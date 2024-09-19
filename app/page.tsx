@@ -1,28 +1,43 @@
 import Link from 'next/link';
+import Image from 'next/image'
 import { BookOpenIcon, AcademicCapIcon, UserIcon, BuildingStorefrontIcon } from '@heroicons/react/24/outline';
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center">
-      <h1 className="text-5xl font-bold text-center mb-8">Horários - Campus Salinas</h1>
-      <div className="grid grid-cols-2 gap-8">
-        <Link href="/ensinoMedio" className="block w-72 px-8 py-6 bg-green-700 text-white text-center text-2xl rounded-md border-4 border-[#8B4513] hover:bg-green-600 transition flex flex-col items-center">
-          <BookOpenIcon className="h-10 w-10 mb-2" />
-          Ensino Médio
-        </Link>
-        <Link href="/ensinoSuperior" className="block w-72 px-8 py-6 bg-green-700 text-white text-center text-2xl rounded-md border-4 border-[#8B4513] hover:bg-green-600 transition flex flex-col items-center">
-          <AcademicCapIcon className="h-10 w-10 mb-2" />
-          Ensino Superior
-        </Link>
-        <Link href="/HorariosProfessores" className="block w-72 px-8 py-6 bg-green-700 text-white text-center text-2xl rounded-md border-4 border-[#8B4513] hover:bg-green-600 transition flex flex-col items-center">
-          <UserIcon className="h-10 w-10 mb-2" />
-          Professores
-        </Link>
-        <Link href="#" className="block w-72 px-8 py-6 bg-green-700 text-white text-center text-2xl rounded-md border-4 border-[#8B4513] hover:bg-green-600 transition flex flex-col items-center">
-          <BuildingStorefrontIcon className="h-10 w-10 mb-2" />
-          Salas
-        </Link>
+    <div className="min-h-screen bg-slate-200 flex flex-col items-center justify-center">
+      <div className="bg-white border-t-4 border-green-700 p-8 rounded-lg shadow-lg text-center">
+        <div className="w-full flex justify-center mb-8">
+          <Image
+            src="/salinas_horizontal_tif.png"
+            alt="Logo do Campus Salinas"
+            width={275}
+            height={275}
+            className="mb-4 object-contain" // Ajusta a imagem para se ajustar ao container mantendo proporções
+          />
+        </div>
+        <h1 className="font-poppins text-4xl font-bold mb-8 text-black">Horários - Campus Salinas</h1>
+        <div className="grid grid-cols-2 gap-8">
+          <Link href="/ensinoMedio" className="block w-72 h-32 bg-green-700 text-white text-center text-2xl rounded-md hover:bg-green-600 transition-all duration-500 flex flex-col items-center justify-center shadow-lg hover:shadow-xl active:bg-green-800 active:shadow-inner">
+            <BookOpenIcon className="h-10 w-10 mb-2 transform transition-transform duration-300" />
+            Ensino Médio
+          </Link>
+          <Link href="/ensinoSuperior" className="block w-72 h-32 bg-green-700 text-white text-center text-2xl rounded-md hover:bg-green-600 transition-all duration-500 flex flex-col items-center justify-center shadow-lg hover:shadow-xl active:bg-green-800 active:shadow-inner">
+            <AcademicCapIcon className="h-10 w-10 mb-2 transform transition-transform duration-300" />
+            Ensino Superior
+          </Link>
+          <Link href="/HorariosProfessores" className="block w-72 h-32 bg-green-700 text-white text-center text-2xl rounded-md hover:bg-green-600 transition-all duration-500 flex flex-col items-center justify-center shadow-lg hover:shadow-xl active:bg-green-800 active:shadow-inner">
+            <UserIcon className="h-10 w-10 mb-2 transform transition-transform duration-300" />
+            Professores
+          </Link>
+          <Link href="#" className="block w-72 h-32 bg-green-700 text-white text-center text-2xl rounded-md hover:bg-green-600 transition-all duration-500 flex flex-col items-center justify-center shadow-lg hover:shadow-xl active:bg-green-800 active:shadow-inner">
+            <BuildingStorefrontIcon className="h-10 w-10 mb-2 transform transition-transform duration-300" />
+            Salas
+          </Link>
+        </div>
       </div>
+      <footer className="text-center text-black py-4 mt-10">
+        © 2024 IFNMG - Todos os direitos reservados.
+      </footer>
     </div>
   );
 }
