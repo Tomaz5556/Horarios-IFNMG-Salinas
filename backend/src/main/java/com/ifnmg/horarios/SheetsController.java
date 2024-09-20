@@ -21,7 +21,7 @@ public class SheetsController {
     @GetMapping("/ensinoMedio")
     @ResponseBody // Retorna o JSON diretamente
     public List<List<Object>> getSheetValuesRangeEnsinoMedio() throws IOException {
-        String range = "Horário - Ensino Médio!A1:G21"; // Defina o range específico para o Ensino Médio
+        String range = "Horário - Ensino Médio!B2:V71"; // Defina o range específico para o Ensino Médio
         return sheetsService.getSheetValues(range);
     }
 }
