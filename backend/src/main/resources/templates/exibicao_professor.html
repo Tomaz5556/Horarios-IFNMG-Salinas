@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Exibição de Horários - Professor</title>
+    <style>
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+        }
+        td, th {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: center;
+            font-size: 12px;
+        }
+        .menu-button, .submit-button {
+            display: block;
+            width: 200px;
+            margin: 20px auto;
+            padding: 10px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+        .menu-button {
+            background-color: red;
+            color: white;
+        }
+        .submit-button {
+            background-color: gainsboro;
+            color: black;
+        }
+        h1 {
+            text-align: center;
+        }
+        select {
+            width: 200px;
+            margin: 20px auto;
+            display: block;
+            font-size: 16px;
+            padding: 10px;
+        }
+        .carga-horaria {
+            width: 200px;
+            margin: 20px;
+            padding: 10px;
+            background-color: gray;
+            color: white;
+            text-align: center;
+            border-radius: 5px;
+            float: right;
+        }
+    </style>
+</head>
+<body>
+    <h1>Selecione o professor</h1>
+    <form method="GET" action="/HorariosProfessores">
+        <select name="professorSelecionado">
+            <option th:each="professor : ${professores}" 
+                    th:value="${professor}" 
+                    th:text="${professor}" 
+                    th:selected="${professor} == ${professorSelecionado}">
+            </option>
+        </select>
+        <button type="submit" class="submit-button">Buscar</button>
+    </form>
+    <table>
+        <thead>
+            <tr>
+                <th>Horários</th>
+                <th>SEGUNDA</th>
+                <th>TERÇA</th>
+                <th>QUARTA</th>
+                <th>QUINTA</th>
+                <th>SEXTA</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="row, iterStat : ${rows}" th:if="${iterStat.index} < ${maxRows}">
+                <td th:text="${row[0]}"></td> <!-- Horários -->
+                <td th:text="${row[1]}"></td> <!-- Segunda -->
+                <td th:text="${row[3]}"></td> <!-- Terça -->
+                <td th:text="${row[5]}"></td> <!-- Quarta -->
+                <td th:text="${row[7]}"></td> <!-- Quinta -->
+                <td th:text="${row[9]}"></td> <!-- Sexta -->
+            </tr>
+        </tbody>
+    </table>
+    <p class="carga-horaria">CH - Total: <span th:text="${horas}"></span></p>
+    <a href="/" class="menu-button">Voltar</a>
+</body>
+</html>
