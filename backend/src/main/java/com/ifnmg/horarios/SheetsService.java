@@ -18,8 +18,8 @@ import java.util.List;
 public class SheetsService {
     private static final String APPLICATION_NAME = "Horários do IFNMG Salinas";
     private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
-    private static final Dotenv dotenv = Dotenv.load();  // Carrega o .env
-    private static final String API_KEY = dotenv.get("API_KEY");  // Carrega a chave da API
+    private static final Dotenv dotenv = Dotenv.load();
+    private static final String API_KEY = dotenv.get("API_KEY");
     private static final String SPREADSHEET_ID = dotenv.get("SPREADSHEET_ID");
     private final Sheets sheetsService;
     public SheetsService() throws GeneralSecurityException, IOException {
@@ -30,10 +30,9 @@ public class SheetsService {
     }
 
     public List<List<Object>> getSheetValues(String range) throws IOException {
-        // Inclua a API key na chamada
         ValueRange response = sheetsService.spreadsheets().values()
                 .get(SPREADSHEET_ID, range)
-                .setKey(API_KEY)  // Adiciona a chave de API
+                .setKey(API_KEY)
                 .execute();
         return response.getValues();
     }

@@ -20,7 +20,7 @@ import java.util.stream.IntStream;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "${FRONTEND_URL}")
 @RestController
 public class SheetsController {
 
@@ -30,6 +30,7 @@ public class SheetsController {
         this.sheetsService = sheetsService;
     }
 
+    // Mostrar os horários dos cursos técnicos
     @GetMapping("/ensinoMedio")
     public ResponseEntity<Map<String, Object>> getSheetValuesRangeEM(
             @RequestParam(value = "cursoSelecionado", required = false, defaultValue = "todos") String cursoSelecionado)
@@ -253,12 +254,12 @@ public class SheetsController {
         Map<String, Object> response = new HashMap<>();
         response.put("professorSelecionado", professorSelecionado);
 
-        String rangeSuperior1 = "Horário - Graduação!B3:B101"; // tabela lateral com horários em horas do dia
-        String rangeSuperior2 = "Horário - Graduação!C3:AW101"; // horários do ensino superior
-        String rangeSuperiorTurmas = "Horário - Graduação!C22:AW22"; // turmas do ensino superior
-        String rangeMedio2 = "Horário - Ensino Médio!C3:V71"; // horários do ensino médio
-        String rangeMedioTurmas = "Horário - Ensino Médio!C16:V16"; // turmas do ensino médio
-        String rangeNomesProfessores = "Validação de Dados!A2:A"; // Nomes dos professores
+        String rangeSuperior1 = "Horário - Graduação!B3:B101";
+        String rangeSuperior2 = "Horário - Graduação!C3:AW101";
+        String rangeSuperiorTurmas = "Horário - Graduação!C22:AW22";
+        String rangeMedio2 = "Horário - Ensino Médio!C3:V71";
+        String rangeMedioTurmas = "Horário - Ensino Médio!C16:V16";
+        String rangeNomesProfessores = "Validação de Dados!A2:A";
 
         List<List<Object>> valuesSuperior1 = sheetsService.getSheetValues(rangeSuperior1);
         List<List<Object>> valuesSuperior2 = sheetsService.getSheetValues(rangeSuperior2);
@@ -267,7 +268,6 @@ public class SheetsController {
         List<List<Object>> valuesMedioTurmas = sheetsService.getSheetValues(rangeMedioTurmas);
         List<List<Object>> nomesProfessores = sheetsService.getSheetValues(rangeNomesProfessores);
 
-        // Verifique se a lista de nomes não está vazia e se contém dados
         Collator collator = Collator.getInstance(new Locale("pt", "BR"));
         List<String> nomesProfessoresValidos = nomesProfessores.stream()
                 .filter(row -> !row.isEmpty())
@@ -275,7 +275,6 @@ public class SheetsController {
                 .sorted(collator::compare)
                 .collect(Collectors.toList());
 
-        // Adiciona os nomes dos professores ao modelo
         response.put("professores", nomesProfessoresValidos);
 
         if (professorSelecionado == null || professorSelecionado.isEmpty()) {
@@ -292,7 +291,6 @@ public class SheetsController {
         int linesPerDayMedio = 14;
         int totalDays = 5;
 
-        // Ajuste de linhas do Ensino Médio para ter 20 linhas por dia
         List<List<Object>> valuesMedio2Adjusted = new ArrayList<>();
         for (int day = 0; day < totalDays; day++) {
             int start = day * linesPerDayMedio;
@@ -302,12 +300,10 @@ public class SheetsController {
                 if (i < valuesMedio2.size()) {
                     valuesMedio2Adjusted.add(valuesMedio2.get(i));
                 } else {
-                    // Adicionando linhas vazias apenas se necessário
                     valuesMedio2Adjusted.add(new ArrayList<>(Collections.nCopies(columnsMedio2, "")));
                 }
             }
 
-            // Adicionando linhas vazias para ajustar até 20 por dia
             while (valuesMedio2Adjusted.size() % linesPerDaySuperior != 0) {
                 valuesMedio2Adjusted.add(new ArrayList<>(Collections.nCopies(columnsMedio2, "")));
             }
@@ -321,17 +317,14 @@ public class SheetsController {
                     List<Object> combinedRow = new ArrayList<>(
                             Collections.nCopies(columnsSuperior1 + columnsSuperior2, ""));
 
-                    // Dados de Graduação (Lateral com Horários)
                     if (i < valuesSuperior1.size()) {
                         combinedRow.set(0, valuesSuperior1.get(i).get(0));
                     }
 
-                    // Combina valores de Graduação e Ensino Médio de forma separada
                     List<Object> superiorData = i < valuesSuperior2.size() ? valuesSuperior2.get(i) : new ArrayList<>();
                     List<Object> medioData = i < valuesMedio2Adjusted.size() ? valuesMedio2Adjusted.get(i)
                             : new ArrayList<>();
 
-                    // Pesquisar nome do professor nos cursos do Ensino Superior e mostrar turma correspondente
                     for (int j = 0; j < superiorData.size(); j++) {
                         Object cellValue = superiorData.get(j);
                         if (cellValue != null && !cellValue.toString().isEmpty()) {
@@ -364,7 +357,6 @@ public class SheetsController {
                         }
                     }
 
-                    // Pesquisar nome do professor nos cursos do Ensino Médio e mostrar turma correspondente
                     for (int j = 0; j < medioData.size(); j++) {
                         Object cellValue = medioData.get(j);
                         if (cellValue != null && !cellValue.toString().isEmpty()) {
@@ -413,7 +405,6 @@ public class SheetsController {
             updatedValues.add(row);
         }
 
-        // Mostrar carga horária do professor selecionado
         int horasPorColuna = 1;
         int colunasPreenchidas = 0;
         int totalHoras = 0;

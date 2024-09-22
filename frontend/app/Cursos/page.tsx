@@ -34,13 +34,13 @@ export default function Cursos() {
     setSelectedCourse(e.target.value);
   };
 
-  const staticOptionsEnsinoMedio = {
+  const OptionsEnsinoMedio = {
     agroindustria: "Técnico em Agroindústria",
     agropecuaria: "Técnico em Agropecuária",
-    informatica: "Técnico em Informática",
+    informatica: "Técnico em Informática"
   };
 
-  const staticOptionsEnsinoSuperior = {
+  const OptionsEnsinoSuperior = {
     engenharia_alimentos: "Bacharelado em Engenharia de Alimentos",
     engenharia_florestal: "Bacharelado em Engenharia Florestal",
     sistemas_informacao: "Bacharelado em Sistemas de Informação",
@@ -49,10 +49,10 @@ export default function Cursos() {
     fisica: "Licenciatura em Física",
     matematica: "Licenciatura em Matemática",
     quimica: "Licenciatura em Química",
-    pedagogia: "Licenciatura em Pedagogia",
+    pedagogia: "Licenciatura em Pedagogia"
   };
 
-  const courseOptions = tipo === 'ensinoMedio' ? staticOptionsEnsinoMedio : staticOptionsEnsinoSuperior;
+  const courseOptions = tipo === 'ensinoMedio' ? OptionsEnsinoMedio : OptionsEnsinoSuperior;
 
   return (
     <div className="container mx-auto p-6">

@@ -3,9 +3,9 @@
 interface DropdownListProps {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-  options: string[]; // Opções dinâmicas
+  options: string[];
   label: string;
-  staticOptions?: { [key: string]: string }; // Opções estáticas para cursos
+  staticOptions?: { [key: string]: string };
 }
 
 export default function DropdownList({ value, onChange, options, label, staticOptions }: DropdownListProps) {

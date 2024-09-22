@@ -12,7 +12,7 @@ export default function Home() {
             alt="Logo do Campus Salinas"
             width={512}
             height={275}
-            className="object-contain w-full max-w-xs md:max-w-md" // Ajusta a imagem para ser responsiva
+            className="object-contain w-full max-w-xs md:max-w-md"
           />
         </div>
         <h1 className="font-poppins text-3xl md:text-4xl font-bold mb-8 text-black">Horários - Campus Salinas</h1>
