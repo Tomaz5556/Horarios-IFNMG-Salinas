@@ -3,6 +3,9 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { fetchCourseData } from '../api';
+import ListaSuspensa from '../components/DropdownList';
+import BotaoBuscar from '../components/SearchButton';
+import BotaoVoltar from '../components/BackButton';
 
 export default function Cursos() {
   const [rows, setRows] = useState<any[]>([]);
@@ -12,7 +15,6 @@ export default function Cursos() {
   const searchParams = useSearchParams();
   const tipo = searchParams.get('tipo');
 
-  // Função para buscar dados da API
   const fetchData = async () => {
     try {
       const data = await fetchCourseData(selectedCourse, tipo ?? '');
@@ -32,42 +34,40 @@ export default function Cursos() {
     setSelectedCourse(e.target.value);
   };
 
+  const staticOptionsEnsinoMedio = {
+    agroindustria: "Técnico em Agroindústria",
+    agropecuaria: "Técnico em Agropecuária",
+    informatica: "Técnico em Informática",
+  };
+
+  const staticOptionsEnsinoSuperior = {
+    engenharia_alimentos: "Bacharelado em Engenharia de Alimentos",
+    engenharia_florestal: "Bacharelado em Engenharia Florestal",
+    sistemas_informacao: "Bacharelado em Sistemas de Informação",
+    medicina_veterinaria: "Bacharelado em Medicina Veterinária",
+    biologia: "Licenciatura em Ciências Biológicas",
+    fisica: "Licenciatura em Física",
+    matematica: "Licenciatura em Matemática",
+    quimica: "Licenciatura em Química",
+    pedagogia: "Licenciatura em Pedagogia",
+  };
+
+  const courseOptions = tipo === 'ensinoMedio' ? staticOptionsEnsinoMedio : staticOptionsEnsinoSuperior;
+
   return (
     <div className="container mx-auto p-6">
       <h1 className="text-center text-2xl font-bold mb-4">
         {courseName ? `Horários para ${courseName}` : 'Carregando...'}
       </h1>
       <div className="flex flex-col items-center mb-4">
-        <select
+        <ListaSuspensa
           value={selectedCourse}
           onChange={handleCourseChange}
-          className="p-2 border border-gray-300 mb-2"
-        >
-          <option value="todos">Todos os Cursos</option>
-          {tipo === 'ensinoMedio' && (
-            <>
-              <option value="agroindustria">Técnico em Agroindústria</option>
-              <option value="agropecuaria">Técnico em Agropecuária</option>
-              <option value="informatica">Técnico em Informática</option>
-            </>
-          )}
-          {tipo === 'ensinoSuperior' && (
-            <>
-              <option value="engenharia_alimentos">Bacharelado em Engenharia de Alimentos</option>
-              <option value="engenharia_florestal">Bacharelado em Engenharia Florestal</option>
-              <option value="sistemas_informacao">Bacharelado em Sistemas de Informação</option>
-              <option value="medicina_veterinaria">Bacharelado em Medicina Veterinária</option>
-              <option value="biologia">Licenciatura em Ciências Biológicas</option>
-              <option value="fisica">Licenciatura em Física</option>
-              <option value="matematica">Licenciatura em Matemática</option>
-              <option value="quimica">Licenciatura em Química</option>
-              <option value="pedagogia">Licenciatura em Pedagogia</option>
-            </>
-          )}
-        </select>
-        <button onClick={fetchData} className="bg-blue-500 text-white py-2 px-4 rounded">
-          Buscar
-        </button>
+          options={[]}
+          label="Selecione um curso"
+          staticOptions={courseOptions}
+        />
+        <BotaoBuscar onClick={fetchData} />
       </div>
 
       <div className="overflow-x-auto">
@@ -99,14 +99,8 @@ export default function Cursos() {
           </tbody>
         </table>
       </div>
-
       <div className="flex justify-center mt-4">
-        <button
-          onClick={() => window.history.back()}
-          className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-400 transition"
-        >
-          Voltar
-        </button>
+        <BotaoVoltar />
       </div>
     </div>
   );

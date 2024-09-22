@@ -2,6 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import { fetchProfessorData } from '../api';
+import ListaSuspensa from '../components/DropdownList';
+import BotaoBuscar from '../components/SearchButton';
+import BotaoVoltar from '../components/BackButton';
 
 export default function Professores() {
   const [rows, setRows] = useState<any[]>([]);
@@ -9,20 +12,17 @@ export default function Professores() {
   const [professores, setProfessores] = useState<string[]>([]);
   const [selectedProfessor, setSelectedProfessor] = useState('');
 
-  // Função para buscar dados da API
   const fetchData = async () => {
     try {
       const data = await fetchProfessorData(selectedProfessor);
       setRows(data.rows);
       setHoras(data.horas);
-      setProfessores(data.professores);
     } catch (error) {
       console.error("Erro ao buscar dados dos professores:", error);
     }
   };
 
   useEffect(() => {
-    // Busca a lista de professores na montagem inicial da página
     const fetchProfessores = async () => {
       try {
         const data = await fetchProfessorData('');
@@ -44,27 +44,13 @@ export default function Professores() {
       <h1 className="text-center text-2xl font-bold mb-4">Horários - Professor</h1>
 
       <div className="flex flex-col items-center mb-4">
-        <select
+        <ListaSuspensa
           value={selectedProfessor}
           onChange={handleProfessorChange}
-          className="p-2 border border-gray-300 mb-2"
-        >
-          <option value="">Selecione um professor</option>
-          {professores.length > 0 ? (
-            professores.map((professor, index) => (
-              <option key={index} value={professor}>
-                {professor}
-              </option>
-            ))
-          ) : (
-            <option value="" disabled>
-              Carregando professores...
-            </option>
-          )}
-        </select>
-        <button onClick={fetchData} className="bg-blue-500 text-white py-2 px-4 rounded">
-          Buscar
-        </button>
+          options={professores}
+          label="Selecione um professor"
+        />
+        <BotaoBuscar onClick={fetchData} />
       </div>
 
       <div className="overflow-x-auto">
@@ -85,12 +71,12 @@ export default function Professores() {
                 <tr key={rowIndex}>
                   <td className="border border-gray-300 p-2 text-center font-bold">
                     {row[0]}
-                  </td> {/* Horários */}
-                  <td className="border border-gray-300 p-2 text-center">{row[1]}</td> {/* Segunda */}
-                  <td className="border border-gray-300 p-2 text-center">{row[3]}</td> {/* Terça */}
-                  <td className="border border-gray-300 p-2 text-center">{row[5]}</td> {/* Quarta */}
-                  <td className="border border-gray-300 p-2 text-center">{row[7]}</td> {/* Quinta */}
-                  <td className="border border-gray-300 p-2 text-center">{row[9]}</td> {/* Sexta */}
+                  </td>
+                  <td className="border border-gray-300 p-2 text-center">{row[1]}</td>
+                  <td className="border border-gray-300 p-2 text-center">{row[3]}</td>
+                  <td className="border border-gray-300 p-2 text-center">{row[5]}</td>
+                  <td className="border border-gray-300 p-2 text-center">{row[7]}</td>
+                  <td className="border border-gray-300 p-2 text-center">{row[9]}</td>
                 </tr>
               ))
             ) : (
@@ -103,18 +89,11 @@ export default function Professores() {
           </tbody>
         </table>
       </div>
-
       <p className="font-bold float-right mt-4 bg-gray-500 text-white p-2 rounded-md inline-block">
         CH - Total: {horas}
       </p>
-
       <div className="flex justify-center mt-4">
-        <button
-          onClick={() => window.history.back()}
-          className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-400 transition"
-        >
-          Voltar
-        </button>
+        <BotaoVoltar />
       </div>
     </div>
   );
