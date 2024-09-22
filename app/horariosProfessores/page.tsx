@@ -1,41 +1,109 @@
-import Link from 'next/link';
+'use client';
 
-export default function HorariosProfessoresPage() {
+import { useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
+
+export default function HorariosProfessores() {
+  const [rows, setRows] = useState<any[]>([]);
+  const [horas, setHoras] = useState('');
+  const [professores, setProfessores] = useState<string[]>([]);
+  const [selectedProfessor, setSelectedProfessor] = useState('');
+  const searchParams = useSearchParams();
+  const tipo = searchParams.get('tipo');
+
+  // Função para buscar dados
+  async function fetchData() {
+    const url = `http://localhost:8080/HorariosProfessores?professorSelecionado=${selectedProfessor}`;
+
+    const response = await fetch(url);
+    const data = await response.json();
+    setRows(data.rows);
+    setHoras(data.horas);
+    setProfessores(data.professores);
+  }
+
+  useEffect(() => {
+    fetchData();
+  }, [selectedProfessor, tipo]);
+
+  const handleProfessorChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedProfessor(e.target.value);
+  };
+
   return (
-    <div className="min-h-screen bg-slate-200 flex flex-col items-center justify-center p-4">
-      <div className="bg-white border-t-4 border-green-700 p-8 rounded-lg shadow-lg text-center w-full max-w-4xl">
-        <h1 className="text-2xl font-bold mb-8">Selecione o professor</h1>
-        <form className="mb-8">
-          <select className="block w-80 mx-auto p-3 border rounded-lg">
-            <option value="professor1">Professor 1</option>
-            <option value="professor2">Professor 2</option>
-            <option value="professor3">Professor 3</option>
-          </select>
-          <button type="submit" className="submit-button mt-4 w-80 mx-auto p-3 bg-green-700 text-white rounded-lg">Buscar</button>
-        </form>
-        <table className="table-auto w-4/5 mx-auto border-collapse">
+    <div className="container mx-auto p-6">
+      <h1 className="text-center text-2xl font-bold mb-4">Horários - Professor</h1>
+
+      {/* Dropdown para selecionar o professor */}
+      <div className="flex flex-col items-center mb-4">
+        <select
+          value={selectedProfessor}
+          onChange={handleProfessorChange}
+          className="p-2 border border-gray-300 mb-2"
+        >
+          <option value="">Selecione um professor</option>
+          {professores && professores.length > 0 ? (
+            professores.map((professor, index) => (
+              <option key={index} value={professor}>
+                {professor}
+              </option>
+            ))
+          ) : (
+            <option value=""></option>
+          )}
+        </select>
+        <button onClick={fetchData} className="bg-blue-500 text-white py-2 px-4 rounded">
+          Buscar
+        </button>
+      </div>
+
+      {/* Tabela de horários */}
+      <div className="overflow-x-auto">
+        <table className="table-auto w-full border-collapse border border-gray-300">
           <thead>
             <tr>
-              <th className="border px-4 py-2">Horários</th>
-              <th className="border px-4 py-2">Segunda</th>
-              <th className="border px-4 py-2">Terça</th>
-              <th className="border px-4 py-2">Quarta</th>
-              <th className="border px-4 py-2">Quinta</th>
-              <th className="border px-4 py-2">Sexta</th>
+              <th className="border border-gray-300 p-2">Horários</th>
+              <th className="border border-gray-300 p-2">SEGUNDA</th>
+              <th className="border border-gray-300 p-2">TERÇA</th>
+              <th className="border border-gray-300 p-2">QUARTA</th>
+              <th className="border border-gray-300 p-2">QUINTA</th>
+              <th className="border border-gray-300 p-2">SEXTA</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td className="border px-4 py-2">08:00 - 09:00</td>
-              <td className="border px-4 py-2">Aula 1</td>
-              <td className="border px-4 py-2">Aula 2</td>
-              <td className="border px-4 py-2">Aula 3</td>
-              <td className="border px-4 py-2">Aula 4</td>
-              <td className="border px-4 py-2">Aula 5</td>
-            </tr>
+            {Array.isArray(rows) && rows.length > 1 ? (
+              rows.slice(0, rows.length - 1).map((row, rowIndex) => (
+                <tr key={rowIndex}>
+                  <td className="border border-gray-300 p-2 text-center">{row[0]}</td> {/* Horários */}
+                  <td className="border border-gray-300 p-2 text-center">{row[1]}</td> {/* Segunda */}
+                  <td className="border border-gray-300 p-2 text-center">{row[3]}</td> {/* Terça */}
+                  <td className="border border-gray-300 p-2 text-center">{row[5]}</td> {/* Quarta */}
+                  <td className="border border-gray-300 p-2 text-center">{row[7]}</td> {/* Quinta */}
+                  <td className="border border-gray-300 p-2 text-center">{row[9]}</td> {/* Sexta */}
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={6} className="border border-gray-300 p-2 text-center">Nenhum dado disponível</td>
+              </tr>
+            )}
           </tbody>
         </table>
-        <Link href="/" className="block w-80 mx-auto mt-8 bg-red-500 text-white text-center py-2 rounded-lg">Voltar</Link>
+      </div>
+
+      {/* Exibição da carga horária */}
+      <p className="font-bold float-right mt-4 bg-gray-500 text-white p-2 rounded-md inline-block">
+        CH - Total: {horas}
+      </p>
+
+      {/* Botão de voltar */}
+      <div className="flex justify-center mt-4">
+        <button
+          onClick={() => window.history.back()}
+          className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-400 transition"
+        >
+          Voltar
+        </button>
       </div>
     </div>
   );

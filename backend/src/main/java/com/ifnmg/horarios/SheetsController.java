@@ -248,6 +248,7 @@ public class SheetsController {
     }
 
     // Mostrar os horários dos professores
+    @ResponseBody
     @GetMapping("/HorariosProfessores")
     public ResponseEntity<Map<String, Object>> getSheetValuesRangeHP(
             @RequestParam(value = "professorSelecionado", required = false) String professorSelecionado)
@@ -431,7 +432,6 @@ public class SheetsController {
         totalHoras = colunasPreenchidas * horasPorColuna;
 
         response.put("rows", updatedValues);
-        response.put("maxRows", linesPerDaySuperior - 1);
         response.put("horas", totalHoras + " h/a");
         return ResponseEntity.ok(response);
     }
