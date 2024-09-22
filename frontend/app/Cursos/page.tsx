@@ -53,11 +53,11 @@ export default function Cursos() {
           )}
           {tipo === 'ensinoSuperior' && (
             <>
-              <option value="engenharia_alimentos">Engenharia de Alimentos</option>
-              <option value="engenharia_florestal">Engenharia Florestal</option>
-              <option value="sistemas_informacao">Sistemas de Informação</option>
-              <option value="medicina_veterinaria">Medicina Veterinária</option>
-              <option value="biologia">Licenciatura em Biologia</option>
+              <option value="engenharia_alimentos">Bacharelado em Engenharia de Alimentos</option>
+              <option value="engenharia_florestal">Bacharelado em Engenharia Florestal</option>
+              <option value="sistemas_informacao">Bacharelado em Sistemas de Informação</option>
+              <option value="medicina_veterinaria">Bacharelado em Medicina Veterinária</option>
+              <option value="biologia">Licenciatura em Ciências Biológicas</option>
               <option value="fisica">Licenciatura em Física</option>
               <option value="matematica">Licenciatura em Matemática</option>
               <option value="quimica">Licenciatura em Química</option>
