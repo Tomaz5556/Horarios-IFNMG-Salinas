@@ -1,11 +1,10 @@
 package com.ifnmg.horarios;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.text.Collator;
@@ -22,7 +21,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @CrossOrigin(origins = "http://localhost:3000")
-@Controller
+@RestController
 public class SheetsController {
 
     private final SheetsService sheetsService;
@@ -31,7 +30,6 @@ public class SheetsController {
         this.sheetsService = sheetsService;
     }
 
-    @ResponseBody
     @GetMapping("/ensinoMedio")
     public ResponseEntity<Map<String, Object>> getSheetValuesRangeEM(
             @RequestParam(value = "cursoSelecionado", required = false, defaultValue = "todos") String cursoSelecionado)
@@ -115,7 +113,6 @@ public class SheetsController {
     }
 
     // Mostrar os horários dos cursos superiores
-    @ResponseBody
     @GetMapping("/ensinoSuperior")
     public ResponseEntity<Map<String, Object>> getSheetValuesRangeES(
             @RequestParam(value = "cursoSelecionado", required = false, defaultValue = "todos") String cursoSelecionado)
@@ -248,8 +245,7 @@ public class SheetsController {
     }
 
     // Mostrar os horários dos professores
-    @ResponseBody
-    @GetMapping("/HorariosProfessores")
+    @GetMapping("/Professores")
     public ResponseEntity<Map<String, Object>> getSheetValuesRangeHP(
             @RequestParam(value = "professorSelecionado", required = false) String professorSelecionado)
             throws IOException {

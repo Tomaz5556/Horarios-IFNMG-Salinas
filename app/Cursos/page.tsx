@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
+import { fetchCourseData } from '../api';
 
-export default function ExibicaoCursos() {
+export default function Cursos() {
   const [rows, setRows] = useState<any[]>([]);
   const [maxColumns, setMaxColumns] = useState(0);
   const [courseName, setCourseName] = useState('');
@@ -11,33 +12,25 @@ export default function ExibicaoCursos() {
   const searchParams = useSearchParams();
   const tipo = searchParams.get('tipo');
 
-  // Função para buscar dados
-  async function fetchData() {
-    let url = '';
-    if (tipo === 'ensinoMedio') {
-      url = `http://localhost:8080/ensinoMedio?cursoSelecionado=${selectedCourse}`;
-    } else if (tipo === 'ensinoSuperior') {
-      url = `http://localhost:8080/ensinoSuperior?cursoSelecionado=${selectedCourse}`;
+  // Função para buscar dados da API
+  const fetchData = async () => {
+    try {
+      const data = await fetchCourseData(selectedCourse, tipo ?? '');
+      setRows(data.rows);
+      setMaxColumns(data.maxColumns);
+      setCourseName(data.courseName);
+    } catch (error) {
+      console.error("Erro ao buscar dados dos cursos:", error);
     }
+  };
 
-    const response = await fetch(url);
-    const data = await response.json();
-    setRows(data.rows);
-    setMaxColumns(data.maxColumns);
-    setCourseName(data.courseName);
-  }
+  useEffect(() => {
+    if (tipo) fetchData();
+  }, [tipo]);
 
   const handleCourseChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedCourse(e.target.value);
   };
-
-  const handleSearch = () => {
-    fetchData();
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, [tipo]);
 
   return (
     <div className="container mx-auto p-6">
@@ -60,11 +53,11 @@ export default function ExibicaoCursos() {
           )}
           {tipo === 'ensinoSuperior' && (
             <>
-              <option value="engenharia_alimentos">Bacharelado em Engenharia de Alimentos</option>
-              <option value="engenharia_florestal">Bacharelado em Engenharia Florestal</option>
-              <option value="sistemas_informacao">Bacharelado em Sistemas de Informação</option>
-              <option value="medicina_veterinaria">Bacharelado em Medicina Veterinária</option>
-              <option value="biologia">Licenciatura em Ciências Biológicas</option>
+              <option value="engenharia_alimentos">Engenharia de Alimentos</option>
+              <option value="engenharia_florestal">Engenharia Florestal</option>
+              <option value="sistemas_informacao">Sistemas de Informação</option>
+              <option value="medicina_veterinaria">Medicina Veterinária</option>
+              <option value="biologia">Licenciatura em Biologia</option>
               <option value="fisica">Licenciatura em Física</option>
               <option value="matematica">Licenciatura em Matemática</option>
               <option value="quimica">Licenciatura em Química</option>
@@ -72,31 +65,41 @@ export default function ExibicaoCursos() {
             </>
           )}
         </select>
-        <button onClick={handleSearch} className="bg-blue-500 text-white py-2 px-4 rounded">
+        <button onClick={fetchData} className="bg-blue-500 text-white py-2 px-4 rounded">
           Buscar
         </button>
       </div>
+
       <div className="overflow-x-auto">
         <table className="table-auto w-full border-collapse border border-gray-300">
           <tbody>
-            {rows.map((row, rowIndex) => (
-              <tr key={rowIndex}>
-                {row.length === 1 ? (
-                  <th colSpan={maxColumns} className="border border-gray-300 p-2">
-                    {row[0]}
-                  </th>
-                ) : (
-                  Array.from({ length: maxColumns }).map((_, colIndex) => (
-                    <td key={colIndex} className={`border border-gray-300 p-2 text-center ${colIndex === 0 ? 'font-bold' : ''}`}>
-                      {colIndex < row.length ? row[colIndex] : ''}
-                    </td>
-                  ))
-                )}
+            {rows.length > 0 ? (
+              rows.map((row, rowIndex) => (
+                <tr key={rowIndex}>
+                  {row.length === 1 ? (
+                    <th colSpan={maxColumns} className="border border-gray-300 p-2">
+                      {row[0]}
+                    </th>
+                  ) : (
+                    Array.from({ length: maxColumns }).map((_, colIndex) => (
+                      <td key={colIndex} className={`border border-gray-300 p-2 text-center ${colIndex === 0 ? 'font-bold' : ''}`}>
+                        {colIndex < row.length ? row[colIndex] : ''}
+                      </td>
+                    ))
+                  )}
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={maxColumns} className="border border-gray-300 p-2 text-center">
+                  Nenhum dado disponível
+                </td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </div>
+
       <div className="flex justify-center mt-4">
         <button
           onClick={() => window.history.back()}
