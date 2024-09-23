@@ -2,10 +2,10 @@
 
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { fetchCourseData } from '../api';
-import ListaSuspensa from '../components/DropdownList';
-import BotaoBuscar from '../components/SearchButton';
-import BotaoVoltar from '../components/BackButton';
+import { fetchCourseData } from '../../api/routes';
+import ListaSuspensa from '../../components/DropdownList';
+import BotaoBuscar from '../../components/SearchButton';
+import BotaoVoltar from '../../components/BackButton';
 
 export default function Cursos() {
   const [rows, setRows] = useState<any[]>([]);

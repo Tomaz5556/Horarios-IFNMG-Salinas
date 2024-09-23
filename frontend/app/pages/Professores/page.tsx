@@ -1,10 +1,10 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { fetchProfessorData } from '../api';
-import ListaSuspensa from '../components/DropdownList';
-import BotaoBuscar from '../components/SearchButton';
-import BotaoVoltar from '../components/BackButton';
+import { fetchProfessorData } from '../../api/routes';
+import ListaSuspensa from '../../components/DropdownList';
+import BotaoBuscar from '../../components/SearchButton';
+import BotaoVoltar from '../../components/BackButton';
 
 export default function Professores() {
   const [rows, setRows] = useState<any[]>([]);

@@ -9,7 +9,7 @@ public class HorariosApplication {
 
 	public static void main(String[] args) {
 		Dotenv dotenv = Dotenv.load();
-        System.setProperty("FRONTEND_URL", dotenv.get("FRONTEND_URL"));
+		System.setProperty("FRONTEND_URL", dotenv.get("FRONTEND_URL"));
 		SpringApplication.run(HorariosApplication.class, args);
 	}
 
