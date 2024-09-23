@@ -56,34 +56,32 @@ export default function Cursos() {
 
   return (
     <div className="container mx-auto p-6">
-      <h1 className="text-center text-2xl font-bold mb-4">
-        {courseName ? `Horários para ${courseName}` : 'Carregando...'}
-      </h1>
+      <h1 className="text-center text-3xl font-bold mb-4">Selecione o curso</h1>
       <div className="flex flex-col items-center mb-4">
         <ListaSuspensa
           value={selectedCourse}
           onChange={handleCourseChange}
           options={[]}
-          label="Selecione um curso"
+          label="Todos os Cursos"
           staticOptions={courseOptions}
         />
         <BotaoBuscar onClick={fetchData} />
       </div>
 
       <div className="overflow-x-auto">
-        <table className="table-auto w-full border-collapse border border-gray-300">
+        <table className="table-auto w-full border-collapse border border-neutral-500">
           <tbody>
             {rows.length > 0 ? (
               rows.map((row, rowIndex) => (
                 <tr key={rowIndex}>
                   {row.length === 1 ? (
-                    <th colSpan={maxColumns} className="border border-gray-300 p-2">
+                    <th colSpan={maxColumns} className="border border-neutral-500 p-3">
                       {row[0]}
                     </th>
                   ) : (
                     Array.from({ length: maxColumns }).map((_, colIndex) => (
-                      <td key={colIndex} className={`border border-gray-300 p-2 text-center ${colIndex === 0 ? 'font-bold' : ''}`}>
-                        {colIndex < row.length ? row[colIndex] : ''}
+                      <td key={colIndex} className={`border border-neutral-500 p-3 text-center ${colIndex === 0 ? 'font-bold whitespace-nowrap overflow-hidden text-ellipsis' : 'whitespace-normal'}`} style={colIndex === 0 ? { width: '150px', maxWidth: '150px' } : { minWidth: '100px' }}>
+                        {colIndex < row.length ? row[colIndex] : '----'}
                       </td>
                     ))
                   )}
@@ -91,7 +89,7 @@ export default function Cursos() {
               ))
             ) : (
               <tr>
-                <td colSpan={maxColumns} className="border border-gray-300 p-2 text-center">
+                <td colSpan={maxColumns} className="border border-neutral-500 p-2 text-center">
                   Nenhum dado disponível
                 </td>
               </tr>
