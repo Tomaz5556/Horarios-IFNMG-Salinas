@@ -55,21 +55,21 @@ export default function Cursos() {
   const courseOptions = tipo === 'ensinoMedio' ? OptionsEnsinoMedio : OptionsEnsinoSuperior;
 
   return (
-    <div className="container mx-auto p-6">
+    <div className="min-h-screen bg-neutral-50 container mx-auto p-6">
       <h1 className="text-center text-3xl font-bold mb-4">Selecione o curso</h1>
       <div className="flex flex-col items-center mb-4">
         <ListaSuspensa
           value={selectedCourse}
           onChange={handleCourseChange}
           options={[]}
-          label="Todos os Cursos"
+          label="Todos (Cursos)"
           staticOptions={courseOptions}
         />
         <BotaoBuscar onClick={fetchData} />
       </div>
 
       <div className="overflow-x-auto">
-        <table className="table-auto w-full border-collapse border border-neutral-500">
+        <table className="bg-white table-auto w-full border-collapse border border-neutral-500">
           <tbody>
             {rows.length > 0 ? (
               rows.map((row, rowIndex) => (
@@ -81,7 +81,7 @@ export default function Cursos() {
                   ) : (
                     Array.from({ length: maxColumns }).map((_, colIndex) => (
                       <td key={colIndex} className={`border border-neutral-500 p-3 text-center ${colIndex === 0 ? 'font-bold whitespace-nowrap overflow-hidden text-ellipsis' : 'whitespace-normal'}`} style={colIndex === 0 ? { width: '150px', maxWidth: '150px' } : { minWidth: '100px' }}>
-                        {colIndex < row.length ? row[colIndex] : '----'}
+                        {courseName !== "Todos os Cursos - Ensino Médio" && courseName !== "Todos os Cursos - Ensino Superior" && colIndex < row.length ? (row[colIndex] || '-------') : (colIndex < row.length ? row[colIndex] : '')}
                       </td>
                     ))
                   )}

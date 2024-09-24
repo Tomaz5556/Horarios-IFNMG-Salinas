@@ -35,7 +35,7 @@ export default function Home() {
           </Link>
         </div>
       </div>
-      <footer className="text-center text-black py-4 mt-10">
+      <footer className="text-center text-black p-4">
         © 2024 IFNMG - Todos os direitos reservados.
       </footer>
     </div>

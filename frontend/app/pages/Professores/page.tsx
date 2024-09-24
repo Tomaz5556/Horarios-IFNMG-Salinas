@@ -40,7 +40,7 @@ export default function Professores() {
   };
 
   return (
-    <div className="container mx-auto p-6">
+    <div className="min-h-screen bg-neutral-50 container mx-auto p-6">
       <h1 className="text-center text-2xl font-bold mb-4">Selecione o Professor</h1>
 
       <div className="flex flex-col items-center mb-4">
@@ -48,16 +48,16 @@ export default function Professores() {
           value={selectedProfessor}
           onChange={handleProfessorChange}
           options={professores}
-          label=""
+          label="Disciplina (Professor)"
         />
         <BotaoBuscar onClick={fetchData} />
       </div>
 
       <div className="overflow-x-auto">
-        <table className="table-auto w-full border-collapse border border-neutral-500">
+        <table className="bg-white table-auto w-full border-collapse border border-neutral-500">
           <thead>
             <tr>
-              <th className="border border-neutral-500 p-3 text-center">Horários</th>
+              <th className="border border-neutral-500 p-3 text-center">HORÁRIO</th>
               <th className="border border-neutral-500 p-3 text-center">SEGUNDA</th>
               <th className="border border-neutral-500 p-3 text-center">TERÇA</th>
               <th className="border border-neutral-500 p-3 text-center">QUARTA</th>
