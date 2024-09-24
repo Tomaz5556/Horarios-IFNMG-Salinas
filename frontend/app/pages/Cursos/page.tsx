@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Key } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { fetchCourseData } from '../../api/routes';
 import ListaSuspensa from '../../components/DropdownList';
@@ -72,21 +72,25 @@ export default function Cursos() {
         <table className="bg-white table-auto w-full border-collapse border border-neutral-500">
           <tbody>
             {rows.length > 0 ? (
-              rows.map((row, rowIndex) => (
-                <tr key={rowIndex}>
-                  {row.length === 1 ? (
-                    <th colSpan={maxColumns} className="border border-neutral-500 p-3">
-                      {row[0]}
-                    </th>
-                  ) : (
-                    Array.from({ length: maxColumns }).map((_, colIndex) => (
-                      <td key={colIndex} className={`border border-neutral-500 p-3 text-center ${colIndex === 0 ? 'font-bold whitespace-nowrap overflow-hidden text-ellipsis' : 'whitespace-normal'}`} style={colIndex === 0 ? { width: '150px', maxWidth: '150px' } : { minWidth: '100px' }}>
-                        {courseName !== "Todos os Cursos - Ensino Médio" && courseName !== "Todos os Cursos - Ensino Superior" && colIndex < row.length ? (row[colIndex] || '-------') : (colIndex < row.length ? row[colIndex] : '')}
-                      </td>
-                    ))
-                  )}
-                </tr>
-              ))
+              rows.map((row, rowIndex) => {
+                const isFirstLineAfterDay = rowIndex > 0 && rows[rowIndex - 1].length === 1;
+
+                return (
+                  <tr key={rowIndex}>
+                    {row.length === 1 ? (
+                      <th colSpan={maxColumns} className="border border-neutral-500 p-3">
+                        {row[0]}
+                      </th>
+                    ) : (
+                      Array.from({ length: maxColumns }).map((_, colIndex) => (
+                        <td className={`border border-neutral-500 p-3 text-center ${ isFirstLineAfterDay ? 'font-bold whitespace-nowrap overflow-hidden text-ellipsis' : colIndex === 0 ? 'font-bold whitespace-nowrap overflow-hidden text-ellipsis w-[150px] max-w-[150px]' : 'whitespace-normal min-w-[100px]'}`}>
+                          {courseName !== 'Todos os Cursos - Ensino Médio' && courseName !== 'Todos os Cursos - Ensino Superior' && colIndex < row.length ? row[colIndex] || '-------' : colIndex < row.length ? row[colIndex] : ''}
+                        </td>
+                      ))
+                    )}
+                  </tr>
+                );
+              })
             ) : (
               <tr>
                 <td colSpan={maxColumns} className="border border-neutral-500 p-2 text-center">

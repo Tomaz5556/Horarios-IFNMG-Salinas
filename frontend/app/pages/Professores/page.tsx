@@ -69,7 +69,7 @@ export default function Professores() {
             {rows.length > 0 ? (
               rows.slice(0, rows.length - 1).map((row, rowIndex) => (
                 <tr key={rowIndex}>
-                  <td className={`border border-neutral-500 p-3 text-center font-bold whitespace-nowrap overflow-hidden text-ellipsis`} style={{ width: '150px', maxWidth: '150px' }}>
+                  <td className="border border-neutral-500 p-3 text-center font-bold whitespace-nowrap overflow-hidden text-ellipsis w-[150px] max-w-[150px]">
                     {row[0]}
                   </td>
                   <td className="border border-neutral-500 p-3 text-center">{row[1]}</td>
