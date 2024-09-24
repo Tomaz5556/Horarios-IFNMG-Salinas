@@ -39,6 +39,16 @@ export default function Professores() {
     setSelectedProfessor(e.target.value);
   };
 
+  const renderCellContent = (content: string) => {
+    const isMultipleClasses = content.includes('+');
+
+    return (
+      <span className={isMultipleClasses ? 'font-bold' : ''}>
+        {content}
+      </span>
+    );
+  };
+
   return (
     <div className="min-h-screen bg-neutral-50 container mx-auto p-6">
       <h1 className="text-center text-2xl font-bold mb-4">Selecione o Professor</h1>
@@ -72,11 +82,11 @@ export default function Professores() {
                   <td className="border border-neutral-500 p-3 text-center font-bold whitespace-nowrap overflow-hidden text-ellipsis w-[150px] max-w-[150px]">
                     {row[0]}
                   </td>
-                  <td className="border border-neutral-500 p-3 text-center">{row[1]}</td>
-                  <td className="border border-neutral-500 p-3 text-center">{row[3]}</td>
-                  <td className="border border-neutral-500 p-3 text-center">{row[5]}</td>
-                  <td className="border border-neutral-500 p-3 text-center">{row[7]}</td>
-                  <td className="border border-neutral-500 p-3 text-center">{row[9]}</td>
+                  <td className="border border-neutral-500 p-3 text-center">{renderCellContent(row[1])}</td>
+                  <td className="border border-neutral-500 p-3 text-center">{renderCellContent(row[3])}</td>
+                  <td className="border border-neutral-500 p-3 text-center">{renderCellContent(row[5])}</td>
+                  <td className="border border-neutral-500 p-3 text-center">{renderCellContent(row[7])}</td>
+                  <td className="border border-neutral-500 p-3 text-center">{renderCellContent(row[9])}</td>
                 </tr>
               ))
             ) : (

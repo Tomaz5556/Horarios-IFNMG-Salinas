@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, Key } from 'react';
+import { useState, useEffect} from 'react';
 import { useSearchParams } from 'next/navigation';
 import { fetchCourseData } from '../../api/routes';
 import ListaSuspensa from '../../components/DropdownList';
