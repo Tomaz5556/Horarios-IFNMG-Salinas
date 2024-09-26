@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect} from 'react';
+import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { fetchCourseData } from '../../api/routes';
 import ListaSuspensa from '../../components/DropdownList';
@@ -54,55 +54,71 @@ export default function Cursos() {
 
   const courseOptions = tipo === 'ensinoMedio' ? OptionsEnsinoMedio : OptionsEnsinoSuperior;
 
+  const emptyColumns: number[] = [];
+
+  rows.forEach((row, rowIndex) => {
+    const isFirstLineAfterDay = rowIndex > 0 && rows[rowIndex - 1].length === 1;
+
+    if (isFirstLineAfterDay) {
+      row.forEach((cell: any, colIndex: number) => {
+        if (!cell && !emptyColumns.includes(colIndex)) {
+          emptyColumns.push(colIndex);
+        }
+      });
+    }
+  });
+
   return (
-    <div className="min-h-screen bg-neutral-50 container mx-auto p-6">
-      <h1 className="text-center text-3xl font-bold mb-4">Selecione o curso</h1>
-      <div className="flex flex-col items-center mb-4">
-        <ListaSuspensa
-          value={selectedCourse}
-          onChange={handleCourseChange}
-          options={[]}
-          label="Todos (Cursos)"
-          staticOptions={courseOptions}
-        />
-        <BotaoBuscar onClick={fetchData} />
-      </div>
+    <div className="min-h-screen bg-neutral-50">
+      <div className="min-h-screen container mx-auto p-6">
+        <h1 className="text-center text-3xl font-bold mb-4">Selecione o curso</h1>
+        <div className="flex flex-col items-center mb-4">
+          <ListaSuspensa
+            value={selectedCourse}
+            onChange={handleCourseChange}
+            options={[]}
+            label="Todos (Cursos)"
+            staticOptions={courseOptions}
+          />
+          <BotaoBuscar onClick={fetchData} />
+        </div>
 
-      <div className="overflow-x-auto">
-        <table className="bg-white table-auto w-full border-collapse border border-neutral-500">
-          <tbody>
-            {rows.length > 0 ? (
-              rows.map((row, rowIndex) => {
-                const isFirstLineAfterDay = rowIndex > 0 && rows[rowIndex - 1].length === 1;
+        <div className="overflow-x-auto">
+          <table className="bg-white table-auto w-full border-collapse border border-neutral-500">
+            <tbody>
+              {rows.length > 0 ? (
+                rows.map((row, rowIndex) => {
+                  const isFirstLineAfterDay = rowIndex > 0 && rows[rowIndex - 1].length === 1;
 
-                return (
-                  <tr key={rowIndex}>
-                    {row.length === 1 ? (
-                      <th colSpan={maxColumns} className="border border-neutral-500 p-3">
-                        {row[0]}
-                      </th>
-                    ) : (
-                      Array.from({ length: maxColumns }).map((_, colIndex) => (
-                        <td className={`border border-neutral-500 p-3 text-center ${ isFirstLineAfterDay ? 'font-bold whitespace-nowrap overflow-hidden text-ellipsis' : colIndex === 0 ? 'font-bold whitespace-nowrap overflow-hidden text-ellipsis w-[150px] max-w-[150px]' : 'whitespace-normal min-w-[100px]'}`}>
-                          {courseName !== 'Todos os Cursos - Ensino Médio' && courseName !== 'Todos os Cursos - Ensino Superior' && colIndex < row.length ? row[colIndex] || '-------' : colIndex < row.length ? row[colIndex] : ''}
-                        </td>
-                      ))
-                    )}
-                  </tr>
-                );
-              })
-            ) : (
-              <tr>
-                <td colSpan={maxColumns} className="border border-neutral-500 p-2 text-center">
-                  Nenhum dado disponível
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
-      <div className="flex justify-center mt-4">
-        <BotaoVoltar />
+                  return (
+                    <tr key={rowIndex}>
+                      {row.length === 1 ? (
+                        <th colSpan={maxColumns} className="bg-neutral-200 border border-neutral-500 p-3">
+                          {row[0]}
+                        </th>
+                      ) : (
+                        Array.from({ length: maxColumns }).map((_, colIndex) => (
+                          <td className={`border border-neutral-500 p-3 text-center ${isFirstLineAfterDay ? 'bg-neutral-400 font-bold whitespace-nowrap overflow-hidden text-ellipsis' : colIndex === 0 ? 'bg-gray-300 font-bold whitespace-nowrap overflow-hidden text-ellipsis w-[150px] max-w-[150px]' : 'whitespace-normal min-w-[100px]'} ${emptyColumns.includes(colIndex) ? 'bg-neutral-400' : ''}`}>
+                            {courseName !== 'Todos os Cursos - Ensino Médio' && courseName !== 'Todos os Cursos - Ensino Superior' && colIndex < row.length ? row[colIndex] || '-------' : colIndex < row.length ? row[colIndex] : ''}
+                          </td>
+                        ))
+                      )}
+                    </tr>
+                  );
+                })
+              ) : (
+                <tr>
+                  <td colSpan={maxColumns} className="border border-neutral-500 p-2 text-center">
+                    Nenhum dado disponível
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+        <div className="flex justify-center mt-4">
+          <BotaoVoltar />
+        </div>
       </div>
     </div>
   );
