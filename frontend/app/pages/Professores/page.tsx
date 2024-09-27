@@ -52,7 +52,7 @@ export default function Professores() {
 
   return (
     <div className="min-h-screen bg-neutral-50">
-      <div className="min-h-screen container mx-auto px-0 py-6">
+      <div className="min-h-screen container mx-auto px-2 py-6">
         <h1 className="text-center text-2xl font-bold mb-4">Selecione o Professor</h1>
         <div className="flex flex-col items-center mb-4">
           <ListaSuspensa

@@ -34,7 +34,7 @@ export default function TabelaCursos({ rows, maxColumns, courseName }: TabelaCur
                                     </th>
                                 ) : (
                                     Array.from({ length: maxColumns }).map((_, colIndex) => (
-                                        <td className={`border border-neutral-500 p-3 text-center ${isFirstLineAfterDay ? 'bg-neutral-400 font-bold whitespace-nowrap overflow-hidden text-ellipsis' : colIndex === 0 ? 'bg-gray-300 font-bold whitespace-nowrap overflow-hidden text-ellipsis w-[150px] max-w-[150px] sticky left-0 z-10 border-neutral-500' : 'whitespace-normal min-w-[100px]'} ${emptyColumns.includes(colIndex) ? 'bg-neutral-400' : ''}`}>
+                                        <td className={`border border-neutral-500 p-3 text-center ${isFirstLineAfterDay ? 'bg-neutral-400 font-bold whitespace-nowrap overflow-hidden text-ellipsis' : colIndex === 0 ? 'bg-gray-300 font-bold whitespace-nowrap overflow-hidden text-ellipsis w-[150px] max-w-[150px] sticky left-0 z-10' : 'whitespace-normal min-w-[100px]'} ${emptyColumns.includes(colIndex) ? 'bg-neutral-400' : ''}`}>
                                             {courseName !== 'Todos os Cursos - Ensino Médio' && courseName !== 'Todos os Cursos - Ensino Superior' && colIndex < row.length ? row[colIndex] || '-------' : colIndex < row.length ? row[colIndex] : ''}
                                         </td>
                                     ))
