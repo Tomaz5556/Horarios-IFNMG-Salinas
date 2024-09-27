@@ -71,7 +71,7 @@ export default function Cursos() {
 
   return (
     <div className="min-h-screen bg-neutral-50">
-      <div className="min-h-screen container mx-auto p-6">
+      <div className="min-h-screen container mx-auto px-0 py-6">
         <h1 className="text-center text-3xl font-bold mb-4">Selecione o curso</h1>
         <div className="flex flex-col items-center mb-4">
           <ListaSuspensa

@@ -1,5 +1,3 @@
-'use client';
-
 interface SearchButtonProps {
   onClick: () => void;
 }

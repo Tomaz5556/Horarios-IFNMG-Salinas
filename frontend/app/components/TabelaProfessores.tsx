@@ -2,7 +2,7 @@ interface TabelaProfessoresProps {
     rows: any[];
 }
 
-const TabelaProfessores = ({ rows }: TabelaProfessoresProps) => {
+export default function TabelaProfessores({ rows }: TabelaProfessoresProps) {
     const renderCellContent = (content: string) => {
         const isMultipleClasses = content.includes('+');
 
@@ -50,5 +50,3 @@ const TabelaProfessores = ({ rows }: TabelaProfessoresProps) => {
         </table>
     );
 };
-
-export default TabelaProfessores;  

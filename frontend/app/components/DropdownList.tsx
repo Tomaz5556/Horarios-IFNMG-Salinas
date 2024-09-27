@@ -1,5 +1,3 @@
-'use client';
-
 interface DropdownListProps {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
