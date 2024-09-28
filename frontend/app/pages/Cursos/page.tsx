@@ -70,10 +70,10 @@ export default function Cursos() {
   });
 
   return (
-    <div className="min-h-screen bg-neutral-50">
+    <div className="min-h-screen bg-neutral-50 dark:bg-neutral-900">
       <div className="min-h-screen container mx-auto px-2 py-6">
-        <h1 className="text-center text-3xl font-bold mb-4">Selecione o curso</h1>
-        <div className="flex flex-col items-center mb-4">
+        <h1 className="text-center text-3xl font-bold mb-4 text-black dark:text-white">Selecione o curso</h1>
+        <div className="flex flex-col items-center mb-4 text-black dark:text-white">
           <ListaSuspensa
             value={selectedCourse}
             onChange={handleCourseChange}

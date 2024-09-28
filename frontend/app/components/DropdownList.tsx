@@ -12,7 +12,7 @@ export default function DropdownList({ value, onChange, options, label, staticOp
       <select
         value={value}
         onChange={onChange}
-        className="p-2 border border-neutral-500"
+        className="bg-white dark:bg-black p-2 border border-neutral-500 text-black dark:text-white"
       >
         <option value="">{label}</option>
         {staticOptions && Object.entries(staticOptions).map(([value, label]) => (

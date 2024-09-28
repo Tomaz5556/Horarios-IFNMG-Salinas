@@ -51,10 +51,10 @@ export default function Professores() {
   };
 
   return (
-    <div className="min-h-screen bg-neutral-50">
+    <div className="min-h-screen bg-neutral-50 dark:bg-neutral-900">
       <div className="min-h-screen container mx-auto px-2 py-6">
-        <h1 className="text-center text-2xl font-bold mb-4">Selecione o Professor</h1>
-        <div className="flex flex-col items-center mb-4">
+        <h1 className="text-center text-2xl font-bold mb-4 text-black dark:text-white">Selecione o Professor</h1>
+        <div className="flex flex-col items-center mb-4 text-black dark:text-white">
           <ListaSuspensa
             value={selectedProfessor}
             onChange={handleProfessorChange}
@@ -68,7 +68,7 @@ export default function Professores() {
           <TabelaProfessores rows={rows} />
         </div>
         <div className="flex flex-col items-center mt-4">
-          <p className="font-bold bg-gray-500 text-white p-3 rounded-md inline-block">
+          <p className="bg-neutral-500 dark:bg-white font-bold p-3 rounded-md inline-block text-white dark:text-black">
             Carga Horária - Total: {horas}
           </p>
           <div className="mt-4">

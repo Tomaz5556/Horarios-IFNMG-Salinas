@@ -20,7 +20,7 @@ export default function TabelaCursos({ rows, maxColumns, courseName }: TabelaCur
     });
 
     return (
-        <table className="bg-white table-auto w-full border-collapse border border-neutral-500 text-sm">
+        <table className="bg-white dark:bg-black table-auto w-full border-collapse border border-neutral-500 text-sm text-black">
             <tbody>
                 {rows.length > 0 ? (
                     rows.map((row, rowIndex) => {
@@ -29,12 +29,14 @@ export default function TabelaCursos({ rows, maxColumns, courseName }: TabelaCur
                         return (
                             <tr key={rowIndex}>
                                 {row.length === 1 ? (
-                                    <th colSpan={maxColumns} className="bg-neutral-200 border border-neutral-500 p-3">
+                                    <th colSpan={maxColumns} className="bg-neutral-100 border border-neutral-500 p-3">
                                         {row[0]}
                                     </th>
                                 ) : (
                                     Array.from({ length: maxColumns }).map((_, colIndex) => (
-                                        <td className={`border border-neutral-500 p-3 text-center ${isFirstLineAfterDay ? 'bg-neutral-400 font-bold whitespace-nowrap overflow-hidden text-ellipsis' : colIndex === 0 ? 'bg-gray-300 font-bold whitespace-nowrap overflow-hidden text-ellipsis w-[150px] max-w-[150px] sticky left-0 z-10' : 'whitespace-normal min-w-[100px]'} ${emptyColumns.includes(colIndex) ? 'bg-neutral-400' : ''}`}>
+                                        <td className={`border border-neutral-500 p-3 text-center ${isFirstLineAfterDay ? 'bg-neutral-400 font-bold whitespace-nowrap overflow-hidden text-ellipsis' : 
+                                        colIndex === 0 ? 'bg-zinc-300 font-bold whitespace-nowrap overflow-hidden text-ellipsis w-[150px] max-w-[150px] sticky left-0 z-10' : 'dark:text-white whitespace-normal min-w-[100px]'} 
+                                        ${emptyColumns.includes(colIndex) ? 'bg-neutral-400' : ''}`}>
                                             {courseName !== 'Todos os Cursos - Ensino Médio' && courseName !== 'Todos os Cursos - Ensino Superior' && colIndex < row.length ? row[colIndex] || '-------' : colIndex < row.length ? row[colIndex] : ''}
                                         </td>
                                     ))
@@ -44,7 +46,7 @@ export default function TabelaCursos({ rows, maxColumns, courseName }: TabelaCur
                     })
                 ) : (
                     <tr>
-                        <td colSpan={maxColumns} className="border border-neutral-500 p-2 text-center">
+                        <td colSpan={maxColumns} className="dark:text-white border border-neutral-500 p-2 text-center">
                             Nenhum dado disponível
                         </td>
                     </tr>
