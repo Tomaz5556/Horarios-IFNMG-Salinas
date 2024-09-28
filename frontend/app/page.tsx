@@ -40,7 +40,7 @@ export default function Home() {
             <UserIcon className="h-8 w-8 md:h-10 md:w-10 mb-2 transform transition-transform duration-300" />
             Professores
           </Link>
-          <Link href="#" className="block w-full h-28 md:h-32 bg-green-700 dark:bg-white text-white dark:text-black text-center text-xl md:text-2xl rounded-md hover:bg-green-600 dark:hover:bg-neutral-300 transition-all duration-500 flex flex-col items-center justify-center shadow-lg hover:shadow-xl active:bg-green-800 dark:active:bg-neutral-500 active:shadow-inner">
+          <Link href="https://www.ifnmg.edu.br/salinas" target="_blank" className="block w-full h-28 md:h-32 bg-green-700 dark:bg-white text-white dark:text-black text-center text-xl md:text-2xl rounded-md hover:bg-green-600 dark:hover:bg-neutral-300 transition-all duration-500 flex flex-col items-center justify-center shadow-lg hover:shadow-xl active:bg-green-800 dark:active:bg-neutral-500 active:shadow-inner">
             <BuildingStorefrontIcon className="h-8 w-8 md:h-10 md:w-10 mb-2 transform transition-transform duration-300" />
             Salas
           </Link>
