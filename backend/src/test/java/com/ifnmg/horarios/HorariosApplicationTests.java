@@ -4,21 +4,17 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import io.github.cdimascio.dotenv.Dotenv;
-
 @SpringBootTest
 class HorariosApplicationTests {
 
     @BeforeAll
     public static void setUp() {
-        Dotenv dotenv = Dotenv.configure().load();
-        System.setProperty("API_KEY", dotenv.get("API_KEY"));
-        System.setProperty("SPREADSHEET_ID", dotenv.get("SPREADSHEET_ID"));
-        System.setProperty("FRONTEND_URL", dotenv.get("FRONTEND_URL"));
+        System.setProperty("API_KEY", System.getProperty("API_KEY", "default_api_key"));
+        System.setProperty("SPREADSHEET_ID", System.getProperty("SPREADSHEET_ID", "default_spreadsheet_id"));
+        System.setProperty("FRONTEND_URL", System.getProperty("FRONTEND_URL", "default_frontend_url"));
     }
 
-	@Test
-	void contextLoads() {
-	}
-
+    @Test
+    void contextLoads() {
+    }
 }
