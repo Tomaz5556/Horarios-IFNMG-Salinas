@@ -13,6 +13,7 @@ export default function Cursos() {
   const [maxColumns, setMaxColumns] = useState(0);
   const [courseName, setCourseName] = useState('');
   const [selectedCourse, setSelectedCourse] = useState('todos');
+  const [hasSearched, setHasSearched] = useState(false);
   const searchParams = useSearchParams();
   const tipo = searchParams.get('tipo');
 
@@ -22,13 +23,14 @@ export default function Cursos() {
       setRows(data.rows);
       setMaxColumns(data.maxColumns);
       setCourseName(data.courseName);
+      setHasSearched(true);
     } catch (error) {
       console.error("Erro ao buscar dados dos cursos:", error);
     }
   };
 
   useEffect(() => {
-    if (tipo) fetchData();
+    setHasSearched(false);
   }, [tipo]);
 
   const handleCourseChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -85,7 +87,12 @@ export default function Cursos() {
         </div>
 
         <div className="overflow-x-auto">
-          <TabelaCursos rows={rows} maxColumns={maxColumns} courseName={courseName} />
+          <TabelaCursos 
+            rows={rows} 
+            maxColumns={maxColumns} 
+            courseName={courseName} 
+            loading={!hasSearched}
+          />
         </div>
         <div className="flex justify-center mt-4">
           <BotaoVoltar />

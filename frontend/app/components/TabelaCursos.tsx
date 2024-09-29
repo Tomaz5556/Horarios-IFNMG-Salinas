@@ -2,9 +2,10 @@ interface TabelaCursosProps {
     rows: any[];
     maxColumns: number;
     courseName: string;
+    loading: boolean;
 }
 
-export default function TabelaCursos({ rows, maxColumns, courseName }: TabelaCursosProps) {
+export default function TabelaCursos({ rows, maxColumns, courseName, loading }: TabelaCursosProps) {
     const emptyColumns: number[] = [];
 
     rows.forEach((row, rowIndex) => {
@@ -22,7 +23,13 @@ export default function TabelaCursos({ rows, maxColumns, courseName }: TabelaCur
     return (
         <table className="bg-white dark:bg-black table-auto w-full border-collapse border border-neutral-500 text-sm text-black">
             <tbody>
-                {rows.length > 0 ? (
+                {loading ? (
+                    <tr>
+                        <td colSpan={maxColumns} className="dark:text-white border border-neutral-500 p-2 text-center">
+                            Nenhum dado disponível
+                        </td>
+                    </tr>
+                ) : (
                     rows.map((row, rowIndex) => {
                         const isFirstLineAfterDay = rowIndex > 0 && rows[rowIndex - 1].length === 1;
 
@@ -44,12 +51,6 @@ export default function TabelaCursos({ rows, maxColumns, courseName }: TabelaCur
                             </tr>
                         );
                     })
-                ) : (
-                    <tr>
-                        <td colSpan={maxColumns} className="dark:text-white border border-neutral-500 p-2 text-center">
-                            Nenhum dado disponível
-                        </td>
-                    </tr>
                 )}
             </tbody>
         </table>
