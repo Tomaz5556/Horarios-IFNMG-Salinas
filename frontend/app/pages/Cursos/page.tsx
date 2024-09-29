@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { fetchCourseData } from '../../api/routes';
 import ListaSuspensa from '../../components/DropdownList';
@@ -8,8 +8,8 @@ import BotaoBuscar from '../../components/SearchButton';
 import BotaoVoltar from '../../components/BackButton';
 import TabelaCursos from '../../components/TabelaCursos';
 
-export default function Cursos() {
-  const [rows, setRows] = useState<any[]>([]);
+function CursosComponent() {
+  const [rows, setRows] = useState<(string | null)[][]>([]);
   const [maxColumns, setMaxColumns] = useState(0);
   const [courseName, setCourseName] = useState('');
   const [selectedCourse, setSelectedCourse] = useState('todos');
@@ -63,7 +63,7 @@ export default function Cursos() {
     const isFirstLineAfterDay = rowIndex > 0 && rows[rowIndex - 1].length === 1;
 
     if (isFirstLineAfterDay) {
-      row.forEach((cell: any, colIndex: number) => {
+      row.forEach((cell, colIndex: number) => {
         if (!cell && !emptyColumns.includes(colIndex)) {
           emptyColumns.push(colIndex);
         }
@@ -99,5 +99,13 @@ export default function Cursos() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function Cursos() {
+  return (
+    <Suspense fallback={<div>Carregando...</div>}>
+      <CursosComponent />
+    </Suspense>
   );
 }

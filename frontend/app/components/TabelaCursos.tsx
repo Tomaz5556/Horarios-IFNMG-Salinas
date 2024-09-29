@@ -1,5 +1,5 @@
 interface TabelaCursosProps {
-    rows: any[];
+    rows: (string | null)[][];
     maxColumns: number;
     courseName: string;
     loading: boolean;
@@ -12,7 +12,7 @@ export default function TabelaCursos({ rows, maxColumns, courseName, loading }: 
         const isFirstLineAfterDay = rowIndex > 0 && rows[rowIndex - 1].length === 1;
 
         if (isFirstLineAfterDay) {
-            row.forEach((cell: any, colIndex: number) => {
+            row.forEach((cell, colIndex: number) => {
                 if (!cell && !emptyColumns.includes(colIndex)) {
                     emptyColumns.push(colIndex);
                 }
@@ -41,7 +41,7 @@ export default function TabelaCursos({ rows, maxColumns, courseName, loading }: 
                                     </th>
                                 ) : (
                                     Array.from({ length: maxColumns }).map((_, colIndex) => (
-                                        <td className={`border border-neutral-500 p-3 text-center ${isFirstLineAfterDay ? 'bg-neutral-400 font-bold whitespace-nowrap overflow-hidden text-ellipsis' : 
+                                        <td key={colIndex} className={`border border-neutral-500 p-3 text-center ${isFirstLineAfterDay ? 'bg-neutral-400 font-bold whitespace-nowrap overflow-hidden text-ellipsis' : 
                                         colIndex === 0 ? 'bg-zinc-300 font-bold whitespace-nowrap overflow-hidden text-ellipsis w-[150px] max-w-[150px] sticky left-0 z-10' : 'dark:text-white whitespace-normal min-w-[100px]'} 
                                         ${emptyColumns.includes(colIndex) ? 'bg-neutral-400' : ''}`}>
                                             {courseName !== 'Todos os Cursos - Ensino Médio' && courseName !== 'Todos os Cursos - Ensino Superior' && colIndex < row.length ? row[colIndex] || '-------' : colIndex < row.length ? row[colIndex] : ''}

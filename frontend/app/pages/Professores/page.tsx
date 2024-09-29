@@ -8,7 +8,7 @@ import BotaoVoltar from '../../components/BackButton';
 import TabelaProfessores from '../../components/TabelaProfessores';
 
 export default function Professores() {
-  const [rows, setRows] = useState<any[]>([]);
+  const [rows, setRows] = useState<(string | null)[][]>([]);
   const [horas, setHoras] = useState('');
   const [professores, setProfessores] = useState<string[]>([]);
   const [selectedProfessor, setSelectedProfessor] = useState('');
@@ -38,16 +38,6 @@ export default function Professores() {
 
   const handleProfessorChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedProfessor(e.target.value);
-  };
-
-  const renderCellContent = (content: string) => {
-    const isMultipleClasses = content.includes('+');
-
-    return (
-      <span className={isMultipleClasses ? 'font-bold' : ''}>
-        {content}
-      </span>
-    );
   };
 
   return (

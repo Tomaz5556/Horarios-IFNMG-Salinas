@@ -1,5 +1,5 @@
 interface TabelaProfessoresProps {
-    rows: any[];
+    rows: (string | null)[][];
 }
 
 export default function TabelaProfessores({ rows }: TabelaProfessoresProps) {
@@ -32,11 +32,11 @@ export default function TabelaProfessores({ rows }: TabelaProfessoresProps) {
                             <td className="bg-zinc-300 border border-neutral-500 p-3 text-center font-bold whitespace-nowrap overflow-hidden text-ellipsis w-[150px] max-w-[150px]">
                                 {row[0]}
                             </td>
-                            <td className="dark:text-white border border-neutral-500 p-3 text-center">{renderCellContent(row[1])}</td>
-                            <td className="dark:text-white border border-neutral-500 p-3 text-center">{renderCellContent(row[3])}</td>
-                            <td className="dark:text-white border border-neutral-500 p-3 text-center">{renderCellContent(row[5])}</td>
-                            <td className="dark:text-white border border-neutral-500 p-3 text-center">{renderCellContent(row[7])}</td>
-                            <td className="dark:text-white border border-neutral-500 p-3 text-center">{renderCellContent(row[9])}</td>
+                            <td className="dark:text-white border border-neutral-500 p-3 text-center">{renderCellContent(row[1] ?? '')}</td>
+                            <td className="dark:text-white border border-neutral-500 p-3 text-center">{renderCellContent(row[3] ?? '')}</td>
+                            <td className="dark:text-white border border-neutral-500 p-3 text-center">{renderCellContent(row[5] ?? '')}</td>
+                            <td className="dark:text-white border border-neutral-500 p-3 text-center">{renderCellContent(row[7] ?? '')}</td>
+                            <td className="dark:text-white border border-neutral-500 p-3 text-center">{renderCellContent(row[9] ?? '')}</td>
                         </tr>
                     ))
                 ) : (
