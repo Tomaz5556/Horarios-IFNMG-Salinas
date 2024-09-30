@@ -20,7 +20,7 @@ import java.util.stream.IntStream;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@CrossOrigin(origins = "https://horarios-ifnmg.vercel.app")
+@CrossOrigin(origins = "${FRONTEND_URL}")
 @RestController
 public class SheetsController {
 

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'https://profitable-starfish-ifnmg-e917e35b.koyeb.app',
+  baseURL: process.env.NEXT_PUBLIC_BACKEND_URL,
 });
 
 export const fetchCourseData = async (cursoSelecionado: string, tipo: string) => {
