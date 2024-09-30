@@ -7,8 +7,6 @@ import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.model.ValueRange;
 
-import io.github.cdimascio.dotenv.Dotenv;
-
 import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
@@ -18,9 +16,8 @@ import java.util.List;
 public class SheetsService {
     private static final String APPLICATION_NAME = "Horários do IFNMG Salinas";
     private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
-    private static final Dotenv dotenv = Dotenv.load();
-    private static final String API_KEY = dotenv.get("API_KEY");
-    private static final String SPREADSHEET_ID = dotenv.get("SPREADSHEET_ID");
+    private static final String API_KEY = System.getenv("API_KEY");
+    private static final String SPREADSHEET_ID = System.getenv("SPREADSHEET_ID");
     private final Sheets sheetsService;
     public SheetsService() throws GeneralSecurityException, IOException {
         final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
