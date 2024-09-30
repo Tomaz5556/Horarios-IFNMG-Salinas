@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_BACKEND_URL,
+  baseURL: 'http://localhost:8080',
 });
 
 export const fetchCourseData = async (cursoSelecionado: string, tipo: string) => {

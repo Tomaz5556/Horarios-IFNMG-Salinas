@@ -20,7 +20,7 @@ import java.util.stream.IntStream;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@CrossOrigin(origins = "${FRONTEND_URL}")
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 public class SheetsController {
 
