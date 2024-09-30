@@ -29,20 +29,22 @@ O projeto é uma plataforma web que mostra os horários dos cursos e professores
 - [Docker](https://www.docker.com/)
 - [Koyeb](https://www.koyeb.com/) (Deploy)
 
-### 2.3 Váriaveis de ambiente
+### 2.3 Variáveis de ambiente
 
 #### Backend
 - `API_KEY`: URL da API do Google Sheets.
 - `SPREADSHEET_ID`: URL da Planilha do Google Sheets.
 - `FRONTEND_URL`: URL do Frontend.
 #### Frontend
-- `NEXT_PUBLIC_BACKEND_URL`= URL do Backend.
+- `NEXT_PUBLIC_BACKEND_URL`: URL do Backend.
 
 <div id='creditos'/> 
 
 ## 3. Créditos
 
-- [Guia de início rápido do Java - Google Sheets](https://developers.google.com/sheets/api/quickstart/java?hl=pt-br)
+- [Criar um aplicativo Next.js](https://nextjs.org/docs/pages/api-reference/cli/create-next-app)
+- [Guia de início rápido do Java com Google Sheets](https://developers.google.com/sheets/api/quickstart/java?hl=pt-br)
+- [Como pular os testes no Maven durante a Build](https://marlonluan.com.br/posts/maven-pular-testes/)
 
 <div id='licenca'/> 
 
