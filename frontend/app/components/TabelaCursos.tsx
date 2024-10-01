@@ -54,7 +54,7 @@ export default function TabelaCursos({ rows, maxColumns, courseName, loading }: 
                         return (
                             <tr key={rowIndex}>
                                 {dayStarts.includes(rowIndex) && (
-                                    <td rowSpan={rowSpanForDay} className="bg-neutral-200 border border-neutral-500 p-3 font-bold text-center text-base sticky left-[-10px] z-10">
+                                    <td rowSpan={rowSpanForDay} className="bg-neutral-200 border border-neutral-500 p-3 font-bold text-center text-base sticky left-0 z-20 opacity-90">
                                         <div className="transform rotate-[-90deg]">
                                             {daysOfWeek[currentDayIndex]}
                                         </div>
@@ -63,11 +63,9 @@ export default function TabelaCursos({ rows, maxColumns, courseName, loading }: 
                                 {row.length === 1 ? null : (
                                     Array.from({ length: maxColumns }).map((_, colIndex) => (
                                         <td key={colIndex} className={`border border-neutral-500 p-3 text-center ${isFirstLineAfterDay ? 'bg-neutral-400 font-bold whitespace-nowrap overflow-hidden text-ellipsis' :
-                                            colIndex === 0 ? 'bg-zinc-300 font-bold whitespace-nowrap overflow-hidden text-ellipsis w-[150px] max-w-[150px] sticky left-[93px] z-10' : 'dark:text-white whitespace-normal min-w-[100px]'} 
+                                            colIndex === 0 ? 'bg-zinc-300 font-bold whitespace-nowrap overflow-hidden text-ellipsis w-[150px] max-w-[150px] sticky left-[98px] z-10 opacity-85' : 'dark:text-white whitespace-normal min-w-[100px]'} 
                                             ${emptyColumns.includes(colIndex) ? 'bg-neutral-400' : ''}`}>
-                                            <div className={`${colIndex === 0 ? 'sticky left-[0px]' : ''}`}>
                                                 {courseName !== 'Todos os Cursos - Ensino Médio' && courseName !== 'Todos os Cursos - Ensino Superior' && colIndex < row.length ? row[colIndex] || '-------' : colIndex < row.length ? row[colIndex] : ''}
-                                            </div>
                                         </td>
                                     ))
                                 )}
