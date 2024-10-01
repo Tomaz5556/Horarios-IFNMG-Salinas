@@ -63,7 +63,7 @@ export default function TabelaCursos({ rows, maxColumns, courseName, loading }: 
                                 {row.length === 1 ? null : (
                                     Array.from({ length: maxColumns }).map((_, colIndex) => (
                                         <td key={colIndex} className={`border border-neutral-500 p-3 text-center ${isFirstLineAfterDay ? 'bg-neutral-400 font-bold whitespace-nowrap overflow-hidden text-ellipsis' :
-                                            colIndex === 0 ? 'bg-zinc-300 font-bold whitespace-nowrap overflow-hidden text-ellipsis w-[150px] max-w-[150px] sticky left-[98px] z-10 opacity-85' : 'dark:text-white whitespace-normal min-w-[100px]'} 
+                                            colIndex === 0 ? 'bg-zinc-300 font-bold whitespace-nowrap overflow-hidden text-ellipsis w-[150px] max-w-[150px] sticky left-[94px] z-10 opacity-85' : 'dark:text-white whitespace-normal min-w-[100px]'} 
                                             ${emptyColumns.includes(colIndex) ? 'bg-neutral-400' : ''}`}>
                                                 {courseName !== 'Todos os Cursos - Ensino Médio' && courseName !== 'Todos os Cursos - Ensino Superior' && colIndex < row.length ? row[colIndex] || '-------' : colIndex < row.length ? row[colIndex] : ''}
                                         </td>
