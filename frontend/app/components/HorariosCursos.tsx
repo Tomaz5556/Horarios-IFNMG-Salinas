@@ -5,6 +5,9 @@ import ListaSuspensa from '../components/DropdownList';
 import BotaoBuscar from '../components/SearchButton';
 import BotaoVoltar from '../components/BackButton';
 import TabelaCursos from '../components/TabelaCursos';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
+import DownloadButton from './DownloadButton';
 
 export default function HorariosCursos() {
   const [rows, setRows] = useState<(string | null)[][]>([]);
@@ -69,6 +72,46 @@ export default function HorariosCursos() {
     }
   });
 
+  const downloadTable = () => {
+    const tableElement = document.querySelector('table');
+
+    if (!rows.length) {
+      // Caso não tenha dados gerar PDF com mensagem "Nenhum dado disponível"
+      const pdf = new jsPDF({
+        orientation: 'portrait',
+        unit: 'mm',
+        format: 'a4'
+      });
+
+      pdf.setFont('Helvetica', 'bold');
+      pdf.setFontSize(14);
+      pdf.text('Nenhum dado disponível', 105, 80, { align: 'center' });
+      pdf.save('tabela-cursos-nenhum-dado.pdf');
+    } else if (tableElement) {
+      html2canvas(tableElement, { scale: 1.5 }).then((canvas) => {
+        const imgWidth = canvas.width;
+        const imgHeight = canvas.height;
+
+        const pixelToMm = 0.264583;
+        const pdfWidth = imgWidth * pixelToMm;
+        const pdfHeight = imgHeight * pixelToMm;
+
+        const pdf = new jsPDF({
+          orientation: 'portrait',
+          unit: 'mm',
+          format: [pdfWidth, pdfHeight]
+        });
+
+        const image = canvas.toDataURL('image/jpeg', 0.75);
+
+        pdf.addImage(image, 'JPEG', 0, 0, pdfWidth, pdfHeight);
+        pdf.save('tabela-cursos-com-dados.pdf');
+      });
+    } else {
+      console.error('Tabela não encontrada.');
+    }
+  };
+
   return (
     <div className="min-h-screen bg-neutral-50 dark:bg-neutral-900">
       <div className="min-h-screen container mx-auto px-2 py-6">
@@ -81,16 +124,14 @@ export default function HorariosCursos() {
             label="Todos (Cursos)"
             staticOptions={courseOptions}
           />
-          <BotaoBuscar onClick={fetchData} />
+          <div className="flex items-center space-x-4">
+            <BotaoBuscar onClick={fetchData} />
+            <DownloadButton onClick={downloadTable} />
+          </div>
         </div>
 
         <div className="overflow-x-auto">
-          <TabelaCursos 
-            rows={rows} 
-            maxColumns={maxColumns} 
-            courseName={courseName} 
-            loading={!hasSearched}
-          />
+          <TabelaCursos rows={rows} maxColumns={maxColumns} courseName={courseName} loading={!hasSearched} />
         </div>
         <div className="flex justify-center mt-4">
           <BotaoVoltar />
