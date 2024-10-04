@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react';
 import { fetchProfessorData } from '../api/routes';
-import ListaSuspensa from '../components/DropdownList';
-import BotaoBuscar from '../components/SearchButton';
-import BotaoVoltar from '../components/BackButton';
-import TabelaProfessores from '../components/TabelaProfessores';
+import ListaSuspensa from './DropdownList';
+import BotaoBuscar from './SearchButton';
+import DownloadButton from './DownloadButton';
+import BotaoVoltar from './BackButton';
+import TabelaProfessores from './TabelaProfessores';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 
 export default function HorariosProfessores() {
   const [rows, setRows] = useState<(string | null)[][]>([]);
@@ -38,6 +41,41 @@ export default function HorariosProfessores() {
     setSelectedProfessor(e.target.value);
   };
 
+  const downloadTable = () => {
+    const tableElement = document.querySelector('table');
+  
+    if (!rows.length) {
+      const pdf = new jsPDF({
+        orientation: 'portrait',
+        unit: 'mm',
+        format: 'a4'
+      });
+
+      pdf.setFont('Helvetica', 'bold');
+      pdf.setFontSize(14);
+      pdf.text('Nenhum dado disponível', 105, 80, { align: 'center' });
+      pdf.save('Horário Professor.pdf');
+    } else if (tableElement) {
+      html2canvas(tableElement, { scale: 2 }).then((canvas) => {
+        const imgWidth = 297;
+        const imgHeight = 210;
+  
+        const pdf = new jsPDF({
+          orientation: 'landscape',
+          unit: 'mm',
+          format: 'a4'
+        });
+  
+        const image = canvas.toDataURL('image/jpeg', 1.0);
+  
+        pdf.addImage(image, 'JPEG', 0, 0, imgWidth, imgHeight);
+        pdf.save(`Horário Professor - ${selectedProfessor}.pdf`);
+      });
+    } else {
+      console.error('Tabela não encontrada.');
+    }
+  };  
+
   return (
     <div className="min-h-screen bg-neutral-50 dark:bg-neutral-900">
       <div className="min-h-screen container mx-auto px-2 py-6">
@@ -49,7 +87,10 @@ export default function HorariosProfessores() {
             options={professores}
             label="Disciplina (Professor)"
           />
-          <BotaoBuscar onClick={fetchData} />
+          <div className="flex items-center space-x-4">
+            <BotaoBuscar onClick={fetchData} />
+            <DownloadButton onClick={downloadTable} />
+          </div>
         </div>
 
         <div className="overflow-x-auto">
