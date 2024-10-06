@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { fetchCourseData } from '../api/routes';
 import ListaSuspensa from './DropdownList';
@@ -8,7 +8,7 @@ import BotaoVoltar from './BackButton';
 import TabelaCursos from './TabelaCursos';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-import { ExclamationCircleIcon } from '@heroicons/react/24/outline';
+import { XCircleIcon } from '@heroicons/react/24/outline';
 
 export default function HorariosCursos() {
   const [rows, setRows] = useState<(string | null)[][]>([]);
@@ -16,9 +16,9 @@ export default function HorariosCursos() {
   const [courseName, setCourseName] = useState('');
   const [selectedCourse, setSelectedCourse] = useState('todos');
   const [hasSearched, setHasSearched] = useState(false);
-  const [showModal, setShowModal] = useState(false);
   const searchParams = useSearchParams();
   const tipo = searchParams.get('tipo');
+  const dialogRef = useRef<HTMLDialogElement>(null);
 
   const fetchData = async () => {
     try {
@@ -92,7 +92,9 @@ export default function HorariosCursos() {
       // Não permitir download do pdf quando o usuário selecionar todos de Ensino Superior
       // Pois dar problema na renderização do PDF (PDF Gigante)
       if (selectedCourse === "todos" && tipo === "ensinoSuperior") {
-        setShowModal(true);
+        if (dialogRef.current) {
+          dialogRef.current.showModal();
+        }
         return;
       }
       
@@ -120,6 +122,12 @@ export default function HorariosCursos() {
     }
   };
 
+  const handleCloseDialog = () => {
+    if (dialogRef.current) {
+      dialogRef.current.close();
+    }
+  };
+
   return (
     <div className="min-h-screen bg-neutral-50 dark:bg-neutral-900">
       <div className="min-h-screen container mx-auto px-2 py-6">
@@ -144,21 +152,16 @@ export default function HorariosCursos() {
         <div className="flex justify-center mt-4">
           <BotaoVoltar />
         </div>
-        {showModal && (
-          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 text-center">
-            <div className="bg-white border-t-4 border-red-600 rounded-lg p-6 max-w-sm mx-auto">
-              <div className="flex flex-col items-center mb-4">
-                <ExclamationCircleIcon className="h-36 w-36 text-red-500 mb-2" />
-                <h2 className="text-xl font-bold text-red-600">ATENÇÃO</h2>
-              </div>
-              <p className="mb-4 font-bold">No momento, não é possível fazer o download do PDF dessa tabela pois é muito grande</p>
-              <p className="mb-4">Por favor, selecione um curso superior específico para fazer o download</p>
-              <button className="bg-blue-500 font-bold text-white px-4 py-2 rounded hover:bg-blue-700" onClick={() => setShowModal(false)}>
-                Fechar
-              </button>
-            </div>
+        <dialog ref={dialogRef} className="bg-white border-t-4 border-red-500 rounded-lg max-w-sm w-full p-6 shadow-lg backdrop:bg-black/50">
+          <div className="flex flex-col items-center mb-4">
+            <XCircleIcon className="h-28 w-28 text-red-500 mb-2" />
+            <h2 className="text-center text-3xl font-bold text-black">Ops!</h2>
           </div>
-        )}
+          <p className=" text-center text-lg text-black mb-4">Não é possível fazer o download do PDF. Pois, a tabela é muito grande!</p>
+          <div className="flex justify-center">
+            <button className="bg-red-700 text-white font-bold px-4 py-2 rounded-md hover:bg-red-600 transition active:bg-red-800" onClick={handleCloseDialog}>Fechar</button>
+          </div>
+        </dialog>
       </div>
     </div>
   );
