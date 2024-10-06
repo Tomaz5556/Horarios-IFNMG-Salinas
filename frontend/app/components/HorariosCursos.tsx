@@ -1,13 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { fetchCourseData } from '../api/routes';
-import ListaSuspensa from '../components/DropdownList';
-import BotaoBuscar from '../components/SearchButton';
-import BotaoVoltar from '../components/BackButton';
-import TabelaCursos from '../components/TabelaCursos';
+import ListaSuspensa from './DropdownList';
+import BotaoBuscar from './SearchButton';
+import DownloadButton from './DownloadButton';
+import BotaoVoltar from './BackButton';
+import TabelaCursos from './TabelaCursos';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-import DownloadButton from './DownloadButton';
+import { XCircleIcon } from '@heroicons/react/24/outline';
 
 export default function HorariosCursos() {
   const [rows, setRows] = useState<(string | null)[][]>([]);
@@ -17,6 +18,7 @@ export default function HorariosCursos() {
   const [hasSearched, setHasSearched] = useState(false);
   const searchParams = useSearchParams();
   const tipo = searchParams.get('tipo');
+  const dialogRef = useRef<HTMLDialogElement>(null);
 
   const fetchData = async () => {
     try {
@@ -76,7 +78,6 @@ export default function HorariosCursos() {
     const tableElement = document.querySelector('table');
 
     if (!rows.length) {
-      // Caso não tenha dados gerar PDF com mensagem "Nenhum dado disponível"
       const pdf = new jsPDF({
         orientation: 'portrait',
         unit: 'mm',
@@ -86,8 +87,17 @@ export default function HorariosCursos() {
       pdf.setFont('Helvetica', 'bold');
       pdf.setFontSize(14);
       pdf.text('Nenhum dado disponível', 105, 80, { align: 'center' });
-      pdf.save('tabela-cursos-nenhum-dado.pdf');
+      pdf.save('Horário Curso.pdf');
     } else if (tableElement) {
+      // Não permitir download do pdf quando o usuário selecionar todos de Ensino Superior
+      // Pois dar problema na renderização do PDF (PDF Gigante)
+      if (selectedCourse === "todos" && tipo === "ensinoSuperior") {
+        if (dialogRef.current) {
+          dialogRef.current.showModal();
+        }
+        return;
+      }
+      
       html2canvas(tableElement, { scale: 1.5 }).then((canvas) => {
         const imgWidth = canvas.width;
         const imgHeight = canvas.height;
@@ -105,10 +115,16 @@ export default function HorariosCursos() {
         const image = canvas.toDataURL('image/jpeg', 0.75);
 
         pdf.addImage(image, 'JPEG', 0, 0, pdfWidth, pdfHeight);
-        pdf.save('tabela-cursos-com-dados.pdf');
+        pdf.save(`Horário Curso - ${courseName}.pdf`);
       });
     } else {
       console.error('Tabela não encontrada.');
+    }
+  };
+
+  const handleCloseDialog = () => {
+    if (dialogRef.current) {
+      dialogRef.current.close();
     }
   };
 
@@ -136,6 +152,16 @@ export default function HorariosCursos() {
         <div className="flex justify-center mt-4">
           <BotaoVoltar />
         </div>
+        <dialog ref={dialogRef} className="bg-white border-t-4 border-red-500 rounded-lg max-w-sm w-full p-6 shadow-lg backdrop:bg-black/50">
+          <div className="flex flex-col items-center mb-4">
+            <XCircleIcon className="h-28 w-28 text-red-500 mb-2" />
+            <h2 className="text-center text-3xl font-bold text-black">Ops!</h2>
+          </div>
+          <p className=" text-center text-lg text-black mb-4">Não é possível fazer o download do PDF. Pois, a tabela é muito grande!</p>
+          <div className="flex justify-center">
+            <button className="bg-red-700 text-white font-bold px-4 py-2 rounded-md hover:bg-red-600 transition active:bg-red-800" onClick={handleCloseDialog}>Fechar</button>
+          </div>
+        </dialog>
       </div>
     </div>
   );
