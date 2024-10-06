@@ -76,6 +76,14 @@ export default function HorariosCursos() {
 
   const downloadTable = () => {
     const tableElement = document.querySelector('table');
+    // Não permitir download do pdf quando o usuário selecionar todos de Ensino Superior
+    // Pois dar problema na renderização do PDF (PDF Gigante)
+    if (courseName === "Todos os Cursos - Ensino Superior") {
+      if (dialogRef.current) {
+        dialogRef.current.showModal();
+      }
+      return;
+    }
 
     if (!rows.length) {
       const pdf = new jsPDF({
@@ -89,15 +97,6 @@ export default function HorariosCursos() {
       pdf.text('Nenhum resultado foi encontrado.', 105, 80, { align: 'center' });
       pdf.save('Horário Curso.pdf');
     } else if (tableElement) {
-      // Não permitir download do pdf quando o usuário selecionar todos de Ensino Superior
-      // Pois dar problema na renderização do PDF (PDF Gigante)
-      if (selectedCourse === "todos" && tipo === "ensinoSuperior") {
-        if (dialogRef.current) {
-          dialogRef.current.showModal();
-        }
-        return;
-      }
-
       html2canvas(tableElement, { scale: 1.5 }).then((canvas) => {
         const imgWidth = canvas.width;
         const imgHeight = canvas.height;

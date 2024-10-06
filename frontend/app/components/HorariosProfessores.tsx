@@ -43,7 +43,7 @@ export default function HorariosProfessores() {
 
   const downloadTable = () => {
     const tableElement = document.querySelector('table');
-  
+
     if (!rows.length) {
       const pdf = new jsPDF({
         orientation: 'portrait',
@@ -57,24 +57,25 @@ export default function HorariosProfessores() {
       pdf.save('Horário Professor.pdf');
     } else if (tableElement) {
       html2canvas(tableElement, { scale: 2 }).then((canvas) => {
-        const imgWidth = 297;
-        const imgHeight = 210;
-  
+        const pixelToMm = 0.264583;
+        const imgWidth = canvas.width * pixelToMm;
+        const imgHeight = canvas.height * pixelToMm;
+
         const pdf = new jsPDF({
-          orientation: 'landscape',
+          orientation: imgWidth > imgHeight ? 'landscape' : 'portrait',
           unit: 'mm',
-          format: 'a4'
+          format: [imgWidth, imgHeight]
         });
-  
+
         const image = canvas.toDataURL('image/jpeg', 1.0);
-  
+
         pdf.addImage(image, 'JPEG', 0, 0, imgWidth, imgHeight);
         pdf.save(`Horário Professor - ${selectedProfessor}.pdf`);
       });
     } else {
       console.error('Tabela não encontrada.');
     }
-  };  
+  };
 
   return (
     <div className="min-h-screen bg-neutral-50 dark:bg-neutral-900">
