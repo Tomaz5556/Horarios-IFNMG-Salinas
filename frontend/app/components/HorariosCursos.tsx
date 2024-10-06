@@ -86,7 +86,7 @@ export default function HorariosCursos() {
 
       pdf.setFont('Helvetica', 'bold');
       pdf.setFontSize(14);
-      pdf.text('Nenhum dado disponível', 105, 80, { align: 'center' });
+      pdf.text('Nenhum resultado foi encontrado.', 105, 80, { align: 'center' });
       pdf.save('Horário Curso.pdf');
     } else if (tableElement) {
       // Não permitir download do pdf quando o usuário selecionar todos de Ensino Superior
@@ -97,7 +97,7 @@ export default function HorariosCursos() {
         }
         return;
       }
-      
+
       html2canvas(tableElement, { scale: 1.5 }).then((canvas) => {
         const imgWidth = canvas.width;
         const imgHeight = canvas.height;
@@ -152,12 +152,13 @@ export default function HorariosCursos() {
         <div className="flex justify-center mt-4">
           <BotaoVoltar />
         </div>
-        <dialog ref={dialogRef} className="bg-white border-t-4 border-red-500 rounded-lg max-w-sm w-full p-6 shadow-lg backdrop:bg-black/50">
+        <dialog ref={dialogRef} className="bg-white border-t-4 border-red-500 rounded-lg max-w-xs min-[420px]:max-w-sm p-6 shadow-lg backdrop:bg-black/50">
           <div className="flex flex-col items-center mb-4">
-            <XCircleIcon className="h-28 w-28 text-red-500 mb-2" />
-            <h2 className="text-center text-3xl font-bold text-black">Ops!</h2>
+            <XCircleIcon className="h-28 w-28 max-sm:h-20 w-20 text-red-500 mb-2" />
+            <h2 className="text-center text-3xl max-sm:text-2xl font-bold text-black">Ops!</h2>
           </div>
-          <p className=" text-center text-lg text-black mb-4">Não é possível fazer o download do PDF. Pois, a tabela é muito grande!</p>
+          <p className="text-center text-lg max-sm:text-sm text-black">Não é possível fazer o download do PDF.</p>
+          <p className="text-center text-lg max-sm:text-sm text-black mb-4">Pois, a tabela é muito grande!</p>
           <div className="flex justify-center">
             <button className="bg-red-700 text-white font-bold px-4 py-2 rounded-md hover:bg-red-600 transition active:bg-red-800" onClick={handleCloseDialog}>Fechar</button>
           </div>

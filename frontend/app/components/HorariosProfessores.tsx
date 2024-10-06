@@ -53,7 +53,7 @@ export default function HorariosProfessores() {
 
       pdf.setFont('Helvetica', 'bold');
       pdf.setFontSize(14);
-      pdf.text('Nenhum dado disponível', 105, 80, { align: 'center' });
+      pdf.text('Nenhum resultado foi encontrado.', 105, 80, { align: 'center' });
       pdf.save('Horário Professor.pdf');
     } else if (tableElement) {
       html2canvas(tableElement, { scale: 2 }).then((canvas) => {
