@@ -35,7 +35,7 @@ export default function TabelaCursos({ rows, maxColumns, courseName, loading }: 
                 {loading ? (
                     <tr>
                         <td colSpan={maxColumns + 1} className="dark:text-white border border-neutral-500 p-2 text-center">
-                            Nenhum dado disponível
+                            Nenhum resultado foi encontrado.
                         </td>
                     </tr>
                 ) : (
