@@ -67,9 +67,9 @@ export default function HorariosProfessores() {
           format: [imgWidth, imgHeight]
         });
 
-        const image = canvas.toDataURL('image/jpeg', 1.0);
+        const image = canvas.toDataURL('image/png', 1.0);
 
-        pdf.addImage(image, 'JPEG', 0, 0, imgWidth, imgHeight);
+        pdf.addImage(image, 'PNG', 0, 0, imgWidth, imgHeight, undefined, 'FAST');
         pdf.save(`Horário Professor - ${selectedProfessor}.pdf`);
       });
     } else {

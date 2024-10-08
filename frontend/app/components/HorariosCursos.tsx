@@ -111,9 +111,9 @@ export default function HorariosCursos() {
           format: [pdfWidth, pdfHeight]
         });
 
-        const image = canvas.toDataURL('image/jpeg', 0.75);
+        const image = canvas.toDataURL('image/png', 0.75);
 
-        pdf.addImage(image, 'JPEG', 0, 0, pdfWidth, pdfHeight);
+        pdf.addImage(image, 'PNG', 0, 0, pdfWidth, pdfHeight, undefined, 'FAST');
         pdf.save(`Horário Curso - ${courseName}.pdf`);
       });
     } else {
