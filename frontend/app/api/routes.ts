@@ -16,4 +16,10 @@ export const fetchProfessorData = async (professorSelecionado: string) => {
   return response.data;
 };
 
+export const fetchSalaData = async (salaSelecionada: string) => {
+  const url = `/Salas?salaSelecionada=${salaSelecionada}`;
+  const response = await api.get(url);
+  return response.data;
+};
+
 export default api;

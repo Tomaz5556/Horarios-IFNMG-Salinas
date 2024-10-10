@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.IOException;
 import java.text.Collator;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -322,8 +323,7 @@ public class SheetsController {
                     }
 
                     List<Object> superiorData = i < valuesSuperior2.size() ? valuesSuperior2.get(i) : new ArrayList<>();
-                    List<Object> medioData = i < valuesMedio2Adjusted.size() ? valuesMedio2Adjusted.get(i)
-                            : new ArrayList<>();
+                    List<Object> medioData = i < valuesMedio2Adjusted.size() ? valuesMedio2Adjusted.get(i) : new ArrayList<>();
 
                     for (int j = 0; j < superiorData.size(); j++) {
                         Object cellValue = superiorData.get(j);
@@ -420,6 +420,147 @@ public class SheetsController {
 
         response.put("rows", updatedValues);
         response.put("horas", totalHoras + " h/a");
+        return ResponseEntity.ok(response);
+    }
+
+    // Mostrar os horários de ocupação das salas
+    @GetMapping("/Salas")
+    public ResponseEntity<Map<String, Object>> getSheetValuesRangeHS(
+            @RequestParam(value = "salaSelecionada", required = false) String salaSelecionada) throws IOException {
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("salaSelecionada", salaSelecionada);
+
+        String rangeSuperior1 = "Horário - Graduação!B3:B101";
+        String rangeSuperior2 = "Horário - Graduação!C3:AW101";
+        String rangeSuperiorTurmas = "Horário - Graduação!C22:AW22";
+        String rangeMedio2 = "Horário - Ensino Médio!C3:V71";
+        String rangeMedioTurmas = "Horário - Ensino Médio!C16:V16";
+
+        List<String> salas = Arrays.asList(
+            "(1/3)", "(1/4)", "(1/5)", "(1/6)", "(1/7)", "(1/8)", "(1/9)", "(1/10)", "(1/11)", "(1/12)",
+            "(1/13)", "(1/14)", "(1/15)", "(1/16)", "(1/17)", "(2/1)", "(2/2)", "(2/3)", "(2/4)", "(2/5)", "(2/6)",
+            "(3/7)", "(3/8)", "(3/9)", "(3/10)", "(3/11)", "(Agricult. I)", "(Agricult. II)", "(Agricult. III)",
+            "(Agroin. 1)", "(Agroin. 2)", "(Anexo Lab. Solos)", "(CELIN 1)", "(CELIN 2)", "(HV 1)", "(HV 2)", 
+            "(HV 3)", "(HV 4)", "(Lab. 1 - Info)", "(Lab. 2 - Info)", "(Lab. 3 - Info)", "(Lab. 4 - Info)",
+            "(Lab. Bromatologia)", "(Lab. Fenôm. de Transportes)", "(Lab. Física)", "(Lab. Invertebrados)", 
+            "(Lab. Microscopia)", "(Lab. Química I)", "(Lab. Química II)", "(Lab. Redes)", "(LEM)", "(Mini 1)", 
+            "(Mini 2)", "(Sala de Topografia)", "(Sala Suinocultura)", "(Sl. Análise Sensorial)", "(Zoo I)", "(Zoo II)", 
+            "(Zoo III)"
+        );
+
+        List<List<Object>> valuesSuperior1 = sheetsService.getSheetValues(rangeSuperior1);
+        List<List<Object>> valuesSuperior2 = sheetsService.getSheetValues(rangeSuperior2);
+        List<List<Object>> valuesSuperiorTurmas = sheetsService.getSheetValues(rangeSuperiorTurmas);
+        List<List<Object>> valuesMedio2 = sheetsService.getSheetValues(rangeMedio2);
+        List<List<Object>> valuesMedioTurmas = sheetsService.getSheetValues(rangeMedioTurmas);
+
+        response.put("salas", salas);
+
+        if (salaSelecionada == null || salaSelecionada.isEmpty()) {
+            response.put("rows", new ArrayList<>());
+            response.put("maxRows", 0);
+            return ResponseEntity.ok(response);
+        }
+
+        int columnsSuperior1 = 1;
+        int columnsSuperior2 = 47;
+        int columnsMedio2 = 20;
+
+        int linesPerDaySuperior = 20;
+        int linesPerDayMedio = 14;
+        int totalDays = 5;
+
+        List<List<Object>> valuesMedio2Adjusted = new ArrayList<>();
+        for (int day = 0; day < totalDays; day++) {
+            int start = day * linesPerDayMedio;
+            int end = start + linesPerDayMedio - 2;
+
+            for (int i = start; i < end; i++) {
+                if (i < valuesMedio2.size()) {
+                    valuesMedio2Adjusted.add(valuesMedio2.get(i));
+                } else {
+                    valuesMedio2Adjusted.add(new ArrayList<>(Collections.nCopies(columnsMedio2, "")));
+                }
+            }
+
+            while (valuesMedio2Adjusted.size() % linesPerDaySuperior != 0) {
+                valuesMedio2Adjusted.add(new ArrayList<>(Collections.nCopies(columnsMedio2, "")));
+            }
+        }
+
+        final String salaFiltrada = salaSelecionada.toLowerCase();
+        List<List<Object>> combinedValues = IntStream
+                .range(0,
+                        Math.max(valuesSuperior1.size(), Math.max(valuesSuperior2.size(), valuesMedio2Adjusted.size())))
+                .mapToObj(i -> {
+                    List<Object> combinedRow = new ArrayList<>(
+                            Collections.nCopies(columnsSuperior1 + columnsSuperior2, ""));
+
+                    if (i < valuesSuperior1.size()) {
+                        combinedRow.set(0, valuesSuperior1.get(i).get(0));
+                    }
+
+                    List<Object> superiorData = i < valuesSuperior2.size() ? valuesSuperior2.get(i) : new ArrayList<>();
+                    List<Object> medioData = i < valuesMedio2Adjusted.size() ? valuesMedio2Adjusted.get(i) : new ArrayList<>();
+
+                    for (int j = 0; j < superiorData.size(); j++) {
+                        Object cellValue = superiorData.get(j);
+                        if (cellValue != null && !cellValue.toString().isEmpty()) {
+                            String cellValueStr = cellValue.toString();
+
+                            if (cellValueStr.toLowerCase().contains(salaFiltrada)) {
+                                String turma = valuesSuperiorTurmas.get(0).get(j).toString();
+                                List<String> turmasSala = new ArrayList<>();
+                                turmasSala.add(turma);
+
+                                String existingValue = combinedRow.get(1).toString();
+                                if (!existingValue.isEmpty()) {
+                                    combinedRow.set(1, existingValue + " + " + String.join(" - ", turmasSala));
+                                } else {
+                                    combinedRow.set(1, String.join(" - ", turmasSala));
+                                }
+                            }
+                        }
+                    }
+
+                    for (int j = 0; j < medioData.size(); j++) {
+                        Object cellValue = medioData.get(j);
+                        if (cellValue != null && !cellValue.toString().isEmpty()) {
+                            String cellValueStr = cellValue.toString();
+
+                            if (cellValueStr.toLowerCase().contains(salaFiltrada)) {
+                                String turma = valuesMedioTurmas.get(0).get(j).toString();
+                                List<String> turmasSala = new ArrayList<>();
+                                turmasSala.add(turma);
+
+                                String existingValue = combinedRow.get(1).toString();
+                                if (!existingValue.isEmpty()) {
+                                    combinedRow.set(1, existingValue + " + " + String.join(" - ", turmasSala));
+                                } else {
+                                    combinedRow.set(1, String.join(" - ", turmasSala));
+                                }
+                            }
+                        }
+                    }
+                    return combinedRow;
+                })
+                .collect(Collectors.toList());
+
+        List<List<Object>> updatedValues = new ArrayList<>();
+        for (int i = 0; i < linesPerDaySuperior; i++) {
+            List<Object> row = new ArrayList<>();
+            for (int day = 0; day < totalDays; day++) {
+                int start = day * linesPerDaySuperior;
+                if (start + i < combinedValues.size()) {
+                    row.addAll(combinedValues.get(start + i).subList(0,
+                            Math.min(2, combinedValues.get(start + i).size())));
+                }
+            }
+            updatedValues.add(row);
+        }
+
+        response.put("rows", updatedValues);
         return ResponseEntity.ok(response);
     }
 }
