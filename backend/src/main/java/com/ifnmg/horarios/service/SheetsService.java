@@ -1,4 +1,8 @@
-package com.ifnmg.horarios;
+package com.ifnmg.horarios.service;
+
+import java.io.IOException;
+import java.util.List;
+import java.security.GeneralSecurityException;
 
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
@@ -8,9 +12,6 @@ import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.model.ValueRange;
 
 import org.springframework.stereotype.Service;
-import java.io.IOException;
-import java.security.GeneralSecurityException;
-import java.util.List;
 
 @Service
 public class SheetsService {
