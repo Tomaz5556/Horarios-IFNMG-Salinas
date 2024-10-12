@@ -1,124 +1,88 @@
-package com.ifnmg.horarios;
-
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+package com.ifnmg.horarios.service;
 
 import java.io.IOException;
+import java.util.*;
 import java.text.Collator;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@CrossOrigin(origins = "${FRONTEND_URL}")
-@RestController
-public class SheetsController {
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+
+import com.ifnmg.horarios.model.Horarios;
+
+@Service
+public class HorariosService {
 
     private final SheetsService sheetsService;
 
-    public SheetsController(SheetsService sheetsService) {
+    public HorariosService(SheetsService sheetsService) {
         this.sheetsService = sheetsService;
     }
 
-    // Mostrar os horários dos cursos técnicos
-    @GetMapping("/ensinoMedio")
-    public ResponseEntity<Map<String, Object>> getSheetValuesRangeEM(
-            @RequestParam(value = "cursoSelecionado", required = false, defaultValue = "todos") String cursoSelecionado)
-            throws IOException {
+    // Retornar os horários dos cursos técnicos
+    public ResponseEntity<Horarios> getSheetValuesRangeEM(String cursoSelecionado) throws IOException {
 
-        String range2Start;
-        String range2End;
-        String courseName;
+        Map<String, String[]> courseData = Map.of(
+                "agroindustria", new String[] { "C2", "H71", "Técnico em Agroindústria" },
+                "agropecuaria", new String[] { "J2", "O71", "Técnico em Agropecuária" },
+                "informatica", new String[] { "Q2", "V71", "Técnico em Informática"
+                });
 
-        switch (cursoSelecionado) {
-            case "agroindustria":
-                range2Start = "C2";
-                range2End = "H71";
-                courseName = "Técnico em Agroindústria";
-                break;
-            case "agropecuaria":
-                range2Start = "J2";
-                range2End = "O71";
-                courseName = "Técnico em Agropecuária";
-                break;
-            case "informatica":
-                range2Start = "Q2";
-                range2End = "V71";
-                courseName = "Técnico em Informática";
-                break;
-            default:
-                range2Start = "C2";
-                range2End = "V71";
-                courseName = "Todos os Cursos - Ensino Médio";
-                break;
-        }
+        String[] selectedCourse = courseData.getOrDefault(cursoSelecionado,
+                new String[] { "C2", "V71", "Todos os Cursos - Ensino Médio" });
 
         String range1 = "Horário - Ensino Médio!B2:B71";
-        String range2 = "Horário - Ensino Médio!" + range2Start + ":" + range2End;
+        String range2 = "Horário - Ensino Médio!" + selectedCourse[0] + ":" + selectedCourse[1];
+        String courseName = selectedCourse[2];
 
         List<List<Object>> valuesRange1 = sheetsService.getSheetValues(range1);
         List<List<Object>> valuesRange2 = sheetsService.getSheetValues(range2);
 
+        List<List<Object>> combinedValues = combineValues(valuesRange1, valuesRange2);
+
+        List<String> daysOfWeek = List.of("SEGUNDA", "TERÇA", "QUARTA", "QUINTA", "SEXTA");
+        List<List<Object>> updatedValues = new ArrayList<>();
+
+        for (int i = 0; i < daysOfWeek.size(); i++) {
+            updatedValues.add(Collections.singletonList(daysOfWeek.get(i)));
+            updatedValues.addAll(combinedValues.subList(i * 14, Math.min((i + 1) * 14, combinedValues.size())));
+        }
+
+        Horarios horarios = new Horarios(updatedValues, valuesRange1.get(0).size() + valuesRange2.get(0).size(), courseName, true);
+
+        return ResponseEntity.ok(horarios);
+    }
+
+    private List<List<Object>> combineValues(List<List<Object>> valuesRange1, List<List<Object>> valuesRange2) {
         int columnsRange1 = 1;
         int columnsRange2 = valuesRange2.isEmpty() ? 0 : valuesRange2.get(0).size();
 
-        List<List<Object>> combinedValues = IntStream.range(0, Math.max(valuesRange1.size(), valuesRange2.size()))
-                .mapToObj(i -> {
-                    List<Object> combinedRow = new ArrayList<>(Collections.nCopies(columnsRange1 + columnsRange2, ""));
+        return IntStream.range(0, Math.max(valuesRange1.size(), valuesRange2.size())).mapToObj(i -> {
+            List<Object> combinedRow = new ArrayList<>(Collections.nCopies(columnsRange1 + columnsRange2, ""));
 
-                    if (i < valuesRange1.size()) {
-                        for (int j = 0; j < valuesRange1.get(i).size(); j++) {
-                            combinedRow.set(j, valuesRange1.get(i).get(j));
-                        }
-                    }
+            if (i < valuesRange1.size()) {
+                for (int j = 0; j < valuesRange1.get(i).size(); j++) {
+                    combinedRow.set(j, valuesRange1.get(i).get(j));
+                }
+            }
 
-                    if (i < valuesRange2.size()) {
-                        for (int j = 0; j < valuesRange2.get(i).size(); j++) {
-                            combinedRow.set(columnsRange1 + j, valuesRange2.get(i).get(j));
-                        }
-                    }
+            if (i < valuesRange2.size()) {
+                for (int j = 0; j < valuesRange2.get(i).size(); j++) {
+                    combinedRow.set(columnsRange1 + j, valuesRange2.get(i).get(j));
+                }
+            }
 
-                    return combinedRow;
-                })
+            return combinedRow;
+        })
                 .collect(Collectors.toList());
-
-        List<List<Object>> updatedValues = new ArrayList<>();
-        updatedValues.add(Collections.singletonList("SEGUNDA"));
-        updatedValues.addAll(combinedValues.subList(0, 14));
-        updatedValues.add(Collections.singletonList("TERÇA"));
-        updatedValues.addAll(combinedValues.subList(14, 28));
-        updatedValues.add(Collections.singletonList("QUARTA"));
-        updatedValues.addAll(combinedValues.subList(28, 42));
-        updatedValues.add(Collections.singletonList("QUINTA"));
-        updatedValues.addAll(combinedValues.subList(42, 56));
-        updatedValues.add(Collections.singletonList("SEXTA"));
-        updatedValues.addAll(combinedValues.subList(56, combinedValues.size()));
-
-        Map<String, Object> response = new HashMap<>();
-        response.put("rows", updatedValues);
-        response.put("maxColumns", columnsRange1 + columnsRange2);
-        response.put("courseName", courseName);
-        response.put("isMedio", true);
-
-        return ResponseEntity.ok(response);
     }
 
-    // Mostrar os horários dos cursos superiores
-    @GetMapping("/ensinoSuperior")
-    public ResponseEntity<Map<String, Object>> getSheetValuesRangeES(
-            @RequestParam(value = "cursoSelecionado", required = false, defaultValue = "todos") String cursoSelecionado)
-            throws IOException {
+    // Retornar os horários dos cursos superiores
+    public ResponseEntity<Horarios> getSheetValuesRangeES(String cursoSelecionado) throws IOException {
 
         String[] courseParams = getCourseParams(cursoSelecionado);
         String range2Start = courseParams[0];
@@ -133,61 +97,34 @@ public class SheetsController {
 
         List<List<Object>> updatedValues = processValuesForCourse(cursoSelecionado, valuesRange1, valuesRange2);
 
-        Map<String, Object> response = new HashMap<>();
-        response.put("rows", updatedValues);
-        response.put("maxColumns", calculateMaxColumns(valuesRange1, valuesRange2));
-        response.put("courseName", courseName);
-        response.put("isMedio", false);
+        Horarios horarios = new Horarios(updatedValues, calculateMaxColumns(valuesRange1, valuesRange2), courseName, false);
 
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(horarios);
     }
 
     private String[] getCourseParams(String cursoSelecionado) {
-        switch (cursoSelecionado) {
-            case "engenharia_alimentos":
-                return new String[] { "C2", "G101", "Bacharelado em Engenharia de Alimentos" };
-            case "engenharia_florestal":
-                return new String[] { "I2", "M101", "Bacharelado em Engenharia Florestal" };
-            case "sistemas_informacao":
-                return new String[] { "O2", "R101", "Bacharelado em Sistemas de Informação" };
-            case "medicina_veterinaria":
-                return new String[] { "T2", "X101", "Bacharelado em Medicina Veterinária" };
-            case "biologia":
-                return new String[] { "Z2", "AC101", "Licenciatura em Ciências Biológicas" };
-            case "fisica":
-                return new String[] { "AE2", "AH101", "Licenciatura em Física" };
-            case "matematica":
-                return new String[] { "AJ2", "AM101", "Licenciatura em Matemática" };
-            case "quimica":
-                return new String[] { "AO2", "AR101", "Licenciatura em Química" };
-            case "pedagogia":
-                return new String[] { "AT2", "AW101", "Licenciatura em Pedagogia" };
-            default:
-                return new String[] { "C2", "AW101", "Todos os Cursos - Ensino Superior" };
-        }
+        return switch (cursoSelecionado) {
+            case "engenharia_alimentos" -> new String[] { "C2", "G101", "Bacharelado em Engenharia de Alimentos" };
+            case "engenharia_florestal" -> new String[] { "I2", "M101", "Bacharelado em Engenharia Florestal" };
+            case "sistemas_informacao" -> new String[] { "O2", "R101", "Bacharelado em Sistemas de Informação" };
+            case "medicina_veterinaria" -> new String[] { "T2", "X101", "Bacharelado em Medicina Veterinária" };
+            case "biologia" -> new String[] { "Z2", "AC101", "Licenciatura em Ciências Biológicas" };
+            case "fisica" -> new String[] { "AE2", "AH101", "Licenciatura em Física" };
+            case "matematica" -> new String[] { "AJ2", "AM101", "Licenciatura em Matemática" };
+            case "quimica" -> new String[] { "AO2", "AR101", "Licenciatura em Química" };
+            case "pedagogia" -> new String[] { "AT2", "AW101", "Licenciatura em Pedagogia" };
+            default -> new String[] { "C2", "AW101", "Todos os Cursos - Ensino Superior" };
+        };
     }
 
     private List<List<Object>> processValuesForCourse(String cursoSelecionado, List<List<Object>> valuesRange1,
             List<List<Object>> valuesRange2) {
-        switch (cursoSelecionado) {
-            case "engenharia_alimentos":
-            case "engenharia_florestal":
-            case "medicina_veterinaria":
-                return processDayValues(valuesRange1, valuesRange2, 5);
-
-            case "sistemas_informacao":
-                return processFilteredValues(valuesRange1, valuesRange2, 6);
-
-            case "biologia":
-            case "fisica":
-            case "matematica":
-            case "quimica":
-            case "pedagogia":
-                return processFilteredValues(valuesRange1, valuesRange2, 13);
-
-            default:
-                return processDayValues(valuesRange1, valuesRange2, 0);
-        }
+        return switch (cursoSelecionado) {
+            case "engenharia_alimentos", "engenharia_florestal", "medicina_veterinaria" -> processDayValues(valuesRange1, valuesRange2, 5);
+            case "sistemas_informacao" -> processFilteredValues(valuesRange1, valuesRange2, 6);
+            case "biologia", "fisica", "matematica", "quimica", "pedagogia" -> processFilteredValues(valuesRange1, valuesRange2, 13);
+            default -> processDayValues(valuesRange1, valuesRange2, 0);
+        };
     }
 
     private int calculateMaxColumns(List<List<Object>> valuesRange1, List<List<Object>> valuesRange2) {
@@ -198,7 +135,7 @@ public class SheetsController {
 
     private List<List<Object>> processDayValues(List<List<Object>> valuesRange1, List<List<Object>> valuesRange2,
             int ignoreLastLines) {
-        return processDayValuesWithCustomLogic((start, end) -> IntStream
+        return processDayValues((start, end) -> IntStream
                 .range(start, end - ignoreLastLines)
                 .mapToObj(i -> combineRow(valuesRange1, valuesRange2, i))
                 .collect(Collectors.toList()));
@@ -206,15 +143,14 @@ public class SheetsController {
 
     private List<List<Object>> processFilteredValues(List<List<Object>> valuesRange1, List<List<Object>> valuesRange2,
             int skipThreshold) {
-        return processDayValuesWithCustomLogic((start, end) -> IntStream
+        return processDayValues((start, end) -> IntStream
                 .range(start, end)
                 .filter(i -> (i == start || i > start + skipThreshold))
                 .mapToObj(i -> combineRow(valuesRange1, valuesRange2, i))
                 .collect(Collectors.toList()));
     }
 
-    private List<List<Object>> processDayValuesWithCustomLogic(
-            BiFunction<Integer, Integer, List<List<Object>>> getDayValues) {
+    private List<List<Object>> processDayValues(BiFunction<Integer, Integer, List<List<Object>>> getDayValues) {
         List<List<Object>> updatedValues = new ArrayList<>();
         updatedValues.add(Collections.singletonList("SEGUNDA"));
         updatedValues.addAll(getDayValues.apply(0, 20));
@@ -246,14 +182,11 @@ public class SheetsController {
         }
     }
 
-    // Mostrar os horários dos professores
-    @GetMapping("/Professores")
-    public ResponseEntity<Map<String, Object>> getSheetValuesRangeHP(
-            @RequestParam(value = "professorSelecionado", required = false) String professorSelecionado)
-            throws IOException {
+    // Retornar os horários dos professores
+    public ResponseEntity<Horarios> getSheetValuesRangeHP(String professorSelecionado) throws IOException {
 
-        Map<String, Object> response = new HashMap<>();
-        response.put("professorSelecionado", professorSelecionado);
+        Horarios horarios = new Horarios();
+        horarios.setProfessorSelecionado(professorSelecionado);
 
         String rangeSuperior1 = "Horário - Graduação!B3:B101";
         String rangeSuperior2 = "Horário - Graduação!C3:AW101";
@@ -276,12 +209,12 @@ public class SheetsController {
                 .sorted(collator::compare)
                 .collect(Collectors.toList());
 
-        response.put("professores", nomesProfessoresValidos);
+        horarios.setProfessores(nomesProfessoresValidos);
 
         if (professorSelecionado == null || professorSelecionado.isEmpty()) {
-            response.put("rows", new ArrayList<>());
-            response.put("maxRows", 0);
-            return ResponseEntity.ok(response);
+            horarios.setRows(new ArrayList<>());
+            horarios.setMaxRows(0);
+            return ResponseEntity.ok(horarios);
         }
 
         int columnsSuperior1 = 1;
@@ -329,6 +262,7 @@ public class SheetsController {
                         Object cellValue = superiorData.get(j);
                         if (cellValue != null && !cellValue.toString().isEmpty()) {
                             String cellValueStr = cellValue.toString();
+                            
                             Pattern pattern = Pattern.compile("\\(([^)]+)\\)");
                             Matcher matcher = pattern.matcher(cellValueStr);
 
@@ -361,6 +295,7 @@ public class SheetsController {
                         Object cellValue = medioData.get(j);
                         if (cellValue != null && !cellValue.toString().isEmpty()) {
                             String cellValueStr = cellValue.toString();
+                            
                             Pattern pattern = Pattern.compile("\\(([^)]+)\\)");
                             Matcher matcher = pattern.matcher(cellValueStr);
 
@@ -418,18 +353,17 @@ public class SheetsController {
         }
         totalHoras = colunasPreenchidas * horasPorColuna;
 
-        response.put("rows", updatedValues);
-        response.put("horas", totalHoras + " h/a");
-        return ResponseEntity.ok(response);
+        horarios.setRows(updatedValues);
+        horarios.setHoras(totalHoras + " h/a");
+
+        return ResponseEntity.ok(horarios);
     }
 
-    // Mostrar os horários de ocupação das salas
-    @GetMapping("/Salas")
-    public ResponseEntity<Map<String, Object>> getSheetValuesRangeHS(
-            @RequestParam(value = "salaSelecionada", required = false) String salaSelecionada) throws IOException {
+    // Retornar os horários de ocupação das salas
+    public ResponseEntity<Horarios> getSheetValuesRangeHS(String salaSelecionada) throws IOException {
 
-        Map<String, Object> response = new HashMap<>();
-        response.put("salaSelecionada", salaSelecionada);
+        Horarios horarios = new Horarios();
+        horarios.setSalaSelecionada(salaSelecionada);
 
         String rangeSuperior1 = "Horário - Graduação!B3:B101";
         String rangeSuperior2 = "Horário - Graduação!C3:AW101";
@@ -437,16 +371,15 @@ public class SheetsController {
         String rangeMedio2 = "Horário - Ensino Médio!C3:V71";
         String rangeMedioTurmas = "Horário - Ensino Médio!C16:V16";
 
-        List<String> salas = Arrays.asList(
-            "(1/3)", "(1/4)", "(1/5)", "(1/6)", "(1/7)", "(1/8)", "(1/9)", "(1/10)", "(1/11)", "(1/12)",
-            "(1/13)", "(1/14)", "(1/15)", "(1/16)", "(1/17)", "(2/1)", "(2/2)", "(2/3)", "(2/4)", "(2/5)", "(2/6)",
-            "(3/7)", "(3/8)", "(3/9)", "(3/10)", "(3/11)", "(Agricult. I)", "(Agricult. II)", "(Agricult. III)",
-            "(Agroin. 1)", "(Agroin. 2)", "(Anexo Lab. Solos)", "(CELIN 1)", "(CELIN 2)", "(HV 1)", "(HV 2)", 
-            "(HV 3)", "(HV 4)", "(Lab. 1 - Info)", "(Lab. 2 - Info)", "(Lab. 3 - Info)", "(Lab. 4 - Info)",
-            "(Lab. Bromatologia)", "(Lab. Fenôm. de Transportes)", "(Lab. Física)", "(Lab. Invertebrados)", 
-            "(Lab. Microscopia)", "(Lab. Química I)", "(Lab. Química II)", "(Lab. Redes)", "(LEM)", "(Mini 1)", 
-            "(Mini 2)", "(Sala de Topografia)", "(Sala Suinocultura)", "(Sl. Análise Sensorial)", "(Zoo I)", "(Zoo II)", 
-            "(Zoo III)"
+        List<String> salas = List.of(
+            "(1/3)", "(1/4)", "(1/5)", "(1/6)", "(1/7)", "(1/8)", "(1/9)", "(1/10)", "(1/11)", "(1/12)", "(1/13)", "(1/14)", 
+            "(1/15)", "(1/16)", "(1/17)", "(2/1)", "(2/2)", "(2/3)", "(2/4)", "(2/5)", "(2/6)", "(3/7)", "(3/8)", "(3/9)", 
+            "(3/10)", "(3/11)", "(Agricult. I)", "(Agricult. II)", "(Agricult. III)", "(Agroin. 1)", "(Agroin. 2)", 
+            "(Anexo Lab. Solos)", "(CELIN 1)", "(CELIN 2)", "(HV 1)", "(HV 2)", "(HV 3)", "(HV 4)", "(Lab. 1 - Info)", 
+            "(Lab. 2 - Info)", "(Lab. 3 - Info)", "(Lab. 4 - Info)", "(Lab. Bromatologia)", "(Lab. Fenôm. de Transportes)", 
+            "(Lab. Física)", "(Lab. Invertebrados)", "(Lab. Microscopia)", "(Lab. Química I)", "(Lab. Química II)", 
+            "(Lab. Redes)", "(LEM)", "(Mini 1)", "(Mini 2)", "(Sala de Topografia)", "(Sala Suinocultura)", 
+            "(Sl. Análise Sensorial)", "(Zoo I)", "(Zoo II)", "(Zoo III)"
         );
 
         List<List<Object>> valuesSuperior1 = sheetsService.getSheetValues(rangeSuperior1);
@@ -455,12 +388,12 @@ public class SheetsController {
         List<List<Object>> valuesMedio2 = sheetsService.getSheetValues(rangeMedio2);
         List<List<Object>> valuesMedioTurmas = sheetsService.getSheetValues(rangeMedioTurmas);
 
-        response.put("salas", salas);
+        horarios.setSalas(salas);
 
         if (salaSelecionada == null || salaSelecionada.isEmpty()) {
-            response.put("rows", new ArrayList<>());
-            response.put("maxRows", 0);
-            return ResponseEntity.ok(response);
+            horarios.setRows(new ArrayList<>());
+            horarios.setMaxRows(0);
+            return ResponseEntity.ok(horarios);
         }
 
         int columnsSuperior1 = 1;
@@ -560,7 +493,7 @@ public class SheetsController {
             updatedValues.add(row);
         }
 
-        response.put("rows", updatedValues);
-        return ResponseEntity.ok(response);
+        horarios.setRows(updatedValues);
+        return ResponseEntity.ok(horarios);
     }
 }
