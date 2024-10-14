@@ -26,59 +26,82 @@ public class HorariosService {
     // Retornar os horários dos cursos técnicos
     public ResponseEntity<Horarios> getSheetValuesRangeEM(String cursoSelecionado) throws IOException {
 
-        Map<String, String[]> courseData = Map.of(
-                "agroindustria", new String[] { "C2", "H71", "Técnico em Agroindústria" },
-                "agropecuaria", new String[] { "J2", "O71", "Técnico em Agropecuária" },
-                "informatica", new String[] { "Q2", "V71", "Técnico em Informática"
-                });
+        String range2Start;
+        String range2End;
+        String courseName;
 
-        String[] selectedCourse = courseData.getOrDefault(cursoSelecionado,
-                new String[] { "C2", "V71", "Todos os Cursos - Ensino Médio" });
+        switch (cursoSelecionado) {
+            case "agroindustria" -> {
+                range2Start = "C2";
+                range2End = "H71";
+                courseName = "Técnico em Agroindústria";
+            }
+            case "agropecuaria" -> {
+                range2Start = "J2";
+                range2End = "O71";
+                courseName = "Técnico em Agropecuária";
+            }
+            case "informatica" -> {
+                range2Start = "Q2";
+                range2End = "V71";
+                courseName = "Técnico em Informática";
+            }
+            default -> {
+                range2Start = "C2";
+                range2End = "V71";
+                courseName = "Todos os Cursos - Ensino Médio";
+            }
+        }
 
         String range1 = "Horário - Ensino Médio!B2:B71";
-        String range2 = "Horário - Ensino Médio!" + selectedCourse[0] + ":" + selectedCourse[1];
-        String courseName = selectedCourse[2];
+        String range2 = "Horário - Ensino Médio!" + range2Start + ":" + range2End;
 
         List<List<Object>> valuesRange1 = sheetsService.getSheetValues(range1);
         List<List<Object>> valuesRange2 = sheetsService.getSheetValues(range2);
 
-        List<List<Object>> combinedValues = combineValues(valuesRange1, valuesRange2);
-
-        List<String> daysOfWeek = List.of("SEGUNDA", "TERÇA", "QUARTA", "QUINTA", "SEXTA");
-        List<List<Object>> updatedValues = new ArrayList<>();
-
-        for (int i = 0; i < daysOfWeek.size(); i++) {
-            updatedValues.add(Collections.singletonList(daysOfWeek.get(i)));
-            updatedValues.addAll(combinedValues.subList(i * 14, Math.min((i + 1) * 14, combinedValues.size())));
-        }
-
-        Horarios horarios = new Horarios(updatedValues, valuesRange1.get(0).size() + valuesRange2.get(0).size(), courseName, true);
-
-        return ResponseEntity.ok(horarios);
-    }
-
-    private List<List<Object>> combineValues(List<List<Object>> valuesRange1, List<List<Object>> valuesRange2) {
         int columnsRange1 = 1;
         int columnsRange2 = valuesRange2.isEmpty() ? 0 : valuesRange2.get(0).size();
 
-        return IntStream.range(0, Math.max(valuesRange1.size(), valuesRange2.size())).mapToObj(i -> {
-            List<Object> combinedRow = new ArrayList<>(Collections.nCopies(columnsRange1 + columnsRange2, ""));
+        List<List<Object>> combinedValues = IntStream.range(0, Math.max(valuesRange1.size(), valuesRange2.size()))
+                .mapToObj(i -> {
+                    List<Object> combinedRow = new ArrayList<>(Collections.nCopies(columnsRange1 + columnsRange2, ""));
 
-            if (i < valuesRange1.size()) {
-                for (int j = 0; j < valuesRange1.get(i).size(); j++) {
-                    combinedRow.set(j, valuesRange1.get(i).get(j));
-                }
-            }
+                    if (i < valuesRange1.size()) {
+                        for (int j = 0; j < valuesRange1.get(i).size(); j++) {
+                            combinedRow.set(j, valuesRange1.get(i).get(j));
+                        }
+                    }
 
-            if (i < valuesRange2.size()) {
-                for (int j = 0; j < valuesRange2.get(i).size(); j++) {
-                    combinedRow.set(columnsRange1 + j, valuesRange2.get(i).get(j));
-                }
-            }
+                    if (i < valuesRange2.size()) {
+                        for (int j = 0; j < valuesRange2.get(i).size(); j++) {
+                            combinedRow.set(columnsRange1 + j, valuesRange2.get(i).get(j));
+                        }
+                    }
 
-            return combinedRow;
-        })
+                    return combinedRow;
+                })
                 .collect(Collectors.toList());
+
+        List<List<Object>> updatedValues = new ArrayList<>();
+        updatedValues.add(Collections.singletonList("SEGUNDA"));
+        updatedValues.addAll(combinedValues.subList(0, 14));
+        updatedValues.add(Collections.singletonList("TERÇA"));
+        updatedValues.addAll(combinedValues.subList(14, 28));
+        updatedValues.add(Collections.singletonList("QUARTA"));
+        updatedValues.addAll(combinedValues.subList(28, 42));
+        updatedValues.add(Collections.singletonList("QUINTA"));
+        updatedValues.addAll(combinedValues.subList(42, 56));
+        updatedValues.add(Collections.singletonList("SEXTA"));
+        updatedValues.addAll(combinedValues.subList(56, combinedValues.size()));
+
+        Horarios horarios = Horarios.builder()
+            .rows(updatedValues)
+            .maxColumns(columnsRange1 + columnsRange2)
+            .courseName(courseName)
+            .checkTypeMedio(true)
+            .build();
+
+        return ResponseEntity.ok(horarios);
     }
 
     // Retornar os horários dos cursos superiores
@@ -97,8 +120,13 @@ public class HorariosService {
 
         List<List<Object>> updatedValues = processValuesForCourse(cursoSelecionado, valuesRange1, valuesRange2);
 
-        Horarios horarios = new Horarios(updatedValues, calculateMaxColumns(valuesRange1, valuesRange2), courseName, false);
-
+        Horarios horarios = Horarios.builder()
+            .rows(updatedValues)
+            .maxColumns(calculateMaxColumns(valuesRange1, valuesRange2))
+            .courseName(courseName)
+            .checkTypeMedio(false)
+            .build();
+        
         return ResponseEntity.ok(horarios);
     }
 
@@ -184,10 +212,7 @@ public class HorariosService {
 
     // Retornar os horários dos professores
     public ResponseEntity<Horarios> getSheetValuesRangeHP(String professorSelecionado) throws IOException {
-
-        Horarios horarios = new Horarios();
-        horarios.setProfessorSelecionado(professorSelecionado);
-
+        
         String rangeSuperior1 = "Horário - Graduação!B3:B101";
         String rangeSuperior2 = "Horário - Graduação!C3:AW101";
         String rangeSuperiorTurmas = "Horário - Graduação!C22:AW22";
@@ -209,11 +234,14 @@ public class HorariosService {
                 .sorted(collator::compare)
                 .collect(Collectors.toList());
 
-        horarios.setProfessores(nomesProfessoresValidos);
-
         if (professorSelecionado == null || professorSelecionado.isEmpty()) {
-            horarios.setRows(new ArrayList<>());
-            horarios.setMaxRows(0);
+            Horarios horarios = Horarios.builder()
+                .professorSelecionado(professorSelecionado)
+                .professores(nomesProfessoresValidos)
+                .rows(new ArrayList<>())
+                .maxRows(0)
+                .build();
+            
             return ResponseEntity.ok(horarios);
         }
 
@@ -353,17 +381,18 @@ public class HorariosService {
         }
         totalHoras = colunasPreenchidas * horasPorColuna;
 
-        horarios.setRows(updatedValues);
-        horarios.setHoras(totalHoras + " h/a");
-
+        Horarios horarios = Horarios.builder()
+            .professorSelecionado(professorSelecionado)
+            .professores(nomesProfessoresValidos)
+            .rows(updatedValues)
+            .horas(totalHoras + " h/a")
+            .build();
+        
         return ResponseEntity.ok(horarios);
     }
 
     // Retornar os horários de ocupação das salas
     public ResponseEntity<Horarios> getSheetValuesRangeHS(String salaSelecionada) throws IOException {
-
-        Horarios horarios = new Horarios();
-        horarios.setSalaSelecionada(salaSelecionada);
 
         String rangeSuperior1 = "Horário - Graduação!B3:B101";
         String rangeSuperior2 = "Horário - Graduação!C3:AW101";
@@ -388,11 +417,14 @@ public class HorariosService {
         List<List<Object>> valuesMedio2 = sheetsService.getSheetValues(rangeMedio2);
         List<List<Object>> valuesMedioTurmas = sheetsService.getSheetValues(rangeMedioTurmas);
 
-        horarios.setSalas(salas);
-
         if (salaSelecionada == null || salaSelecionada.isEmpty()) {
-            horarios.setRows(new ArrayList<>());
-            horarios.setMaxRows(0);
+            Horarios horarios = Horarios.builder()
+                .salaSelecionada(salaSelecionada)
+                .salas(salas)
+                .rows(new ArrayList<>())
+                .maxRows(0)
+                .build();
+            
             return ResponseEntity.ok(horarios);
         }
 
@@ -493,7 +525,12 @@ public class HorariosService {
             updatedValues.add(row);
         }
 
-        horarios.setRows(updatedValues);
+        Horarios horarios = Horarios.builder()
+            .salaSelecionada(salaSelecionada)
+            .salas(salas)
+            .rows(updatedValues)
+            .build();
+        
         return ResponseEntity.ok(horarios);
     }
 }

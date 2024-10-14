@@ -5,34 +5,28 @@ import java.util.List;
 import lombok.Data;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import lombok.Builder;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Horarios {
-    // Informações sobre os horários
+    // Informações dos horários
     private List<List<Object>> rows;
     private int maxRows;
     private int maxColumns;
 
-    // Informações do curso
+    // Informações dos cursos
     private String courseName;
-    private boolean isMedio;
+    private boolean checkTypeMedio;
 
-    // Informações sobre o professor
+    // Informações dos professores
     private String professorSelecionado;
     private List<String> professores;
     private String horas;
 
-    // Informações sobre a sala
+    // Informações das salas
     private String salaSelecionada;
     private List<String> salas;
-
-    // Construtor para os Cursos
-    public Horarios(List<List<Object>> rows, int maxColumns, String courseName, boolean isMedio) {
-        this.rows = rows;
-        this.maxColumns = maxColumns;
-        this.courseName = courseName;
-        this.isMedio = isMedio;
-    }
 }
