@@ -9,7 +9,7 @@
 
 ## 1. Descrição
 
-O projeto é uma plataforma web que mostra os horários dos cursos e professores do IFNMG Campus Salinas. O objetivo do projeto é facilitar o acesso aos horários para melhor organização e auxiliar o setor de ensino na manutenção da planilha.
+O projeto é uma plataforma web que mostra os horários dos cursos, professores e ocupação de salas do IFNMG Campus Salinas. O objetivo do projeto é facilitar o acesso aos horários para melhor organização e auxiliar o setor de ensino na manutenção da planilha. Ou seja, os dados são recebidos da planilha para o aplicativo.
 
 <div id='tecnologias'/> 
 
