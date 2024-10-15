@@ -3,6 +3,8 @@ import Image from 'next/image';
 import { BookOpenIcon, AcademicCapIcon, UserIcon, BuildingStorefrontIcon } from '@heroicons/react/24/outline';
 
 export default function Home() {
+  const currentYear = new Date().getFullYear();
+  
   return (
     <div className="min-h-screen bg-slate-200 dark:bg-neutral-900 flex flex-col items-center justify-center p-4">
       <div className="bg-white dark:bg-black border-t-4 border-green-700 dark:border-white p-8 rounded-lg shadow-lg text-center w-full max-w-4xl">
@@ -47,7 +49,7 @@ export default function Home() {
         </div>
       </div>
       <footer className="text-center text-black dark:text-white p-4">
-        © 2024 IFNMG - Todos os direitos reservados.
+        © {currentYear} IFNMG - Todos os direitos reservados.
       </footer>
     </div>
   );
