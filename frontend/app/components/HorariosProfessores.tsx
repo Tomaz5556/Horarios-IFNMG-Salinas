@@ -80,13 +80,13 @@ export default function HorariosProfessores() {
   return (
     <div className="min-h-screen bg-neutral-50 dark:bg-neutral-900">
       <div className="min-h-screen container mx-auto px-2 py-6">
-        <h1 className="text-center text-2xl font-bold mb-4 text-black dark:text-white">Selecione o Professor</h1>
+        <h1 className="font-sans font-semibold text-center text-3xl mb-4 text-black dark:text-white">Selecione o Professor</h1>
         <div className="flex flex-col items-center mb-4 text-black dark:text-white">
           <ListaSuspensa
             value={selectedProfessor}
             onChange={handleProfessorChange}
             options={professores}
-            label="Disciplina (Professor)"
+            label="Disciplinas (Professores)"
           />
           <div className="flex items-center space-x-4">
             <BotaoBuscar onClick={fetchData} />
@@ -98,7 +98,7 @@ export default function HorariosProfessores() {
           <TabelaProfessores rows={rows} />
         </div>
         <div className="flex flex-col items-center mt-4">
-          <p className="bg-neutral-500 dark:bg-white font-bold p-3 rounded-md inline-block text-white dark:text-black">
+          <p className="font-sans font-bold bg-neutral-500 dark:bg-white p-3 rounded-md inline-block text-white dark:text-black">
             Carga Horária - Total: {horas}
           </p>
           <div className="mt-4">
