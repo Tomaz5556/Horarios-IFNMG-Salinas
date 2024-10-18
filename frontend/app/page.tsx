@@ -28,8 +28,8 @@ export default function Home() {
             />
           </div>
         </div>
-        <h1 className="font-poppins text-3xl md:text-4xl font-bold mb-8 text-black dark:text-white">Horários - Campus Salinas</h1>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
+        <h1 className="font-sans font-bold text-3xl md:text-4xl mb-8 text-black dark:text-white">Horários - Campus Salinas</h1>
+        <div className="font-sans font-semibold grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-8">
           <Link href="pages/Cursos?tipo=ensinoMedio" className="block w-full h-28 md:h-32 bg-green-700 dark:bg-white text-white dark:text-black text-center text-xl md:text-2xl rounded-md hover:bg-green-600 dark:hover:bg-neutral-300 transition-all duration-500 flex flex-col items-center justify-center shadow-lg hover:shadow-xl active:bg-green-800 dark:active:bg-neutral-500 active:shadow-inner">
             <BookOpenIcon className="h-8 w-8 md:h-10 md:w-10 mb-2 transform transition-transform duration-300" />
             Ensino Médio

@@ -130,7 +130,7 @@ export default function HorariosCursos() {
   return (
     <div className="min-h-screen bg-neutral-50 dark:bg-neutral-900">
       <div className="min-h-screen container mx-auto px-2 py-6">
-        <h1 className="text-center text-3xl font-bold mb-4 text-black dark:text-white">Selecione o curso</h1>
+        <h1 className="font-sans font-semibold text-center text-3xl mb-4 text-black dark:text-white">Selecione o Curso</h1>
         <div className="flex flex-col items-center mb-4 text-black dark:text-white">
           <ListaSuspensa
             value={selectedCourse}
@@ -151,15 +151,15 @@ export default function HorariosCursos() {
         <div className="flex justify-center mt-4">
           <BotaoVoltar />
         </div>
-        <dialog ref={dialogRef} className="bg-white border-t-4 border-red-500 rounded-lg max-w-xs min-[420px]:max-w-sm p-6 shadow-lg backdrop:bg-black/50">
+        <dialog ref={dialogRef} className="font-sans bg-white border-t-4 border-red-500 rounded-lg max-w-xs min-[420px]:max-w-sm p-6 shadow-lg backdrop:bg-black/50">
           <div className="flex flex-col items-center mb-4">
             <XCircleIcon className="h-28 w-28 max-sm:h-20 w-20 text-red-500 mb-2" />
-            <h2 className="text-center text-3xl max-sm:text-2xl font-bold text-black">Ops!</h2>
+            <h2 className="font-bold text-center text-3xl max-sm:text-2xl text-black">Ops!</h2>
           </div>
           <p className="text-center text-lg max-sm:text-sm text-black">Não é possível fazer o download do PDF.</p>
           <p className="text-center text-lg max-sm:text-sm text-black mb-4">Pois, a tabela é muito grande!</p>
           <div className="flex justify-center">
-            <button className="bg-red-700 text-white font-bold px-4 py-2 rounded-md hover:bg-red-600 transition active:bg-red-800" onClick={handleCloseDialog}>Fechar</button>
+            <button className="font-bold bg-red-700 text-white px-4 py-2 rounded-md hover:bg-red-600 transition active:bg-red-800" onClick={handleCloseDialog}>Fechar</button>
           </div>
         </dialog>
       </div>
