@@ -16,6 +16,7 @@ export default function Home() {
               width={512}
               height={275}
               className="object-contain w-full max-w-xs md:max-w-md rounded-md"
+              priority={true}
             />
           </div>
           <div className="hidden dark:block">
@@ -25,6 +26,7 @@ export default function Home() {
               width={512}
               height={275}
               className="object-contain w-full max-w-xs md:max-w-md rounded-md"
+              priority={true}
             />
           </div>
         </div>

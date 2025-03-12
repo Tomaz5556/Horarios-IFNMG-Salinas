@@ -14,7 +14,7 @@ export default function TabelaProfessores({ rows }: TabelaProfessoresProps) {
     };
 
     return (
-        <table className="bg-white dark:bg-black table-auto w-full border-collapse border border-neutral-500 text-xs md:text-sm text-black">
+        <table className="bg-white dark:bg-black table-auto w-full border-separate border-spacing-0 border border-neutral-500 text-xs md:text-sm text-black">
             <thead>
                 <tr>
                     <th className="bg-neutral-400 border border-neutral-500 p-3 text-center w-1/6">HORÁRIO</th>
