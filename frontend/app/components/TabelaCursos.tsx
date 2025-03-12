@@ -30,7 +30,7 @@ export default function TabelaCursos({ rows, maxColumns, courseName, loading }: 
     });
 
     return (
-        <table className="bg-white dark:bg-black table-auto w-full border-collapse border border-neutral-500 text-xs md:text-sm text-black">
+        <table className="bg-white dark:bg-black table-auto w-full border-separate border-spacing-0 border border-neutral-500 text-xs md:text-sm text-black">
             <tbody>
                 {loading ? (
                     <tr>

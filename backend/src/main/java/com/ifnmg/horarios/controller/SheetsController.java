@@ -23,25 +23,25 @@ public class SheetsController {
 
     // Mostrar os horários dos cursos técnicos
     @GetMapping("/ensinoMedio")
-    public ResponseEntity<Horarios> getSheetValuesRangeEM(@RequestParam(value = "cursoSelecionado", required = false, defaultValue = "todos") String cursoSelecionado) throws IOException {
+    public ResponseEntity<Horarios> getSheetValuesRangeEM(@RequestParam(required = false, defaultValue = "todos") String cursoSelecionado) throws IOException {
         return horariosService.getSheetValuesRangeEM(cursoSelecionado);
     }
 
     // Mostrar os horários dos cursos superiores
     @GetMapping("/ensinoSuperior")
-    public ResponseEntity<Horarios> getSheetValuesRangeES(@RequestParam(value = "cursoSelecionado", required = false, defaultValue = "todos") String cursoSelecionado) throws IOException {
+    public ResponseEntity<Horarios> getSheetValuesRangeES(@RequestParam(required = false, defaultValue = "todos") String cursoSelecionado) throws IOException {
         return horariosService.getSheetValuesRangeES(cursoSelecionado);
     }
 
     // Mostrar os horários dos professores
     @GetMapping("/Professores")
-    public ResponseEntity<Horarios> getSheetValuesRangeHP(@RequestParam(value = "professorSelecionado", required = false) String professorSelecionado) throws IOException {
+    public ResponseEntity<Horarios> getSheetValuesRangeHP(@RequestParam(required = false) String professorSelecionado) throws IOException {
         return horariosService.getSheetValuesRangeHP(professorSelecionado);
     }
 
     // Mostrar os horários de ocupação das salas
     @GetMapping("/Salas")
-    public ResponseEntity<Horarios> getSheetValuesRangeHS(@RequestParam(value = "salaSelecionada", required = false) String salaSelecionada) throws IOException {
+    public ResponseEntity<Horarios> getSheetValuesRangeHS(@RequestParam(required = false) String salaSelecionada) throws IOException {
         return horariosService.getSheetValuesRangeHS(salaSelecionada);
     }
 }
