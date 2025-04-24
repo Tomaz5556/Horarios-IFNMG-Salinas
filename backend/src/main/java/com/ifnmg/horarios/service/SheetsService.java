@@ -12,14 +12,15 @@ import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.model.ValueRange;
 
 import org.springframework.stereotype.Service;
+import com.ifnmg.horarios.config.EnvConfig;
 
 @Service
 public class SheetsService {
     private static final String APPLICATION_NAME = "Horários do IFNMG Salinas";
     private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
-    private static final String API_KEY = System.getenv("API_KEY");
-    private static final String SPREADSHEET_ID = System.getenv("SPREADSHEET_ID");
+
     private final Sheets sheetsService;
+
     public SheetsService() throws GeneralSecurityException, IOException {
         final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
         this.sheetsService = new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, null)
@@ -29,8 +30,8 @@ public class SheetsService {
 
     public List<List<Object>> getSheetValues(String range) throws IOException {
         ValueRange response = sheetsService.spreadsheets().values()
-                .get(SPREADSHEET_ID, range)
-                .setKey(API_KEY)
+                .get(EnvConfig.SPREADSHEET_ID, range)
+                .setKey(EnvConfig.API_KEY)
                 .execute();
         return response.getValues();
     }

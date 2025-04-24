@@ -98,7 +98,7 @@ export default function HorariosProfessores() {
           <TabelaProfessores rows={rows} />
         </div>
         <div className="flex flex-col items-center mt-4">
-          <p className="font-sans font-bold bg-neutral-500 dark:bg-white p-3 rounded-md inline-block text-white dark:text-black">
+          <p className="text-center font-sans font-bold bg-neutral-500 dark:bg-white p-3 rounded-md inline-block text-white dark:text-black">
             Carga Horária - Total: {horas}
           </p>
           <div className="mt-4">
