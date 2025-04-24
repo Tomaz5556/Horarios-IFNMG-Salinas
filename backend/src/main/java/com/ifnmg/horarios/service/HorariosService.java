@@ -33,27 +33,27 @@ public class HorariosService {
         switch (cursoSelecionado) {
             case "agroindustria" -> {
                 range2Start = "C2";
-                range2End = "H71";
+                range2End = "H76";
                 courseName = "Técnico em Agroindústria";
             }
             case "agropecuaria" -> {
                 range2Start = "J2";
-                range2End = "O71";
+                range2End = "O76";
                 courseName = "Técnico em Agropecuária";
             }
             case "informatica" -> {
                 range2Start = "Q2";
-                range2End = "V71";
+                range2End = "V76";
                 courseName = "Técnico em Informática";
             }
             default -> {
                 range2Start = "C2";
-                range2End = "V71";
+                range2End = "V76";
                 courseName = "Todos os Cursos - Ensino Médio";
             }
         }
 
-        String range1 = "Horário - Ensino Médio!B2:B71";
+        String range1 = "Horário - Ensino Médio!B2:B76";
         String range2 = "Horário - Ensino Médio!" + range2Start + ":" + range2End;
 
         List<List<Object>> valuesRange1 = sheetsService.getSheetValues(range1);
@@ -84,15 +84,15 @@ public class HorariosService {
 
         List<List<Object>> updatedValues = new ArrayList<>();
         updatedValues.add(Collections.singletonList("SEGUNDA"));
-        updatedValues.addAll(combinedValues.subList(0, 14));
+        updatedValues.addAll(combinedValues.subList(0, 15));
         updatedValues.add(Collections.singletonList("TERÇA"));
-        updatedValues.addAll(combinedValues.subList(14, 28));
+        updatedValues.addAll(combinedValues.subList(15, 30));
         updatedValues.add(Collections.singletonList("QUARTA"));
-        updatedValues.addAll(combinedValues.subList(28, 42));
+        updatedValues.addAll(combinedValues.subList(30, 45));
         updatedValues.add(Collections.singletonList("QUINTA"));
-        updatedValues.addAll(combinedValues.subList(42, 56));
+        updatedValues.addAll(combinedValues.subList(45, 60));
         updatedValues.add(Collections.singletonList("SEXTA"));
-        updatedValues.addAll(combinedValues.subList(56, combinedValues.size()));
+        updatedValues.addAll(combinedValues.subList(60, combinedValues.size()));
 
         Horarios horarios = Horarios.builder()
             .rows(updatedValues)
@@ -112,7 +112,7 @@ public class HorariosService {
         String range2End = courseParams[1];
         String courseName = courseParams[2];
 
-        String range1 = "Horário - Graduação!B2:B101";
+        String range1 = "Horário - Graduação!B2:B106";
         String range2 = "Horário - Graduação!" + range2Start + ":" + range2End;
 
         List<List<Object>> valuesRange1 = sheetsService.getSheetValues(range1);
@@ -132,16 +132,16 @@ public class HorariosService {
 
     private String[] getCourseParams(String cursoSelecionado) {
         return switch (cursoSelecionado) {
-            case "engenharia_alimentos" -> new String[] { "C2", "G101", "Bacharelado em Engenharia de Alimentos" };
-            case "engenharia_florestal" -> new String[] { "I2", "M101", "Bacharelado em Engenharia Florestal" };
-            case "sistemas_informacao" -> new String[] { "O2", "R101", "Bacharelado em Sistemas de Informação" };
-            case "medicina_veterinaria" -> new String[] { "T2", "X101", "Bacharelado em Medicina Veterinária" };
-            case "biologia" -> new String[] { "Z2", "AC101", "Licenciatura em Ciências Biológicas" };
-            case "fisica" -> new String[] { "AE2", "AH101", "Licenciatura em Física" };
-            case "matematica" -> new String[] { "AJ2", "AM101", "Licenciatura em Matemática" };
-            case "quimica" -> new String[] { "AO2", "AR101", "Licenciatura em Química" };
-            case "pedagogia" -> new String[] { "AT2", "AW101", "Licenciatura em Pedagogia" };
-            default -> new String[] { "C2", "AW101", "Todos os Cursos - Ensino Superior" };
+            case "engenharia_alimentos" -> new String[] { "C2", "G106", "Bacharelado em Engenharia de Alimentos" };
+            case "engenharia_florestal" -> new String[] { "I2", "M106", "Bacharelado em Engenharia Florestal" };
+            case "sistemas_informacao" -> new String[] { "O2", "R106", "Bacharelado em Sistemas de Informação" };
+            case "medicina_veterinaria" -> new String[] { "T2", "X106", "Bacharelado em Medicina Veterinária" };
+            case "biologia" -> new String[] { "Z2", "AC106", "Licenciatura em Ciências Biológicas" };
+            case "fisica" -> new String[] { "AE2", "AH106", "Licenciatura em Física" };
+            case "matematica" -> new String[] { "AJ2", "AM106", "Licenciatura em Matemática" };
+            case "quimica" -> new String[] { "AO2", "AR106", "Licenciatura em Química" };
+            case "pedagogia" -> new String[] { "AT2", "AW106", "Licenciatura em Pedagogia" };
+            default -> new String[] { "C2", "AW106", "Todos os Cursos - Ensino Superior" };
         };
     }
 
@@ -149,8 +149,8 @@ public class HorariosService {
             List<List<Object>> valuesRange2) {
         return switch (cursoSelecionado) {
             case "engenharia_alimentos", "engenharia_florestal", "medicina_veterinaria" -> processDayValues(valuesRange1, valuesRange2, 5);
-            case "sistemas_informacao" -> processFilteredValues(valuesRange1, valuesRange2, 6);
-            case "biologia", "fisica", "matematica", "quimica", "pedagogia" -> processFilteredValues(valuesRange1, valuesRange2, 13);
+            case "sistemas_informacao" -> processFilteredValues(valuesRange1, valuesRange2, 7);
+            case "biologia", "fisica", "matematica", "quimica", "pedagogia" -> processFilteredValues(valuesRange1, valuesRange2, 14);
             default -> processDayValues(valuesRange1, valuesRange2, 0);
         };
     }
@@ -181,15 +181,15 @@ public class HorariosService {
     private List<List<Object>> processDayValues(BiFunction<Integer, Integer, List<List<Object>>> getDayValues) {
         List<List<Object>> updatedValues = new ArrayList<>();
         updatedValues.add(Collections.singletonList("SEGUNDA"));
-        updatedValues.addAll(getDayValues.apply(0, 20));
+        updatedValues.addAll(getDayValues.apply(0, 21));
         updatedValues.add(Collections.singletonList("TERÇA"));
-        updatedValues.addAll(getDayValues.apply(20, 40));
+        updatedValues.addAll(getDayValues.apply(21, 42));
         updatedValues.add(Collections.singletonList("QUARTA"));
-        updatedValues.addAll(getDayValues.apply(40, 60));
+        updatedValues.addAll(getDayValues.apply(42, 63));
         updatedValues.add(Collections.singletonList("QUINTA"));
-        updatedValues.addAll(getDayValues.apply(60, 80));
+        updatedValues.addAll(getDayValues.apply(63, 84));
         updatedValues.add(Collections.singletonList("SEXTA"));
-        updatedValues.addAll(getDayValues.apply(80, 100));
+        updatedValues.addAll(getDayValues.apply(84, 105));
         return updatedValues;
     }
 
@@ -213,11 +213,11 @@ public class HorariosService {
     // Retornar os horários dos professores
     public ResponseEntity<Horarios> getSheetValuesRangeHP(String professorSelecionado) throws IOException {
         
-        String rangeSuperior1 = "Horário - Graduação!B3:B101";
-        String rangeSuperior2 = "Horário - Graduação!C3:AW101";
-        String rangeSuperiorTurmas = "Horário - Graduação!C22:AW22";
-        String rangeMedio2 = "Horário - Ensino Médio!C3:V71";
-        String rangeMedioTurmas = "Horário - Ensino Médio!C16:V16";
+        String rangeSuperior1 = "Horário - Graduação!B3:B106";
+        String rangeSuperior2 = "Horário - Graduação!C3:AW106";
+        String rangeSuperiorTurmas = "Horário - Graduação!C23:AW23";
+        String rangeMedio2 = "Horário - Ensino Médio!C3:V76";
+        String rangeMedioTurmas = "Horário - Ensino Médio!C17:V17";
         String rangeNomesProfessores = "Validação de Dados!A2:A";
 
         List<List<Object>> valuesSuperior1 = sheetsService.getSheetValues(rangeSuperior1);
@@ -227,7 +227,7 @@ public class HorariosService {
         List<List<Object>> valuesMedioTurmas = sheetsService.getSheetValues(rangeMedioTurmas);
         List<List<Object>> nomesProfessores = sheetsService.getSheetValues(rangeNomesProfessores);
 
-        Collator collator = Collator.getInstance(new Locale("pt", "BR"));
+        Collator collator = Collator.getInstance(Locale.forLanguageTag("pt-BR"));
         List<String> nomesProfessoresValidos = nomesProfessores.stream()
                 .filter(row -> !row.isEmpty())
                 .map(row -> row.get(0).toString())
@@ -249,8 +249,8 @@ public class HorariosService {
         int columnsSuperior2 = 47;
         int columnsMedio2 = 20;
 
-        int linesPerDaySuperior = 20;
-        int linesPerDayMedio = 14;
+        int linesPerDaySuperior = 21;
+        int linesPerDayMedio = 15;
         int totalDays = 5;
 
         List<List<Object>> valuesMedio2Adjusted = new ArrayList<>();
@@ -394,11 +394,11 @@ public class HorariosService {
     // Retornar os horários de ocupação das salas
     public ResponseEntity<Horarios> getSheetValuesRangeHS(String salaSelecionada) throws IOException {
 
-        String rangeSuperior1 = "Horário - Graduação!B3:B101";
-        String rangeSuperior2 = "Horário - Graduação!C3:AW101";
-        String rangeSuperiorTurmas = "Horário - Graduação!C22:AW22";
-        String rangeMedio2 = "Horário - Ensino Médio!C3:V71";
-        String rangeMedioTurmas = "Horário - Ensino Médio!C16:V16";
+        String rangeSuperior1 = "Horário - Graduação!B3:B106";
+        String rangeSuperior2 = "Horário - Graduação!C3:AW106";
+        String rangeSuperiorTurmas = "Horário - Graduação!C23:AW23";
+        String rangeMedio2 = "Horário - Ensino Médio!C3:V76";
+        String rangeMedioTurmas = "Horário - Ensino Médio!C17:V17";
 
         List<String> salas = List.of(
             "(1/3)", "(1/4)", "(1/5)", "(1/6)", "(1/7)", "(1/8)", "(1/9)", "(1/10)", "(1/11)", "(1/12)", "(1/13)", "(1/14)", 
@@ -432,8 +432,8 @@ public class HorariosService {
         int columnsSuperior2 = 47;
         int columnsMedio2 = 20;
 
-        int linesPerDaySuperior = 20;
-        int linesPerDayMedio = 14;
+        int linesPerDaySuperior = 21;
+        int linesPerDayMedio = 15;
         int totalDays = 5;
 
         List<List<Object>> valuesMedio2Adjusted = new ArrayList<>();

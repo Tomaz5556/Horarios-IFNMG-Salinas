@@ -1,18 +1,18 @@
-FROM ubuntu:latest AS build
+FROM maven:3.9-eclipse-temurin-21-jammy AS build
 
-RUN apt-get update && \
-    apt-get install -y openjdk-17-jdk maven && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+WORKDIR /app
 
-COPY . .
+COPY pom.xml .
+COPY src ./src
 
-RUN mvn clean install
+RUN mvn clean package -DskipTests
 
-FROM openjdk:17-jdk-slim
+FROM eclipse-temurin:21-jdk-alpine
 
 EXPOSE 8080
 
-COPY --from=build /target/horarios-0.0.1-SNAPSHOT.jar app.jar
+WORKDIR /app
+
+COPY --from=build /app/target/horarios-0.0.1-SNAPSHOT.jar app.jar
 
 ENTRYPOINT ["java", "-jar", "app.jar"]
