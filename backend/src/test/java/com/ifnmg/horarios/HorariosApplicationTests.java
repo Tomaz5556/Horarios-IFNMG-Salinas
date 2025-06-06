@@ -15,6 +15,7 @@ class HorariosApplicationTests {
     public static void setUp() {
         System.setProperty("API_KEY", dotenv.get("API_KEY"));
 		System.setProperty("SPREADSHEET_ID", dotenv.get("SPREADSHEET_ID"));
+		System.setProperty("SPREADSHEET_LOGIN", dotenv.get("SPREADSHEET_LOGIN"));
 		System.setProperty("FRONTEND_URL", dotenv.get("FRONTEND_URL"));
     }
 

@@ -29,4 +29,7 @@ public class Horarios {
     // Informações das salas
     private String salaSelecionada;
     private List<String> salas;
+
+    // Novas validações
+    private List<String> validacoes;
 }

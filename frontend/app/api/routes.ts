@@ -11,13 +11,26 @@ export const fetchCourseData = async (cursoSelecionado: string, tipo: string) =>
 };
 
 export const fetchProfessorData = async (professorSelecionado: string) => {
-  const url = `/Professores?professorSelecionado=${professorSelecionado}`;
+  const url = `/professores?professorSelecionado=${professorSelecionado}`;
   const response = await api.get(url);
   return response.data;
 };
 
 export const fetchSalaData = async (salaSelecionada: string) => {
-  const url = `/Salas?salaSelecionada=${salaSelecionada}`;
+  const url = `/salas?salaSelecionada=${salaSelecionada}`;
+  const response = await api.get(url);
+  return response.data;
+};
+
+export const fetchLoginData = async (usuario: string, senha: string) => {
+  const response = await api.get(`/login`, {
+    params: { usuario, senha },
+  });
+  return response.data;
+};
+
+export const fetchValidacaoData = async () => {
+  const url = `/validacao`;
   const response = await api.get(url);
   return response.data;
 };
