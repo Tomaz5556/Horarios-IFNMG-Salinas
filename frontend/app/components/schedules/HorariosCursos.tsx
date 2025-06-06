@@ -1,11 +1,11 @@
 import { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { fetchCourseData } from '../api/routes';
-import ListaSuspensa from './DropdownList';
-import BotaoBuscar from './SearchButton';
-import DownloadButton from './DownloadButton';
-import BotaoVoltar from './BackButton';
-import TabelaCursos from './TabelaCursos';
+import { fetchCourseData } from '../../api/routes';
+import ListaSuspensa from '../common/dropdowns/DropdownList';
+import BotaoBuscar from '../common/buttons/SearchButton';
+import DownloadButton from '../common/buttons/DownloadButton';
+import BotaoVoltar from '../common/buttons/BackButton';
+import TabelaCursos from '../tables/TabelaCursos';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import { XCircleIcon } from '@heroicons/react/24/outline';
@@ -79,9 +79,7 @@ export default function HorariosCursos() {
     // Não permitir download do pdf quando o usuário selecionar todos de Ensino Superior
     // Pois dar problema na renderização do PDF (PDF Gigante)
     if (courseName === "Todos os Cursos - Ensino Superior") {
-      if (dialogRef.current) {
-        dialogRef.current.showModal();
-      }
+      dialogRef.current?.showModal();
       return;
     }
 
@@ -96,29 +94,33 @@ export default function HorariosCursos() {
       pdf.setFontSize(14);
       pdf.text('Nenhum resultado foi encontrado.', 105, 80, { align: 'center' });
       pdf.save('Horário Curso.pdf');
-    } else if (tableElement) {
-      html2canvas(tableElement, { scale: 1.5 }).then((canvas) => {
-        const imgWidth = canvas.width;
-        const imgHeight = canvas.height;
-
-        const pixelToMm = 0.264583;
-        const pdfWidth = imgWidth * pixelToMm;
-        const pdfHeight = imgHeight * pixelToMm;
-
-        const pdf = new jsPDF({
-          orientation: 'portrait',
-          unit: 'mm',
-          format: [pdfWidth, pdfHeight]
-        });
-
-        const image = canvas.toDataURL('image/png', 0.75);
-
-        pdf.addImage(image, 'PNG', 0, 0, pdfWidth, pdfHeight, undefined, 'FAST');
-        pdf.save(`Horário Curso - ${courseName}.pdf`);
-      });
-    } else {
+      return;
+    } 
+    
+    if (!tableElement) {
       console.error('Tabela não encontrada.');
+      return;
     }
+    
+    html2canvas(tableElement, { scale: 1.5 }).then((canvas) => {
+      const imgWidth = canvas.width;
+      const imgHeight = canvas.height;
+
+      const pixelToMm = 0.264583;
+      const pdfWidth = imgWidth * pixelToMm;
+      const pdfHeight = imgHeight * pixelToMm;
+
+      const pdf = new jsPDF({
+        orientation: 'portrait',
+        unit: 'mm',
+        format: [pdfWidth, pdfHeight]
+      });
+
+      const image = canvas.toDataURL('image/png', 0.75);
+
+      pdf.addImage(image, 'PNG', 0, 0, pdfWidth, pdfHeight, undefined, 'FAST');
+      pdf.save(`Horário Curso - ${courseName}.pdf`);
+    });
   };
 
   const handleCloseDialog = () => {

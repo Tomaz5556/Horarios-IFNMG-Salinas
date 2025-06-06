@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { fetchSalaData } from '../api/routes';
-import ListaSuspensa from './DropdownList';
-import BotaoBuscar from './SearchButton';
-import DownloadButton from './DownloadButton';
-import BotaoVoltar from './BackButton';
-import TabelaSalas from './TabelaSalas';
+import { fetchSalaData } from '../../api/routes';
+import ListaSuspensa from '../common/dropdowns/DropdownList';
+import BotaoBuscar from '../common/buttons/SearchButton';
+import DownloadButton from '../common/buttons/DownloadButton';
+import BotaoVoltar from '../common/buttons/BackButton';
+import TabelaSalas from '../tables/TabelaSalas';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 
@@ -54,26 +54,30 @@ export default function HorariosSalas() {
       pdf.setFontSize(14);
       pdf.text('Nenhum resultado foi encontrado.', 105, 80, { align: 'center' });
       pdf.save('Horário Sala.pdf');
-    } else if (tableElement) {
-      html2canvas(tableElement, { scale: 2 }).then((canvas) => {
-        const pixelToMm = 0.264583;
-        const imgWidth = canvas.width * pixelToMm;
-        const imgHeight = canvas.height * pixelToMm;
-
-        const pdf = new jsPDF({
-          orientation: imgWidth > imgHeight ? 'landscape' : 'portrait',
-          unit: 'mm',
-          format: [imgWidth, imgHeight]
-        });
-
-        const image = canvas.toDataURL('image/png', 1.0);
-
-        pdf.addImage(image, 'PNG', 0, 0, imgWidth, imgHeight, undefined, 'FAST');
-        pdf.save(`Horário Sala - ${selectedSala}.pdf`);
-      });
-    } else {
+      return;
+    } 
+    
+    if (!tableElement) {
       console.error('Tabela não encontrada.');
+      return;
     }
+    
+    html2canvas(tableElement, { scale: 2 }).then((canvas) => {
+      const pixelToMm = 0.264583;
+      const imgWidth = canvas.width * pixelToMm;
+      const imgHeight = canvas.height * pixelToMm;
+
+      const pdf = new jsPDF({
+        orientation: imgWidth > imgHeight ? 'landscape' : 'portrait',
+        unit: 'mm',
+        format: [imgWidth, imgHeight]
+      });
+
+      const image = canvas.toDataURL('image/png', 1.0);
+
+      pdf.addImage(image, 'PNG', 0, 0, imgWidth, imgHeight, undefined, 'FAST');
+      pdf.save(`Horário Sala - ${selectedSala}.pdf`);
+    });
   };
 
   return (

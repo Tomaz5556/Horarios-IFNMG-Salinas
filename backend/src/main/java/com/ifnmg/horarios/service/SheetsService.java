@@ -12,6 +12,7 @@ import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.model.ValueRange;
 
 import org.springframework.stereotype.Service;
+
 import com.ifnmg.horarios.config.EnvConfig;
 
 @Service
@@ -31,6 +32,14 @@ public class SheetsService {
     public List<List<Object>> getSheetValues(String range) throws IOException {
         ValueRange response = sheetsService.spreadsheets().values()
                 .get(EnvConfig.SPREADSHEET_ID, range)
+                .setKey(EnvConfig.API_KEY)
+                .execute();
+        return response.getValues();
+    }
+
+    public List<List<Object>> getSheetValuesLogin(String range) throws IOException {
+        ValueRange response = sheetsService.spreadsheets().values()
+                .get(EnvConfig.SPREADSHEET_LOGIN, range)
                 .setKey(EnvConfig.API_KEY)
                 .execute();
         return response.getValues();
