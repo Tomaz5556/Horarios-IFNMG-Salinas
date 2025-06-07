@@ -11,7 +11,7 @@ interface DropdownListProps {
 export default function DropdownList({ value, onChange, options, label, staticOptions }: DropdownListProps) {
   return (
     <div className="relative mb-2">
-      <select value={value} onChange={onChange} className="font-sans bg-white dark:bg-black p-2 border border-neutral-500 text-black dark:text-white appearance-none w-full pl-3 pr-8">
+      <select value={value} onChange={onChange} className="cursor-pointer font-sans bg-white dark:bg-black p-2 border border-neutral-500 text-black dark:text-white appearance-none w-full pl-3 pr-8">
         <option value="">
           {label}
         </option>
