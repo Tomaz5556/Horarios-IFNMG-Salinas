@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { fetchCourseData } from '../../api/routes';
+import { OptionsEnsinoMedio, OptionsEnsinoSuperior } from '../../constants/cursos';
+import { XCircleIcon } from '@heroicons/react/24/outline';
 import ListaSuspensa from '../common/dropdowns/DropdownList';
 import BotaoBuscar from '../common/buttons/SearchButton';
 import DownloadButton from '../common/buttons/DownloadButton';
@@ -8,7 +10,6 @@ import BotaoVoltar from '../common/buttons/BackButton';
 import TabelaCursos from '../tables/TabelaCursos';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-import { XCircleIcon } from '@heroicons/react/24/outline';
 
 export default function HorariosCursos() {
   const [rows, setRows] = useState<(string | null)[][]>([]);
@@ -38,24 +39,6 @@ export default function HorariosCursos() {
 
   const handleCourseChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedCourse(e.target.value);
-  };
-
-  const OptionsEnsinoMedio = {
-    agroindustria: "Técnico em Agroindústria",
-    agropecuaria: "Técnico em Agropecuária",
-    informatica: "Técnico em Informática"
-  };
-
-  const OptionsEnsinoSuperior = {
-    engenharia_alimentos: "Bacharelado em Engenharia de Alimentos",
-    engenharia_florestal: "Bacharelado em Engenharia Florestal",
-    sistemas_informacao: "Bacharelado em Sistemas de Informação",
-    medicina_veterinaria: "Bacharelado em Medicina Veterinária",
-    biologia: "Licenciatura em Ciências Biológicas",
-    fisica: "Licenciatura em Física",
-    matematica: "Licenciatura em Matemática",
-    quimica: "Licenciatura em Química",
-    pedagogia: "Licenciatura em Pedagogia"
   };
 
   const courseOptions = tipo === 'ensinoMedio' ? OptionsEnsinoMedio : OptionsEnsinoSuperior;
@@ -153,7 +136,7 @@ export default function HorariosCursos() {
         <div className="flex justify-center mt-4">
           <BotaoVoltar />
         </div>
-        <dialog ref={dialogRef} className="font-sans bg-white border-t-4 border-red-500 rounded-lg max-w-xs min-[420px]:max-w-sm p-6 shadow-lg backdrop:bg-black/50">
+        <dialog ref={dialogRef} className="font-sans bg-white border-t-4 border-red-500 rounded-lg max-w-xs min-[420px]:max-w-sm p-5 shadow-lg backdrop:bg-black/50">
           <div className="flex flex-col items-center mb-4">
             <XCircleIcon className="h-28 w-28 max-sm:h-20 w-20 text-red-500 mb-2" />
             <h2 className="font-bold text-center text-3xl max-sm:text-2xl text-black">Ops!</h2>
@@ -161,7 +144,7 @@ export default function HorariosCursos() {
           <p className="text-center text-lg max-sm:text-sm text-black">Não é possível fazer o download do PDF.</p>
           <p className="text-center text-lg max-sm:text-sm text-black mb-4">Pois, a tabela é muito grande!</p>
           <div className="flex justify-center">
-            <button className="font-bold bg-red-700 text-white px-4 py-2 rounded-md hover:bg-red-600 transition active:bg-red-800" onClick={handleCloseDialog}>Fechar</button>
+            <button className="cursor-pointer font-bold bg-red-700 text-white px-4 py-2 rounded-md hover:bg-red-600 transition active:bg-red-800" onClick={handleCloseDialog}>Fechar</button>
           </div>
         </dialog>
       </div>

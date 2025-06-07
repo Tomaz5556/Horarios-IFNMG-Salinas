@@ -10,7 +10,6 @@ export default function LoginValidacao() {
   const [usuario, setUsuario] = useState('');
   const [senha, setSenha] = useState('');
   const [erros, setErros] = useState({ usuario: false, senha: false });
-  const currentYear = new Date().getFullYear();
   const [mensagemErro, setMensagemErro] = useState('');
 
   const validarCampos = async () => {
@@ -35,7 +34,7 @@ export default function LoginValidacao() {
       if (error instanceof AxiosError && error.response?.status === 401) {
         setMensagemErro("Usuário ou senha inválidos!");
         return;
-      } 
+      }
       setMensagemErro("Erro ao realizar o login!");
       console.error("Erro no login:", error);
     }
@@ -98,7 +97,7 @@ export default function LoginValidacao() {
             {erros.senha && (
               <p className="text-sm text-red-600 font-medium -mt-2 w-full text-left">&quot;Senha&quot; não pode ficar em branco</p>
             )}
-            <button onClick={validarCampos} className="font-sans font-bold w-full text-center py-3 bg-blue-600 dark:bg-white hover:bg-blue-500 dark:hover:bg-neutral-200 text-white dark:text-black rounded-lg transition active:bg-blue-700 dark:active:bg-neutral-500">
+            <button onClick={validarCampos} className="cursor-pointer font-sans font-bold w-full text-center py-3 bg-blue-600 dark:bg-white hover:bg-blue-500 dark:hover:bg-neutral-200 text-white dark:text-black rounded-lg transition active:bg-blue-700 dark:active:bg-neutral-500">
               Acessar
             </button>
             {mensagemErro && (
@@ -112,9 +111,6 @@ export default function LoginValidacao() {
       <div className="mt-4">
         <BotaoVoltar />
       </div>
-      <footer className="text-center text-black dark:text-white p-4">
-        © {currentYear} IFNMG - Todos os direitos reservados.
-      </footer>
     </div>
   );
 }
