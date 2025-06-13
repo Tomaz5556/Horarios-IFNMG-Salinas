@@ -4,7 +4,7 @@ import io.github.cdimascio.dotenv.Dotenv;
 
 public class EnvConfig {
     private static final Dotenv dotenv = Dotenv.configure().ignoreIfMissing().load();
-    
+    // Variáveis de ambiente do projeto
     public static final String API_KEY = getEnvVar("API_KEY");
     public static final String SPREADSHEET_ID = getEnvVar("SPREADSHEET_ID");
     public static final String SPREADSHEET_LOGIN = getEnvVar("SPREADSHEET_LOGIN");
@@ -14,9 +14,9 @@ public class EnvConfig {
     }
 
     private static String getEnvVar(String key) {
-        String value = dotenv.get(key);
+        String value = System.getenv(key);
         if (value == null) {
-            value = System.getenv(key);
+            value = dotenv.get(key);
         }
         return value;
     }

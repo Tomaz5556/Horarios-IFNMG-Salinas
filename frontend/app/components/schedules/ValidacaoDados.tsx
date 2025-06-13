@@ -1,9 +1,8 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { fetchValidacaoData } from '../../api/routes';
-import ValidateButton from '../common/buttons/ValidateButton';
 import TabelaValidacao from '../tables/TabelaValidacao';
-
+// O componente mostra uma tabela com a lista de validações, retorna o resultado se cada uma foi atendida com 'SIM' ou 'NÃO' e mostra o resultado final.
 export default function ValidacaoDados() {
   const router = useRouter();
 
@@ -51,7 +50,9 @@ export default function ValidacaoDados() {
       <div className="min-h-screen container mx-auto px-2 py-6">
         <h1 className="font-sans font-semibold text-center text-3xl mb-4 text-black dark:text-white">Validação de Dados</h1>
         <div className="flex flex-col items-center mb-4 text-black dark:text-white">
-          <ValidateButton onClick={fetchData} />
+          <button onClick={fetchData} className="cursor-pointer font-sans font-bold bg-cyan-600 dark:bg-white text-white dark:text-black py-2 px-4 rounded hover:bg-cyan-500 dark:hover:bg-neutral-200 active:bg-cyan-700 dark:active:bg-neutral-500">
+            Iniciar
+          </button>
         </div>
 
         <div className="overflow-x-auto">

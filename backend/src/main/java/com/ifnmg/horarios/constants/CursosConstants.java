@@ -25,14 +25,14 @@ public class CursosConstants {
     
     private CursosConstants() {
     }
-
+    // Lista de cursos técnicos disponíveis
     public static final Map<String, Curso> CURSOS_MEDIO = Map.ofEntries(
         Map.entry("agroindustria", new Curso("Técnico em Agroindústria", "C2", "H76")),
         Map.entry("agropecuaria", new Curso("Técnico em Agropecuária", "J2", "O76")),
         Map.entry("informatica", new Curso("Técnico em Informática", "Q2", "V76")),
         Map.entry("default", new Curso("Todos os Cursos - Ensino Médio", "C2", "V76"))
     );
-    
+    // Lista de cursos superiores disponíveis
     public static final Map<String, Curso> CURSOS_SUPERIOR = Map.ofEntries(
         Map.entry("engenharia_alimentos", new Curso("Bacharelado em Engenharia de Alimentos", "C2", "G106")),
         Map.entry("engenharia_florestal", new Curso("Bacharelado em Engenharia Florestal", "I2", "M106")),
@@ -45,13 +45,13 @@ public class CursosConstants {
         Map.entry("pedagogia", new Curso("Licenciatura em Pedagogia", "AT2", "AW106")),
         Map.entry("default", new Curso("Todos os Cursos - Ensino Superior", "C2", "AW106"))
     );
-
+    // Qtd de linhas para ignorar no final de cada dia da semana para alguns cursos superiores
     public static final Map<String, Integer> IGNORE_LAST_LINES = Map.of(
         "engenharia_alimentos", 5,
         "engenharia_florestal", 5,
         "medicina_veterinaria", 5
     );
-
+    // Qtd de linhas para pular no início de cada dia da semana para alguns cursos superiores
     public static final Map<String, Integer> SKIP_INITIAL_LINES = Map.of(
         "sistemas_informacao", 7,
         "biologia", 14,
@@ -60,11 +60,11 @@ public class CursosConstants {
         "quimica", 14,
         "pedagogia", 14
     );
-
+    // Gerar intervalo que será usado na função dos cursos técnicos
     public static String getRangeCompletoMedio(Curso curso) {
         return GUIA_MEDIO + "!" + curso.getRangeStart() + ":" + curso.getRangeEnd();
     }
-
+    // Gerar intervalo que será usado na função dos cursos superiores
     public static String getRangeCompletoSuperior(Curso curso) {
         return GUIA_SUPERIOR + "!" + curso.getRangeStart() + ":" + curso.getRangeEnd();
     }

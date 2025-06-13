@@ -21,14 +21,14 @@ public class SheetsService {
     private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
 
     private final Sheets sheetsService;
-
+    // Cria o cliente da API do Google Sheets
     public SheetsService() throws GeneralSecurityException, IOException {
         final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
         this.sheetsService = new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, null)
                 .setApplicationName(APPLICATION_NAME)
                 .build();
     }
-
+    // Consulta valores na planilha principal com o intervalo especificado.
     public List<List<Object>> getSheetValues(String range) throws IOException {
         ValueRange response = sheetsService.spreadsheets().values()
                 .get(EnvConfig.SPREADSHEET_ID, range)
@@ -36,7 +36,7 @@ public class SheetsService {
                 .execute();
         return response.getValues();
     }
-
+    // Consulta valores na planilha de login com o intervalo especificado.
     public List<List<Object>> getSheetValuesLogin(String range) throws IOException {
         ValueRange response = sheetsService.spreadsheets().values()
                 .get(EnvConfig.SPREADSHEET_LOGIN, range)

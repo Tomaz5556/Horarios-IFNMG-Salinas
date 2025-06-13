@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { BookOpenIcon, AcademicCapIcon, UserIcon, BuildingStorefrontIcon, CheckCircleIcon, BuildingOffice2Icon, ArrowPathIcon, CalendarDaysIcon } from '@heroicons/react/24/outline';
-
+// Menu principal da plataforma com opções de botões de horários e outros serviços
 export default function Home() {
   const currentYear = new Date().getFullYear();
   

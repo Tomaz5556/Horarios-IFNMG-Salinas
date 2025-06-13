@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { AxiosError } from 'axios';
 import { fetchLoginData } from '../../api/routes';
 import BotaoVoltar from '../common/buttons/BackButton';
-
+// Componente para verificar credenciais de login antes de entrar na tela de validação
 export default function LoginValidacao() {
   const router = useRouter();
   const [usuario, setUsuario] = useState('');

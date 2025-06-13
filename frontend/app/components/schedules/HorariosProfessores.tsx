@@ -7,7 +7,7 @@ import BotaoVoltar from '../common/buttons/BackButton';
 import TabelaProfessores from '../tables/TabelaProfessores';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-
+// O componente mostra uma lista de professores, a tabela com os horários de um professor selecionado e a carga horária total, com opções de buscar, baixar e voltar.
 export default function HorariosProfessores() {
   const [rows, setRows] = useState<(string | null)[][]>([]);
   const [horas, setHoras] = useState('');

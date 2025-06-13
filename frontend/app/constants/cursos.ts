@@ -1,3 +1,4 @@
+// Lista de cursos técnicos e superiores disponíveis.
 export const OptionsEnsinoMedio = {
     agroindustria: "Técnico em Agroindústria",
     agropecuaria: "Técnico em Agropecuária",
