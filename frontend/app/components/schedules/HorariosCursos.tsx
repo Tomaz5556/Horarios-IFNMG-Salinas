@@ -10,7 +10,7 @@ import BotaoVoltar from '../common/buttons/BackButton';
 import TabelaCursos from '../tables/TabelaCursos';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-
+// O componente mostra uma lista de cursos e a tabela com os horários de um curso selecionado, com opções de buscar, baixar e voltar.
 export default function HorariosCursos() {
   const [rows, setRows] = useState<(string | null)[][]>([]);
   const [maxColumns, setMaxColumns] = useState(0);
