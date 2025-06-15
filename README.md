@@ -112,6 +112,10 @@ NEXT_PUBLIC_BACKEND_URL=http://localhost:8080
 - [Como pular os testes no Maven durante a Build](https://marlonluan.com.br/posts/maven-pular-testes/)
 - [Build a Maven Project in Visual Studio Locally](https://medium.com/@Shamimw/build-a-maven-project-in-visual-studio-locally-3bac0580abe2)
 
-## 8. Licença
+## 8. Documentação da Planilha
+
+- [Documentação](https://tomaz5556.github.io/Horarios-IFNMG-Salinas/)
+
+## 9. Licença
 
 Esse projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE.md) para mais detalhes.

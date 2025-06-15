@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="icon" href="favicon.ico" type="image/png">
+        <title>Documentação da Planilha - Campus Salinas</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+    </head>
+    <body class="bg-slate-200 p-8">
+        <div class="max-w-6xl mx-auto bg-white border-t-4 border-green-700 shadow-lg rounded-lg p-3 text-black">
+            <div class="flex flex-col xl:flex-row-reverse items-center justify-between mb-2">
+                <div class="mb-4 md:mb-0">
+                    <img src="ifnmg.jpg" alt="Logo IFNMG" class="h-28 w-92">
+                </div>
+                <div class="text-center flex-grow">
+                    <h1 class="text-3xl md:text-4xl font-bold font-sans">Documentação da Planilha</h1>
+                </div>
+            </div>
+
+            <h2 class="text-2xl text-center font-bold border-y border-neutral-300 p-2 mb-4 mt-2">👨‍💻 Desenvolvedor</h2>
+            <ol class="list-decimal list-inside space-y-3 mb-6">
+                <li>
+                    No início de cada semestre, trocar o link da variável de ambiente do back-end <span class="font-mono font-bold">SPREADSHEET_ID</span> com o novo ID da planilha do <span class="italic">Google Sheets</span>:
+                    <div class="ml-5 mt-2 space-y-2">
+                        <p class="mb-1"><span class="font-bold">URL da planilha:</span></p>
+                        <ul class="list-disc list-inside ml-5 space-y-2">
+                            <li>
+                                <code class="bg-slate-200 p-1 rounded text-sm break-all">https://docs.google.com/spreadsheets/d/<span class="font-bold text-red-600">1CKEFgTwz7k66666VytFDGMlYWyTqf2Zq8HbzcQJHKVI</span>/edit?gid=0#gid=0</code>
+                            </li>
+                        </ul>
+                        <p class="mb-1 mt-3"><span class="font-bold">Variável de Ambiente:</span></p>
+                        <ul class="list-disc list-inside ml-5 space-y-2">
+                            <li>
+                                <code class="bg-slate-200 p-1 rounded text-sm break-all">SPREADSHEET_ID=1CKEFgTwz7k66666VytFDGMlYWyTqf2Zq8HbzcQJHKVI</code>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li>Criar uma <span class="font-bold">cópia da planilha original privada do setor de ensino</span>, que será utilizada como banco de dados do aplicativo. Isso é feito por questões de segurança e para manter um backup do conteúdo original.</li>
+                <li>Configurar o acesso da planilha para <span class="font-bold">qualquer pessoa com o link</span>, para que a API do <span class="italic">Google Sheets</span> possa ler os dados da planilha.</li>
+                <li>Durante testes, fazer uma <span class="font-bold">cópia da planilha utilizada no sistema</span> para evitar edições indevidas e modificações acidentais em células.</li>
+                <li>(Se usar Koyeb) Acessar a plataforma de deploy do back-end <span class="font-bold">Koyeb</span> pelo menos 1 vez ao mês para evitar que o serviço seja interrompido, pois o modo gratuito exige acesso periódico mensal.</li>
+            </ol>
+
+            <h2 class="text-2xl text-center font-bold border-y border-neutral-300 p-2 mb-4 mt-4">🏫 Administradores da Planilha</h2>
+
+            <h3 class="text-xl text-center font-bold border-b border-neutral-300 p-2 mb-3 mt-4">✍️ Exemplos de Padrões de Escrita</h3>
+            <p class="mb-4">Nas guias <span class="font-bold">Horário - Ensino Médio</span> e <span class="font-bold">Horário - Graduação</span>:</p>
+            <div class="space-y-4 mb-6">
+                <div>
+                    <span class="font-bold">1. Nome da disciplina:</span>
+                    <ul class="list-disc list-inside ml-5 mt-1 space-y-2">
+                        <li><span class="font-bold">Incorreto:</span> <code class="bg-red-200 p-1 rounded text-sm">(Calculo Numérico)</code></li>
+                        <li><span class="font-bold">Correto:</span> <code class="bg-green-200 p-1 rounded text-sm">Calculo Numérico</code></li>
+                        <li><span class="font-bold">Explicação:</span> Os nomes das disciplinas não podem ter parênteses, pois o algoritmo utiliza os parênteses para buscar o horário de um professor. Isso pode causar confusão na leitura e consulta dos dados.</li>
+                    </ul>
+                </div>
+                <div>
+                    <span class="font-bold">2. Nome do professor:</span>
+                    <ul class="list-disc list-inside ml-5 mt-1 space-y-2">
+                        <li><span class="font-bold">Incorreto:</span>
+                            <code class="bg-red-200 p-1 rounded text-sm">Ricardo</code></li>
+                        <li><span class="font-bold">Correto:</span>
+                            <code class="bg-green-200 p-1 rounded text-sm">(Ricardo)</code> ou <code class="bg-green-200 p-1 rounded text-sm">( Ricardo )</code></li>
+                        <li><span class="font-bold">Explicação:</span> Os nomes dos professores devem estar entre parênteses, pois o algoritmo os reconhece dessa forma ao buscar os horários.</li>
+                    </ul>
+                </div>
+                <div>
+                    <span class="font-bold">3. Nome da sala:</span>
+                    <ul class="list-disc list-inside ml-5 mt-1 space-y-2">
+                        <li><span class="font-bold">Incorreto:</span>
+                            <code class="bg-red-200 p-1 rounded text-sm">(2 / 3)</code> ou <code class="bg-red-200 p-1 rounded text-sm">2/3</code></li>
+                        <li><span class="font-bold">Correto:</span> <code class="bg-green-200 p-1 rounded text-sm">(2/3)</code></li>
+                        <li><span class="font-bold">Explicação:</span> Os nomes das salas devem estar entre parênteses e não podem ter espaços extras, pois o algoritmo tem uma lista fixa de strings com os nomes para buscar o horário de ocupação de uma sala. A presença de espaços pode impedir o reconhecimento correto.</li>
+                    </ul>
+                </div>
+                <div>
+                    <span class="font-bold">4. Resultado final da escrita de um horário de uma disciplina:</span>
+                    <ul class="list-disc list-inside ml-5 mt-1 space-y-2">
+                        <li><span class="font-bold">Incorreto:</span> <code class="bg-red-200 p-1 rounded text-sm">(Calculo Numérico) Ricardo 2/3</code></li>
+                        <li><span class="font-bold">Correto:</span> <code class="bg-green-200 p-1 rounded text-sm">Calculo Numérico (Ricardo) (2/3)</code></li>
+                        <li><span class="font-bold">Explicação:</span> Esse é o formato padrão esperado pelo sistema.</li>
+                        <li><span class="font-bold">Exceções:</span> Algumas entradas podem ter informações adicionais ou múltiplos professores, como:
+                            <ul class="list-disc list-inside ml-5 mt-1 space-y-2">
+                                <li><code class="bg-green-200 p-1 rounded text-sm">Físico Química II (Magnovaldo) (PPC 2017) (1/5)</code></li>
+                                <li><code class="bg-green-200 p-1 rounded text-sm">Estágio área 1 (Antônio, Charles, Fernando Matos, Sérgio)</code></li>
+                                <li><code class="bg-green-200 p-1 rounded text-sm">Educação Física (Jairo)</code></li>
+                            </ul>
+                        </li>
+                        <li>Essas variações são aceitas e não comprometem o funcionamento do sistema.</li>
+                    </ul>
+                </div>
+            </div>
+            <p class="mb-4">Na guia <span class="font-bold">Validação de Dados</span>:</p>
+            <div class="space-y-4 mb-6">
+                <div>
+                    <span class="font-bold">1. Evitar nomes com espaços ou parênteses antes e depois:</span>
+                    <ul class="list-disc list-inside ml-5 mt-1 space-y-2">
+                        <li><span class="font-bold">Incorreto:</span> <code class="bg-red-200 p-1 rounded text-sm">( Mateus )</code></li>
+                        <li><span class="font-bold">Correto:</span> <code class="bg-green-200 p-1 rounded text-sm">Mateus</code></li>
+                        <li><span class="font-bold">Explicação:</span> Para facilitar a busca de um nome de professor, pois com espaços e parênteses dificulta a busca.</li>
+                    </ul>
+                </div>
+            </div>
+            <h3 class="text-xl text-center font-bold border-y border-neutral-300 p-2 mb-3 mt-4">📊 Explicação das Guias e Intervalos de Células</h3>
+            <p class="mb-4">No <span class="italic">Google Sheets</span>, as colunas são representadas por letras <code class="bg-slate-200 p-1 rounded text-sm">(A, B, C, ...)</code> e as linhas por números <code class="bg-slate-200 p-1 rounded text-sm">(1, 2, 3, ...)</code>.<br>Cada célula é identificada pela combinação da letra da coluna com o número da linha.</p>
+            <ul class="list-disc list-inside ml-5 mb-4 space-y-2">
+                <li><code class="bg-yellow-300 p-1 rounded text-sm">B2</code> é a célula na coluna <span class="font-bold">B</span> e linha <span class="font-bold">2</span>.</li>
+                <li><code class="bg-yellow-300 p-1 rounded text-sm">B2:V76</code> esse intervalo começa na célula <span class="font-bold">B2</span> e vai até a célula <span class="font-bold">V76</span>.</li>
+                <li><code class="bg-yellow-300 p-1 rounded text-sm">B2:AW106</code> esse intervalo começa na célula <span class="font-bold">B2</span> e vai até a célula <span class="font-bold">AW106</span>.</li>
+                <li><code class="bg-yellow-300 p-1 rounded text-sm">A2</code> é a célula na coluna <span class="font-bold">A</span> e linha <span class="font-bold">2</span>.</li>
+                <li><code class="bg-yellow-300 p-1 rounded text-sm">A2:A</code> é um intervalo que começa na célula <span class="font-bold">A2</span> e se estende indefinidamente para baixo na coluna <span class="font-bold">A</span> são lidas independente da quantidade de linhas.</li>
+            </ul>
+            <p class="mb-4">A seguir são mostradas as guias que possuem a estrutura vital para o correto funcionamento do sistema:</p>
+            <div class="space-y-4 mb-6">
+                <div class="border border-neutral-300 rounded-lg p-4">
+                    <h4 class="text-lg font-bold mb-2">📘 Guia: <span class="font-bold">Horário - Ensino Médio</span></h4>
+                    <ul class="list-disc list-inside ml-5 space-y-2">
+                        <li><span class="font-bold">Intervalo de células</span>: <code class="bg-slate-200 p-1 rounded text-sm">B2:V76</code></li>
+                        <li><span class="font-bold">Descrição</span>: Contém os horários das turmas dos cursos técnicos.</li>
+                    </ul>
+                </div>
+                <div class="border border-neutral-300 rounded-lg p-4">
+                    <h4 class="text-lg font-bold mb-2">📗 Guia: <span class="font-bold">Horário - Graduação</span></h4>
+                    <ul class="list-disc list-inside ml-5 space-y-2">
+                        <li><span class="font-bold">Intervalo de células</span>: <code class="bg-slate-200 p-1 rounded text-sm">B2:AW106</code></li>
+                        <li><span class="font-bold">Descrição</span>: Contém os horários das turmas dos cursos superiores.</li>
+                    </ul>
+                </div>
+                <div class="border border-neutral-300 rounded-lg p-4">
+                    <h4 class="text-lg font-bold mb-2">📙 Guia: <span class="font-bold">Validação de Dados</span></h4>
+                    <ul class="list-disc list-inside ml-5 space-y-2">
+                        <li><span class="font-bold">Intervalo de células</span>: <code class="bg-slate-200 p-1 rounded text-sm">A2:A</code></li>
+                        <li><span class="font-bold">Descrição</span>: Reúne a lista de professores da instituição.</li>
+                    </ul>
+                </div>
+            </div>
+            <p class="mt-6 bg-red-200 border border-neutral-300 rounded-lg p-4"><span class="font-bold">Importante</span>: Não devem ser feitas alterações como renomear essas guias, excluir abas ou modificar a posição das células. Alterações desse tipo podem comprometer o funcionamento da plataforma. Qualquer mudança estrutural só deve ser feita se for realmente necessária e acompanhada da devida atualização no código - o que, em geral, não será necessário.</p>
+        </div>
+        <footer class="text-black p-2">
+            <p class="text-center my-2" id="year"></p>
+        </footer>
+    </body>
+    <script src="index.js"></script>
+</html>
