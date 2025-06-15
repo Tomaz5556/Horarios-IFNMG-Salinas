@@ -114,7 +114,7 @@ NEXT_PUBLIC_BACKEND_URL=http://localhost:8080
 
 ## 8. Documentação da Planilha
 
-- [Documentação]()
+- [Documentação](https://tomaz5556.github.io/Horarios-IFNMG-Salinas/)
 
 ## 9. Licença
 
