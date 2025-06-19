@@ -16,20 +16,16 @@ public class Horarios {
     private List<List<Object>> rows;
     private int maxRows;
     private int maxColumns;
-
     // Informações dos cursos
     private String courseName;
     private boolean checkTypeMedio;
-
     // Informações dos professores
     private String professorSelecionado;
     private List<String> professores;
     private String horas;
-
     // Informações das salas
     private String salaSelecionada;
     private List<String> salas;
-
     // Novas validações
     private List<String> validacoes;
 }

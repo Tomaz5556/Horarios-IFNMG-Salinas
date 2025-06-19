@@ -9,7 +9,6 @@ import io.github.cdimascio.dotenv.Dotenv;
 @SpringBootTest
 class HorariosApplicationTests {
     private static final Dotenv dotenv = Dotenv.configure().load();
-
 	// Carregar variáveis de ambiente antes de fazer os testes
 	@BeforeAll
     public static void setUp() {
