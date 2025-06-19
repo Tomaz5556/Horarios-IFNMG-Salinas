@@ -8,7 +8,7 @@ import BotaoVoltar from '../common/buttons/BackButton';
 import TabelaSalas from '../tables/TabelaSalas';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-// O componente mostra uma lista de salas e a tabela com os horários de ocupação de uma sala selecionada, com opções de buscar, baixar e voltar.
+// O componente mostra uma lista de salas e a tabela com os horários de ocupação de uma sala selecionada, com opções de buscar, baixar e voltar
 export default function HorariosSalas() {
   const [rows, setRows] = useState<(string | null)[][]>([]);
   const [selectedSala, setselectedSala] = useState('');

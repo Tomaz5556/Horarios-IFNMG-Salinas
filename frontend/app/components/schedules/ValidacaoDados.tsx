@@ -2,7 +2,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { fetchValidacaoData } from '../../api/routes';
 import TabelaValidacao from '../tables/TabelaValidacao';
-// O componente mostra uma tabela com a lista de validações, retorna o resultado se cada uma foi atendida com 'SIM' ou 'NÃO' e mostra o resultado final.
+// O componente mostra uma tabela com a lista de validações, retorna o resultado se cada uma foi atendida com 'SIM' ou 'NÃO' e mostra o resultado final
 export default function ValidacaoDados() {
   const router = useRouter();
 

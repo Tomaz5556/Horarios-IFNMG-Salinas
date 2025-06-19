@@ -10,7 +10,7 @@ import BotaoVoltar from '../common/buttons/BackButton';
 import TabelaCursos from '../tables/TabelaCursos';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-// O componente mostra uma lista de cursos e a tabela com os horários de um curso selecionado, com opções de buscar, baixar e voltar.
+// O componente mostra uma lista de cursos e a tabela com os horários de um curso selecionado, com opções de buscar, baixar e voltar
 export default function HorariosCursos() {
   const [rows, setRows] = useState<(string | null)[][]>([]);
   const [maxColumns, setMaxColumns] = useState(0);
@@ -59,7 +59,7 @@ export default function HorariosCursos() {
 
   const downloadTable = () => {
     const tableElement = document.querySelector('table');
-    // Não permitir download do pdf quando o usuário selecionar todos de Ensino Superior
+    // Impede o download do pdf quando o usuário selecionar todos de Ensino Superior
     // Pois dar problema na renderização do PDF (PDF Gigante)
     if (courseName === "Todos os Cursos - Ensino Superior") {
       dialogRef.current?.showModal();

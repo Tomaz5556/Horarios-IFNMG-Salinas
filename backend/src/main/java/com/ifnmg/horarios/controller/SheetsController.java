@@ -18,31 +18,26 @@ public class SheetsController {
     public SheetsController(HorariosService horariosService) {
         this.horariosService = horariosService;
     }
-
     // Mostrar os horários dos cursos técnicos
     @GetMapping("/ensinoMedio")
     public ResponseEntity<Horarios> getSheetsMedio(@RequestParam(required = false, defaultValue = "todos") String cursoSelecionado) throws IOException {
         return horariosService.getSheetsValuesMedio(cursoSelecionado);
     }
-
     // Mostrar os horários dos cursos superiores
     @GetMapping("/ensinoSuperior")
     public ResponseEntity<Horarios> getSheetsSuperior(@RequestParam(required = false, defaultValue = "todos") String cursoSelecionado) throws IOException {
         return horariosService.getSheetsValuesSuperior(cursoSelecionado);
     }
-
     // Mostrar os horários dos professores
     @GetMapping("/professores")
     public ResponseEntity<Horarios> getSheetsProfessores(@RequestParam(required = false) String professorSelecionado) throws IOException {
         return horariosService.getSheetsValuesProfessores(professorSelecionado);
     }
-
     // Mostrar os horários de ocupação das salas
     @GetMapping("/salas")
     public ResponseEntity<Horarios> getSheetsSalas(@RequestParam(required = false) String salaSelecionada) throws IOException {
         return horariosService.getSheetsValuesSalas(salaSelecionada);
     }
-
     // Permissões para ver validação da planilha
     @GetMapping("/login")
     public ResponseEntity<String> getSheetsLogin(@RequestParam String usuario, @RequestParam String senha) throws IOException {
@@ -52,7 +47,6 @@ public class SheetsController {
         }
         return ResponseEntity.ok("Autenticado com sucesso");
     }
-
     // Validar dados da planilha
     @GetMapping("/validacao")
     public ResponseEntity<Horarios> getSheetsValidation() throws IOException {
