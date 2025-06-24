@@ -90,8 +90,8 @@ Exemplo:
 
 ```env
 API_KEY=AIzaS...
-SPREADSHEET_ID=https://docs.google.com/spreadsheets/d/SPREADSHEET_ID/edit?gid=0#gid=0
-SPREADSHEET_LOGIN=https://docs.google.com/spreadsheets/d/SPREADSHEET_ID/edit?gid=0#gid=0
+SPREADSHEET_ID=1CKEFgTwz7k11111VytFDGMlYWyTqf2Zq8HbzcQJHKVI
+SPREADSHEET_LOGIN=1CKEFgTwz7k22222VytFDGMlYWyTqf2Zq8HbzcQJHKVI
 FRONTEND_URL=http://localhost:3000
 ```
 
@@ -104,18 +104,10 @@ Exemplo:
 NEXT_PUBLIC_BACKEND_URL=http://localhost:8080
 ```
 
-## 7. Créditos
-
-- [Criar um aplicativo Next.js](https://nextjs.org/docs/pages/api-reference/cli/create-next-app)
-- [Visão geral da API Google Sheets](https://developers.google.com/workspace/sheets/api/guides/concepts?hl=pt-br)
-- [Guia de início rápido do Java com Google Sheets](https://developers.google.com/sheets/api/quickstart/java?hl=pt-br)
-- [Como pular os testes no Maven durante a Build](https://marlonluan.com.br/posts/maven-pular-testes/)
-- [Build a Maven Project in Visual Studio Locally](https://medium.com/@Shamimw/build-a-maven-project-in-visual-studio-locally-3bac0580abe2)
-
-## 8. Documentação da Planilha
+## 7. Documentação da Planilha
 
 - [Documentação](https://tomaz5556.github.io/Horarios-IFNMG-Salinas/)
 
-## 9. Licença
+## 8. Licença
 
 Esse projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE.md) para mais detalhes.
