@@ -6,6 +6,7 @@ O projeto é uma plataforma web que mostra os horários dos cursos, professores 
 
 ### Front-end
 
+- [Figma](https://www.figma.com/)
 - [Next.js](https://nextjs.org/)
 - [TailwindCSS](https://tailwindcss.com/)
 - [Vercel](https://vercel.com/) (Deploy)
