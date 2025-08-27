@@ -26,14 +26,14 @@ public class ProfessoresService {
         this.sheetsService = sheetsService;
     }
 
-    public ResponseEntity<Horarios> getSheetsValues(String professorSelecionado) throws IOException {
+    public ResponseEntity<Horarios> getSheetsValues(String periodoId, String professorSelecionado) throws IOException {
         
-        List<List<Object>> valuesSuperior1 = sheetsService.getSheetValues(ProfessoresSalasConstants.RANGE_SUPERIOR_1);
-        List<List<Object>> valuesSuperior2 = sheetsService.getSheetValues(ProfessoresSalasConstants.RANGE_SUPERIOR_2);
-        List<List<Object>> valuesSuperiorTurmas = sheetsService.getSheetValues(ProfessoresSalasConstants.RANGE_SUPERIOR_TURMAS);
-        List<List<Object>> valuesMedio2 = sheetsService.getSheetValues(ProfessoresSalasConstants.RANGE_MEDIO_2);
-        List<List<Object>> valuesMedioTurmas = sheetsService.getSheetValues(ProfessoresSalasConstants.RANGE_MEDIO_TURMAS);
-        List<List<Object>> nomesProfessores = sheetsService.getSheetValues(ProfessoresSalasConstants.RANGE_PROFESSORES);
+        List<List<Object>> valuesSuperior1 = sheetsService.getSheetValues(periodoId, ProfessoresSalasConstants.RANGE_SUPERIOR_1);
+        List<List<Object>> valuesSuperior2 = sheetsService.getSheetValues(periodoId, ProfessoresSalasConstants.RANGE_SUPERIOR_2);
+        List<List<Object>> valuesSuperiorTurmas = sheetsService.getSheetValues(periodoId, ProfessoresSalasConstants.RANGE_SUPERIOR_TURMAS);
+        List<List<Object>> valuesMedio2 = sheetsService.getSheetValues(periodoId, ProfessoresSalasConstants.RANGE_MEDIO_2);
+        List<List<Object>> valuesMedioTurmas = sheetsService.getSheetValues(periodoId, ProfessoresSalasConstants.RANGE_MEDIO_TURMAS);
+        List<List<Object>> nomesProfessores = sheetsService.getSheetValues(periodoId, ProfessoresSalasConstants.RANGE_PROFESSORES);
 
         Collator collator = Collator.getInstance(Locale.forLanguageTag("pt-BR"));
         List<String> nomesProfessoresValidos = nomesProfessores.stream()

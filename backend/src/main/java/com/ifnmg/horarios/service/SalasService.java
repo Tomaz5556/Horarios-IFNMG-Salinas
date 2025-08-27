@@ -22,13 +22,13 @@ public class SalasService {
         this.sheetsService = sheetsService;
     }
 
-    public ResponseEntity<Horarios> getSheetsValues(String salaSelecionada) throws IOException {
+    public ResponseEntity<Horarios> getSheetsValues(String periodoId, String salaSelecionada) throws IOException {
 
-        List<List<Object>> valuesSuperior1 = sheetsService.getSheetValues(ProfessoresSalasConstants.RANGE_SUPERIOR_1);
-        List<List<Object>> valuesSuperior2 = sheetsService.getSheetValues(ProfessoresSalasConstants.RANGE_SUPERIOR_2);
-        List<List<Object>> valuesSuperiorTurmas = sheetsService.getSheetValues(ProfessoresSalasConstants.RANGE_SUPERIOR_TURMAS);
-        List<List<Object>> valuesMedio2 = sheetsService.getSheetValues(ProfessoresSalasConstants.RANGE_MEDIO_2);
-        List<List<Object>> valuesMedioTurmas = sheetsService.getSheetValues(ProfessoresSalasConstants.RANGE_MEDIO_TURMAS);
+        List<List<Object>> valuesSuperior1 = sheetsService.getSheetValues(periodoId, ProfessoresSalasConstants.RANGE_SUPERIOR_1);
+        List<List<Object>> valuesSuperior2 = sheetsService.getSheetValues(periodoId, ProfessoresSalasConstants.RANGE_SUPERIOR_2);
+        List<List<Object>> valuesSuperiorTurmas = sheetsService.getSheetValues(periodoId, ProfessoresSalasConstants.RANGE_SUPERIOR_TURMAS);
+        List<List<Object>> valuesMedio2 = sheetsService.getSheetValues(periodoId, ProfessoresSalasConstants.RANGE_MEDIO_2);
+        List<List<Object>> valuesMedioTurmas = sheetsService.getSheetValues(periodoId, ProfessoresSalasConstants.RANGE_MEDIO_TURMAS);
 
         if (salaSelecionada == null || salaSelecionada.isEmpty()) {
             Horarios horarios = Horarios.builder()
