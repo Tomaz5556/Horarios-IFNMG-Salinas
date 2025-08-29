@@ -106,15 +106,7 @@ public class ProfessoresService {
                                     }
                                 }
                             }
-
-                            if (!turmasProfessor.isEmpty()) {
-                                String existingValue = combinedRow.get(1).toString();
-                                if (!existingValue.isEmpty()) {
-                                    combinedRow.set(1, existingValue + " + " + String.join(" - ", turmasProfessor));
-                                } else {
-                                    combinedRow.set(1, cellValueStr + " - " + String.join(" - ", turmasProfessor));
-                                }
-                            }
+                            adicionarDisciplina(combinedRow, cellValueStr, turmasProfessor);
                         }
                     }
 
@@ -139,15 +131,7 @@ public class ProfessoresService {
                                     }
                                 }
                             }
-
-                            if (!turmasProfessor.isEmpty()) {
-                                String existingValue = combinedRow.get(1).toString();
-                                if (!existingValue.isEmpty()) {
-                                    combinedRow.set(1, existingValue + " + " + String.join(" - ", turmasProfessor));
-                                } else {
-                                    combinedRow.set(1, cellValueStr + " - " + String.join(" - ", turmasProfessor));
-                                }
-                            }
+                            adicionarDisciplina(combinedRow, cellValueStr, turmasProfessor);
                         }
                     }
                     return combinedRow;
@@ -187,5 +171,18 @@ public class ProfessoresService {
             .horas(totalHoras + " h/a")
             .build();
         return ResponseEntity.ok(horarios);
+    }
+    
+    private void adicionarDisciplina(List<Object> combinedRow, String cellValueStr, List<String> turmasProfessor) {
+        if (!turmasProfessor.isEmpty()) {
+            String disciplina = combinedRow.get(1).toString();
+            String novaParte = cellValueStr + " - " + String.join(" - ", turmasProfessor);
+
+            if (disciplina.isEmpty()) {
+                combinedRow.set(1, novaParte);
+            } else {
+                combinedRow.set(1, disciplina + " + " + novaParte);
+            }
+        }
     }
 }
