@@ -85,71 +85,8 @@ public class ProfessoresService {
                     List<Object> superiorData = i < valuesSuperior2.size() ? valuesSuperior2.get(i) : new ArrayList<>();
                     List<Object> medioData = i < valuesMedio2Adjusted.size() ? valuesMedio2Adjusted.get(i) : new ArrayList<>();
 
-                    for (int j = 0; j < superiorData.size(); j++) {
-                        Object cellValue = superiorData.get(j);
-                        if (cellValue != null && !cellValue.toString().isEmpty()) {
-                            String cellValueStr = cellValue.toString();
-                            
-                            Pattern pattern = Pattern.compile("\\(([^)]+)\\)");
-                            Matcher matcher = pattern.matcher(cellValueStr);
-
-                            List<String> turmasProfessor = new ArrayList<>();
-
-                            while (matcher.find()) {
-                                String professores = matcher.group(1);
-                                String[] nomes = professores.split("[/,]");
-
-                                for (String nome : nomes) {
-                                    if (nome.trim().toLowerCase().contains(professorFiltrado)) {
-                                        String turma = valuesSuperiorTurmas.get(0).get(j).toString();
-                                        turmasProfessor.add(turma);
-                                    }
-                                }
-                            }
-
-                            if (!turmasProfessor.isEmpty()) {
-                                String existingValue = combinedRow.get(1).toString();
-                                if (!existingValue.isEmpty()) {
-                                    combinedRow.set(1, existingValue + " + " + String.join(" - ", turmasProfessor));
-                                } else {
-                                    combinedRow.set(1, cellValueStr + " - " + String.join(" - ", turmasProfessor));
-                                }
-                            }
-                        }
-                    }
-
-                    for (int j = 0; j < medioData.size(); j++) {
-                        Object cellValue = medioData.get(j);
-                        if (cellValue != null && !cellValue.toString().isEmpty()) {
-                            String cellValueStr = cellValue.toString();
-                            
-                            Pattern pattern = Pattern.compile("\\(([^)]+)\\)");
-                            Matcher matcher = pattern.matcher(cellValueStr);
-
-                            List<String> turmasProfessor = new ArrayList<>();
-
-                            while (matcher.find()) {
-                                String professores = matcher.group(1);
-                                String[] nomes = professores.split("[/,]");
-
-                                for (String nome : nomes) {
-                                    if (nome.trim().toLowerCase().contains(professorFiltrado)) {
-                                        String turma = valuesMedioTurmas.get(0).get(j).toString();
-                                        turmasProfessor.add(turma);
-                                    }
-                                }
-                            }
-
-                            if (!turmasProfessor.isEmpty()) {
-                                String existingValue = combinedRow.get(1).toString();
-                                if (!existingValue.isEmpty()) {
-                                    combinedRow.set(1, existingValue + " + " + String.join(" - ", turmasProfessor));
-                                } else {
-                                    combinedRow.set(1, cellValueStr + " - " + String.join(" - ", turmasProfessor));
-                                }
-                            }
-                        }
-                    }
+                    addDisciplina(professorFiltrado, valuesSuperiorTurmas, superiorData, combinedRow);
+                    addDisciplina(professorFiltrado, valuesMedioTurmas, medioData, combinedRow);
                     return combinedRow;
                 })
                 .collect(Collectors.toList());
@@ -187,5 +124,42 @@ public class ProfessoresService {
             .horas(totalHoras + " h/a")
             .build();
         return ResponseEntity.ok(horarios);
+    }
+    
+    private void addDisciplina(String professorFiltrado, List<List<Object>> valuesTurmas, List<Object> horariosData, List<Object> combinedRow)  {
+        for (int j = 0; j < horariosData.size(); j++) {
+            Object cellValue = horariosData.get(j);
+            if (cellValue != null && !cellValue.toString().isEmpty()) {
+                String cellValueStr = cellValue.toString();
+                
+                Pattern pattern = Pattern.compile("\\(([^)]+)\\)");
+                Matcher matcher = pattern.matcher(cellValueStr);
+
+                List<String> turmasProfessor = new ArrayList<>();
+
+                while (matcher.find()) {
+                    String professores = matcher.group(1);
+                    String[] nomes = professores.split("[/,]");
+
+                    for (String nome : nomes) {
+                        if (nome.trim().toLowerCase().contains(professorFiltrado)) {
+                            String turma = valuesTurmas.get(0).get(j).toString();
+                            turmasProfessor.add(turma);
+                        }
+                    }
+                }
+                
+                if (!turmasProfessor.isEmpty()) {
+                    String dis = combinedRow.get(1).toString();
+                    String novaParte = cellValueStr + " - " + String.join(" - ", turmasProfessor);
+
+                    if (dis.isEmpty()) {
+                        combinedRow.set(1, novaParte);
+                    } else {
+                        combinedRow.set(1, dis + " + " + novaParte);
+                    }
+                }
+            }
+        }
     }
 }
