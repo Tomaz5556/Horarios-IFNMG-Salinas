@@ -150,13 +150,13 @@ public class ProfessoresService {
                 }
                 
                 if (!turmasProfessor.isEmpty()) {
-                    String disciplina = combinedRow.get(1).toString();
+                    String dis = combinedRow.get(1).toString();
                     String novaParte = cellValueStr + " - " + String.join(" - ", turmasProfessor);
 
-                    if (disciplina.isEmpty()) {
+                    if (dis.isEmpty()) {
                         combinedRow.set(1, novaParte);
                     } else {
-                        combinedRow.set(1, disciplina + " + " + novaParte);
+                        combinedRow.set(1, dis + " + " + novaParte);
                     }
                 }
             }

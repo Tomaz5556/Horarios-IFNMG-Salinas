@@ -73,45 +73,8 @@ public class SalasService {
                     List<Object> superiorData = i < valuesSuperior2.size() ? valuesSuperior2.get(i) : new ArrayList<>();
                     List<Object> medioData = i < valuesMedio2Adjusted.size() ? valuesMedio2Adjusted.get(i) : new ArrayList<>();
 
-                    for (int j = 0; j < superiorData.size(); j++) {
-                        Object cellValue = superiorData.get(j);
-                        if (cellValue != null && !cellValue.toString().isEmpty()) {
-                            String cellValueStr = cellValue.toString();
-
-                            if (cellValueStr.toLowerCase().contains(salaFiltrada)) {
-                                String turma = valuesSuperiorTurmas.get(0).get(j).toString();
-                                List<String> turmasSala = new ArrayList<>();
-                                turmasSala.add(turma);
-
-                                String existingValue = combinedRow.get(1).toString();
-                                if (!existingValue.isEmpty()) {
-                                    combinedRow.set(1, existingValue + " + " + String.join(" - ", turmasSala));
-                                } else {
-                                    combinedRow.set(1, String.join(" - ", turmasSala));
-                                }
-                            }
-                        }
-                    }
-
-                    for (int j = 0; j < medioData.size(); j++) {
-                        Object cellValue = medioData.get(j);
-                        if (cellValue != null && !cellValue.toString().isEmpty()) {
-                            String cellValueStr = cellValue.toString();
-
-                            if (cellValueStr.toLowerCase().contains(salaFiltrada)) {
-                                String turma = valuesMedioTurmas.get(0).get(j).toString();
-                                List<String> turmasSala = new ArrayList<>();
-                                turmasSala.add(turma);
-
-                                String existingValue = combinedRow.get(1).toString();
-                                if (!existingValue.isEmpty()) {
-                                    combinedRow.set(1, existingValue + " + " + String.join(" - ", turmasSala));
-                                } else {
-                                    combinedRow.set(1, String.join(" - ", turmasSala));
-                                }
-                            }
-                        }
-                    }
+                    addTurma(salaFiltrada, valuesSuperiorTurmas, superiorData, combinedRow);
+                    addTurma(salaFiltrada, valuesMedioTurmas, medioData, combinedRow);
                     return combinedRow;
                 })
                 .collect(Collectors.toList());
@@ -135,5 +98,28 @@ public class SalasService {
             .rows(updatedValues)
             .build();
         return ResponseEntity.ok(horarios);
+    }
+
+    private void addTurma(String salaFiltrada, List<List<Object>> valuesTurmas, List<Object> horariosData, List<Object> combinedRow)  {
+        for (int j = 0; j < horariosData.size(); j++) {
+            Object cellValue = horariosData.get(j);
+            if (cellValue != null && !cellValue.toString().isEmpty()) {
+                String cellValueStr = cellValue.toString();
+
+                if (cellValueStr.toLowerCase().contains(salaFiltrada)) {
+                    String turma = valuesTurmas.get(0).get(j).toString();
+                    List<String> turmasSala = new ArrayList<>();
+                    turmasSala.add(turma);
+
+                    String tur = combinedRow.get(1).toString();
+                    
+                    if (tur.isEmpty()) {
+                        combinedRow.set(1, turma);
+                    } else {
+                        combinedRow.set(1, tur + " + " + turma);
+                    }
+                }
+            }
+        }
     }
 }
