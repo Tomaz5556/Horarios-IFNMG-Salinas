@@ -30,7 +30,7 @@ O projeto é uma plataforma web que mostra os horários dos cursos, professores 
 - Para começar, clone este repositório para o seu ambiente local:
 
 ```
-git clone https://github.com/ifnmgsal-inf/Horarios-IFNMG-Salinas.git
+git clone https://github.com/Tomaz5556/Horarios-IFNMG-Salinas
 ```
 
 - Em seguida, execute o comando abaixo dentro da pasta `frontend`, dependendo de qual gerenciador de pacotes você preferir, para instalar as dependências do projeto:
@@ -107,7 +107,7 @@ NEXT_PUBLIC_BACKEND_URL=http://localhost:8080
 
 ## 7. Documentação da Planilha
 
-- [Documentação](https://ifnmgsal-inf.github.io/Horarios-IFNMG-Salinas/)
+- [Documentação](https://tomaz5556.github.io/Horarios-IFNMG-Salinas/)
 
 ## 8. Licença
 
